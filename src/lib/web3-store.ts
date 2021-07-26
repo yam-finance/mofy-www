@@ -190,5 +190,3 @@ export const selectedAccount = allStores.default.selectedAccount;
 export const walletType = allStores.default.walletType;
 export const web3 = allStores.default.web3;
 export const chainData = allStores.default.chainData;
-
-export const ethStore = defaultChainStore;
