@@ -22,6 +22,7 @@
 		console.log('Fee', fee);
 		console.log('NFT', nft);
 		console.log('TxReceipt', receipt);
+        console.log(nft.txHash.substring(8));
 	};
 </script>
 
