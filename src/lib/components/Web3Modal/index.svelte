@@ -1,4 +1,5 @@
-<script>
+<!-- src/lib/components/Web3Modal/index.svelte -->
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { defaultChainStore, web3, connected } from '$lib/web3-store';
 

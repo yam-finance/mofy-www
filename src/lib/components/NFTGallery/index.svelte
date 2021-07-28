@@ -1,4 +1,6 @@
-<script>
+<!-- src/lib/components/NFTGallery/index.svelte -->
+<script lang="ts">
+	import { onMount } from 'svelte';
 	import {
 		syncWallet,
 		web3,
@@ -11,6 +13,14 @@
 	$: checkAccountL1 = $selectedAccount || '0x0000000000000000000000000000000000000000';
 	$: balanceL1 = $connected ? $web3.eth.getBalance(checkAccountL1) : '';
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
+	$: committedNFTList = '';
+	$: verifiedNFTList = '';
+	
+	onMount(async () => {
+		const state = await syncWallet.getAccountState(checkAccountL1);
+		committedNFTList = state.committed.nfts
+		verifiedNFTList = state.verified.nfts;
+	});
 </script>
 
 <p>
