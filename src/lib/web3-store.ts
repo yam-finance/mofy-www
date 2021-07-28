@@ -74,7 +74,7 @@ export const createStore = () => {
 		update(() => ({
 			signer,
 			syncWallet,
-		    syncProvider,	
+			syncProvider,
 			provider,
 			providerType: 'String',
 			connected: true,

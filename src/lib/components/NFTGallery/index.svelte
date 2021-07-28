@@ -15,10 +15,10 @@
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
 	$: committedNFTList = '';
 	$: verifiedNFTList = '';
-	
+
 	onMount(async () => {
 		const state = await syncWallet.getAccountState(checkAccountL1);
-		committedNFTList = state.committed.nfts
+		committedNFTList = state.committed.nfts;
 		verifiedNFTList = state.verified.nfts;
 	});
 </script>
