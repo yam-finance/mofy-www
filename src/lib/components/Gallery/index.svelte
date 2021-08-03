@@ -1,4 +1,4 @@
-<!-- src/lib/components/NFTGallery/index.svelte -->
+<!-- src/lib/components/Gallery/index.svelte -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {

@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>Gallery</title>
+	<title>Explore</title>
 </svelte:head>
 
 <Protected>
