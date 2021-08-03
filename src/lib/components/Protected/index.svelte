@@ -9,6 +9,6 @@
 	<slot />
 {:else}
 	<slot name="unauthorized">
-		<div>Please connect to see your nfts</div>
+		<div>Please connect your wallet</div>
 	</slot>
 {/if}

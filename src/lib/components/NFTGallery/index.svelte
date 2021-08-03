@@ -17,7 +17,7 @@
 	$: verifiedNFTList = '';
 
 	onMount(async () => {
-		const state = await syncWallet.getAccountState(checkAccountL1);
+		const state = await $syncWallet.getAccountState(checkAccountL1);
 		committedNFTList = state.committed.nfts;
 		verifiedNFTList = state.verified.nfts;
 	});
