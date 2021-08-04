@@ -39,7 +39,6 @@
 		let committedNFT;
 
 		for (const account of accounts) {
-			console.log(account);
 			const state = await $syncWallet.getAccountState(account);
 			committedNFT = { ...committedNFT, ...state.committed.nfts };
 			// verifiedNFT = {...verifiedNFT, ...state.verified.nfts};
