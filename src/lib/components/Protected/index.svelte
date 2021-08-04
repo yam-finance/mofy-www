@@ -1,6 +1,6 @@
 <!-- src/lib/components/Protected/index.svelte -->
 <script lang="ts">
-	import { connected } from '$lib/web3-store';
+	import { connected } from '$lib/stores/web3-store';
 
 	$: auth = $connected;
 </script>

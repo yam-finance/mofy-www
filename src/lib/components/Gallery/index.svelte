@@ -1,34 +1,63 @@
 <!-- src/lib/components/Gallery/index.svelte -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import {
-		syncWallet,
-		web3,
-		connected,
-		selectedAccount,
-		chainId,
-		chainData
-	} from '$lib/web3-store';
+	import { syncWallet, web3, connected, chainId, chainData } from '$lib/stores/web3-store';
+	import { zkSyncNfts } from '$lib/stores/nft-store';
+	import NFTCard from '$lib/components/NFTCard/index.svelte';
 
-	$: checkAccountL1 = $selectedAccount || '0x0000000000000000000000000000000000000000';
-	$: balanceL1 = $connected ? $web3.eth.getBalance(checkAccountL1) : '';
+	export let accounts;
+	let searchTerm = '';
+	let filteredNFT = [];
+
+	$: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
-	$: committedNFTList = '';
-	$: verifiedNFTList = '';
+	$: {
+		if (searchTerm) {
+			// @todo Update search after meeting
+			filteredNFT = $zkSyncNfts.nfts.filter((nft) =>
+				String(nft.id).toLowerCase().includes(searchTerm.toLowerCase())
+			);
+		} else {
+			filteredNFT = [...$zkSyncNfts.nfts];
+		}
+	}
 
 	onMount(async () => {
-		const state = await $syncWallet.getAccountState(checkAccountL1);
-		committedNFTList = state.committed.nfts;
-		verifiedNFTList = state.verified.nfts;
+		getZkSyncNfts();
 	});
+
+	/**
+	 * @todo Check how this function behaves with a bigger gallery
+	 * and add $zkSyncNfts.nfts.length == 0 check if necessary.
+	 */
+	export const getZkSyncNfts = async () => {
+		zkSyncNfts.update((previous) => ({
+			...previous,
+			loading: true
+		}));
+
+		let committedNFT;
+
+		for (const account of accounts) {
+			console.log(account);
+			const state = await $syncWallet.getAccountState(account);
+			committedNFT = { ...committedNFT, ...state.committed.nfts };
+			// verifiedNFT = {...verifiedNFT, ...state.verified.nfts};
+		}
+
+		zkSyncNfts.update(() => ({
+			loading: false,
+			nfts: Object.values(committedNFT)
+		}));
+	};
 </script>
 
 <p>
 	Connected chain: chainId = {$chainId}
 </p>
-<p>
-	Selected account: {$selectedAccount || 'not defined'}
-</p>
+<!-- <p>
+	Selected account: {accounts[0] || 'not defined'}
+</p> -->
 
 <p>
 	Balance on Ethereum {$chainData.network}:
@@ -48,3 +77,14 @@
 	{/await}
 	{$chainData.nativeCurrency?.symbol}
 </p>
+
+<input type="text" bind:value={searchTerm} placeholder="Searh for a specific nft id" />
+
+<!-- @todo Render nfts -->
+{#if $zkSyncNfts.loading && filteredNFT.length == 0}
+	<p>loading ...</p>
+{:else}
+	{#each filteredNFT as nft}
+		<NFTCard {nft} />
+	{/each}
+{/if}

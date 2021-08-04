@@ -2,19 +2,20 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { defaultChainStore, web3, connected, selectedAccount } from '$lib/web3-store';
+	import { goto } from '$app/navigation';
+	import { defaultChainStore, web3, connected, selectedAccount } from '$lib/stores/web3-store';
 
 	let Web3Modal;
 	let WalletConnectProvider;
 	let mobileMenu = { open: false };
 	let dynamicClass = {
 		desktop: {
-			current: 'bg-gray-100 text-gray-900 rounded-md py-2 px-4',
-			other: 'text-gray-900 hover:bg-gray-50 hover:text-gray-900 rounded-md py-2 px-3'
+			current: 'bg-gray-100 text-gray-900',
+			default: 'text-gray-900 hover:bg-gray-50 hover:text-gray-900'
 		},
 		mobile: {
 			current: 'bg-gray-100 text-gray-900',
-			other: 'text-gray-900 hover:bg-gray-50 hover:text-gray-900'
+			default: 'text-gray-900 hover:bg-gray-50 hover:text-gray-900'
 		}
 	};
 
@@ -101,8 +102,8 @@
 					</button>
 				</div>
 				<div class="flex-shrink-0 flex items-center">
-					<img class="block lg:hidden h-8 w-auto" src="" alt="Mofy" />
-					<img class="hidden lg:block h-8 w-auto" src="" alt="Mofy" />
+					<img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Mofy" />
+					<img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Mofy" />
 				</div>
 			</div>
 			<div class="flex items-center">
@@ -111,7 +112,8 @@
 						href="/explore"
 						class="{$page.path == '/explore'
 							? dynamicClass.desktop.current
-							: dynamicClass.desktop.other} hidden md:inline-flex items-center text-sm font-medium"
+							: dynamicClass.desktop
+									.default} hidden rounded-md py-2 px-3 md:inline-flex items-center text-sm font-medium"
 						aria-current="page"
 					>
 						Explore
@@ -120,9 +122,19 @@
 						href="/gallery"
 						class="{$page.path == '/gallery'
 							? dynamicClass.desktop.current
-							: dynamicClass.desktop.other} hidden md:inline-flex items-center text-sm font-medium"
+							: dynamicClass.desktop
+									.default} hidden rounded-md py-2 px-3 md:inline-flex items-center text-sm font-medium"
 					>
 						Your Gallery
+					</a>
+					<a
+						href="/mint"
+						class="{$page.path == '/mint'
+							? dynamicClass.desktop.current
+							: dynamicClass.desktop
+									.default} hidden rounded-md py-2 px-3 md:inline-flex items-center text-sm font-medium"
+					>
+						Mint
 					</a>
 					{#if $web3.version}
 						{#if !$connected}
@@ -139,7 +151,7 @@
 								type="button"
 								class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 							>
-								<!-- TODO Use address shortener function -->
+								<!-- @todo Use address shortener function -->
 								<span>Disconnect {$selectedAccount.substring(0, 8)}</span>
 							</button>
 						{/if}
@@ -163,15 +175,21 @@
 					href="/explore"
 					class="{$page.path == '/explore'
 						? dynamicClass.mobile.current
-						: dynamicClass.mobile.other} block rounded-md py-2 px-3 text-base font-medium"
+						: dynamicClass.mobile.default} block rounded-md py-2 px-3 text-base font-medium"
 					aria-current="page">Explore</a
 				>
 				<a
 					href="/gallery"
 					class="{$page.path == '/gallery'
 						? dynamicClass.mobile.current
-						: dynamicClass.mobile.other} block rounded-md py-2 px-3 text-base font-medium"
+						: dynamicClass.mobile.default} block rounded-md py-2 px-3 text-base font-medium"
 					>Your Gallery</a
+				>
+				<a
+					href="/mint"
+					class="{$page.path == '/mint'
+						? dynamicClass.mobile.current
+						: dynamicClass.mobile.default} block rounded-md py-2 px-3 text-base font-medium">Mint</a
 				>
 			</div>
 		</div>
