@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores'
+	import { page } from '$app/stores';
 	import Protected from '$lib/components/Protected/index.svelte';
 	import Gallery from '$lib/components/Gallery/index.svelte';
 	import { selectedAccount } from '$lib/stores/web3-store';

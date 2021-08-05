@@ -4,7 +4,6 @@
 	import { selectedAccount } from '$lib/stores/web3-store';
 	// @todo Add types for artists.json
 	import Artists from '$lib/config/artists';
-
 </script>
 
 <svelte:head>

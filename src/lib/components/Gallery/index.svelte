@@ -1,7 +1,14 @@
 <!-- src/lib/components/Gallery/index.svelte -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { syncWallet, syncProvider, web3, connected, chainId, chainData } from '$lib/stores/web3-store';
+	import {
+		syncWallet,
+		syncProvider,
+		web3,
+		connected,
+		chainId,
+		chainData
+	} from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import NFTCard from '$lib/components/NFTCard/index.svelte';
 
@@ -86,6 +93,6 @@
 	<p>loading ...</p>
 {:else}
 	{#each filteredNFT as nft}
-		<NFTCard nft={nft} />
+		<NFTCard {nft} />
 	{/each}
 {/if}

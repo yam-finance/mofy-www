@@ -1,6 +1,6 @@
 <!-- src/lib/components/NFTCard/index.svelte -->
 <script lang="ts">
-	import { utils } from "ethers";
+	import { utils } from 'ethers';
 
 	export let nft;
 </script>
