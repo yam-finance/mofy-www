@@ -1,4 +1,4 @@
-import chains from './chains.json';
+import chains from '../config/chains.json';
 import { derived, writable } from 'svelte/store';
 import * as zksync from 'zksync';
 import { ethers } from 'ethers';
