@@ -13,7 +13,7 @@
 		);
 
 		let txFee = fee;
-		
+
 		// @todo Replace the content hash with the ipfs hash represented by a 32-byte hex string
 		const contentHash = '0xbd7289936758c562235a3a42ba2c4a56cbb23a263bb8f8d27aead80d74d9d996';
 		const nft = await $syncWallet.mintNFT({

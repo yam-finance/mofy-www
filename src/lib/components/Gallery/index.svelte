@@ -1,7 +1,7 @@
 <!-- src/lib/components/Gallery/index.svelte -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { syncWallet, web3, connected, chainId, chainData } from '$lib/stores/web3-store';
+	import { syncWallet, syncProvider, web3, connected, chainId, chainData } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import NFTCard from '$lib/components/NFTCard/index.svelte';
 
@@ -12,6 +12,7 @@
 	$: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
 	$: {
+		// @todo Check if term is equal to address and link to artist gallery
 		if (searchTerm) {
 			// @todo Update search after meeting
 			filteredNFT = $zkSyncNfts.nfts.filter((nft) =>
@@ -29,6 +30,7 @@
 	/**
 	 * @todo Check how this function behaves with a bigger gallery
 	 * and add $zkSyncNfts.nfts.length == 0 check if necessary.
+	 * @todo Add check so explore and personal galleries don't overwrite themselves
 	 */
 	export const getZkSyncNfts = async () => {
 		zkSyncNfts.update((previous) => ({
@@ -39,7 +41,7 @@
 		let committedNFT;
 
 		for (const account of accounts) {
-			const state = await $syncWallet.getAccountState(account);
+			const state = await $syncProvider.getState(account);
 			committedNFT = { ...committedNFT, ...state.committed.nfts };
 			// verifiedNFT = {...verifiedNFT, ...state.verified.nfts};
 		}
@@ -54,9 +56,9 @@
 <p>
 	Connected chain: chainId = {$chainId}
 </p>
-<!-- <p>
+<p>
 	Selected account: {accounts[0] || 'not defined'}
-</p> -->
+</p>
 
 <p>
 	Balance on Ethereum {$chainData.network}:
@@ -84,6 +86,6 @@
 	<p>loading ...</p>
 {:else}
 	{#each filteredNFT as nft}
-		<NFTCard {nft} />
+		<NFTCard nft={nft} />
 	{/each}
 {/if}
