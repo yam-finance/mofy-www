@@ -30,7 +30,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@sveltejs/adapter-static": "^1.0.0-next.16",
+		"@sveltejs/adapter-static": "^1.0.0-next.15",
 		"ethers": "^5.4.2",
 		"zksync": "^0.11.1"
 	},
