@@ -19,6 +19,11 @@
 	$: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
 	$: {
+		if (accounts) {
+			getZkSyncNfts();
+		}
+	}
+	$: {
 		// @todo Check if term is equal to address and link to artist gallery
 		if (searchTerm) {
 			// @todo Update search after meeting
@@ -29,10 +34,6 @@
 			filteredNFT = [...$zkSyncNfts.nfts];
 		}
 	}
-
-	onMount(async () => {
-		getZkSyncNfts();
-	});
 
 	/**
 	 * @todo Check how this function behaves with a bigger gallery
