@@ -1,3 +1,13 @@
+# Museum Of Fine Yams
+
+## Available at
+
+https://museum.yam.finance/ - Live website
+<a href="https://app.netlify.com/sites/determined-meninsky-9f80bf/deploys" target="_blank">![Netlify Status](https://api.netlify.com/api/v1/badges/a0f06628-f198-40ee-960e-b1cefdbf1098/deploy-status)</a>
+
+https://develop.museum.yam.finance/ - Devleopment builds
+<a href="https://app.netlify.com/sites/sharp-curie-148676/deploys" target="_blank">![Netlify Status](https://api.netlify.com/api/v1/badges/96c0149d-6ba2-4912-9e81-57ae32e238a4/deploy-status)</a>
+
 ## Developing
 
 ```bash
