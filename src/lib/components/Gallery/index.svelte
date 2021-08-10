@@ -16,7 +16,7 @@
 	let filteredNFT = [];
 
 	$: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
-	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
+	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
 	$: {
 		if (accounts) {
 			getZkSyncNfts();

@@ -1,3 +1,7 @@
+// @todo Move address to second input
+// @todo make attribute name editable
+// @todo loading 
+
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
