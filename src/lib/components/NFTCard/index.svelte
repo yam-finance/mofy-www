@@ -2,7 +2,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { utils } from 'ethers';
 	import { ethers } from 'ethers';
 	import CID from 'cids';
 
@@ -60,8 +59,8 @@
 	{/if}
 
 	<a
-		href={`/gallery/${utils.getAddress(nft.creatorAddress)}`}
+		href={`/gallery/${ethers.utils.getAddress(nft.creatorAddress)}`}
 		class="block text-sm font-medium text-gray-500"
-		>{utils.getAddress(nft.creatorAddress).substring(0, 8)}</a
+		>{ethers.utils.getAddress(nft.creatorAddress).substring(0, 8)}</a
 	>
 </li>

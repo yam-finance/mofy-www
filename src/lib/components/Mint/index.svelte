@@ -1,5 +1,6 @@
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
+	import DepositModal from '$lib/components/DepositModal/index.svelte';
 	import { syncWallet, syncProvider } from '$lib/stores/web3-store';
 	import { NFTStorage, File } from 'nft.storage';
 	import CID from 'cids';
@@ -14,6 +15,7 @@
 	let description;
 	let name;
 	let recipientAddress = $syncWallet.address();
+	let showModal = true;
 
 	$: if (files) {
 		// Note that `files` is of type `FileList`, not an Array:
@@ -51,7 +53,8 @@
 
 		// @todo Open modal to onboard the user
 		if (accountETHBalance.toNumber() < txFee.toNumber()) {
-			console.log('onboard user');
+			showModal = true;
+			return 1;
 		}
 
 		const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
@@ -228,4 +231,5 @@
 			</div>
 		</div>
 	</div>
+	<DepositModal on:close={() => (showModal = false)} visible={showModal} />
 </div>
