@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { syncWallet } from '$lib/stores/web3-store';
+	import { syncWallet, selectedAccount } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import { ethers } from 'ethers';
 	import CID from 'cids';
@@ -10,9 +10,12 @@
 	let nft;
 	let metadata;
 	let nftImage;
+	let order;
+	let loading = true;
 
 	// @todo Check for a more suitable solution
 	onMount(async () => {
+		loading = true;
 		if ($zkSyncNfts.nfts.length == 0) {
 			nft = await $syncWallet.getNFT(id, 'committed');
 		} else {
@@ -29,6 +32,8 @@
 
 		metadata = await res.json();
 		nftImage = 'https://ipfs.io/ipfs/' + metadata.image.slice(7);
+
+		loading = false;
 	});
 
 	// @todo Move to utils
@@ -45,7 +50,7 @@
 		if (left > right) return -1;
 
 		const middle = Math.floor((left + right) / 2);
-		const potentialMatch = array[middle].id;
+		const potentialMatch = array[middle]['id'];
 
 		if (target === potentialMatch) {
 			return middle;
@@ -65,7 +70,7 @@
 			>
 				<!-- Testimonial card-->
 				<div class="relative pt-64 pb-10 rounded-2xl shadow-xl overflow-hidden">
-					{#if !nftImage}
+					{#if loading}
 						<img class="absolute inset-0 h-full w-full object-cover" src="" alt="loading NFT ..." />
 					{:else}
 						<img class="absolute inset-0 h-full w-full object-cover" src={nftImage} alt="NFT" />
@@ -75,7 +80,7 @@
 					<div class="relative px-8">
 						<blockquote class="mt-8">
 							<footer class="mt-4">
-								{#if !nft}
+								{#if loading}
 									<p class="text-base font-semibold text-gray-200">loading ...</p>
 								{:else}
 									<p class="text-base font-semibold text-gray-200">{nft.id}</p>
@@ -90,7 +95,7 @@
 		<div class="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0">
 			<!-- Content area -->
 			<div class="pt-12 sm:pt-16 lg:pt-20">
-				{#if !metadata}
+				{#if loading}
 					<h2 class="text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl">
 						loading ...
 					</h2>
@@ -118,7 +123,7 @@
 								d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"
 							/>
 						</svg>
-						{#if !nft}
+						{#if loading}
 							loading ...
 						{:else}
 							{nft.creatorAddress.substring(0, 8)}
@@ -140,7 +145,7 @@
 							/>
 						</svg>
 						<!-- @todo Check which address this is -->
-						{#if !nft}
+						{#if loading}
 							loading ...
 						{:else}
 							{nft.address.substring(0, 8)}
@@ -148,7 +153,7 @@
 					</div>
 				</div>
 				<div class="mt-6 text-gray-500 space-y-6">
-					{#if !metadata}
+					{#if loading}
 						<p class="text-lg">loading ...</p>
 					{:else}
 						<p class="text-lg">{metadata.description}</p>
@@ -159,7 +164,7 @@
 			<!-- Attributes section -->
 			<div class="mt-10">
 				<dl class="grid grid-cols-2 gap-x-4 gap-y-8">
-					{#if metadata}
+					{#if !loading}
 						{#each Object.keys(metadata.properties) as attribute}
 							<div class="sm:col-span-1">
 								<dt class="text-sm font-medium text-gray-500">{attribute}</dt>
@@ -175,24 +180,35 @@
 
 			<div class="mt-10">
 				<span class="relative z-0 inline-flex shadow-sm rounded-md">
-					<button
-						type="button"
-						class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-					>
-						buy for
-					</button>
-					<!-- <button type="button" class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500">
-					not for sale 
-				</button> -->
-					<button
-						type="button"
-						class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-					>
-						12 {ethers.constants.EtherSymbol}
-					</button>
-					<!-- <button type="button" class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500">
-					set price
-				</button> -->
+					{#if !loading}
+						{#if !order && ethers.utils.getAddress(nft.creatorAddress) == $selectedAccount}
+							<button
+								type="button"
+								class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+							>
+								currently not for sale
+							</button>
+							<button
+								type="button"
+								class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+							>
+								set price
+							</button>
+						{:else if order}
+							<button
+								type="button"
+								class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+							>
+								buy for
+							</button>
+							<button
+								type="button"
+								class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+							>
+								{order.amount + ethers.constants.EtherSymbol}
+							</button>>
+						{/if}
+					{/if}
 				</span>
 			</div>
 		</div>
