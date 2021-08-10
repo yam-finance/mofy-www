@@ -3,7 +3,7 @@
 	import Gallery from '$lib/components/Gallery/index.svelte';
 	import { selectedAccount } from '$lib/stores/web3-store';
 	// @todo Add types for artists.json
-	import Artists from '$lib/config/artists';
+	import Artists from '$lib/config/artists.json';
 </script>
 
 <svelte:head>

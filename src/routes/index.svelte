@@ -32,6 +32,23 @@
 	<title>Home</title>
 </svelte:head>
 
-{#if visible}
+<!-- {#if visible}
 	<p in:typewriter>Welcome to Mofy - the Museum of fine Yams</p>
-{/if}
+{/if} -->
+
+<iframe
+	src="https://museum-of-fine-yams.webflow.io/"
+	title="Mofy Webflow site"
+	style="
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    border: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+	z-index: -1;
+  "
+/>

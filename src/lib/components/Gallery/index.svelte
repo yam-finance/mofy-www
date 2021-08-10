@@ -1,6 +1,5 @@
 <!-- src/lib/components/Gallery/index.svelte -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import {
 		syncWallet,
 		syncProvider,
@@ -61,7 +60,7 @@
 	};
 </script>
 
-<p>
+<!-- <p>
 	Connected chain: chainId = {$chainId}
 </p>
 <p>
@@ -85,16 +84,19 @@
 		<span>{value}</span>
 	{/await}
 	{$chainData.nativeCurrency?.symbol}
-</p>
+</p> -->
 
 <input type="text" bind:value={searchTerm} placeholder="Searh for a specific nft id" />
 
-<ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+<ul
+	role="list"
+	class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+>
 	{#if $zkSyncNfts.loading && filteredNFT.length == 0}
-		<p>loading ...</p>	
+		<p>loading ...</p>
 	{:else}
 		{#each filteredNFT as nft}
 			<NFTCard {nft} />
 		{/each}
 	{/if}
-  </ul>
+</ul>
