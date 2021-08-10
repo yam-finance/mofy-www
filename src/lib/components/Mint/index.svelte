@@ -15,7 +15,7 @@
 	let description;
 	let name;
 	let recipientAddress = $syncWallet.address();
-	let showModal = false 
+	let showModal = false;
 
 	$: if (files) {
 		// Note that `files` is of type `FileList`, not an Array:

@@ -10,7 +10,7 @@
 	const dispatch = createEventDispatcher();
 	const close = () => dispatch('close');
 
-    $: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
+	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
 
 	onMount(async () => {});
 
@@ -23,6 +23,23 @@
 
 		const depositReceipt = await deposit.awaitReceipt();
 		console.log(depositReceipt);
+
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				throw new Error('Unknown account');
+			}
+
+			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+			// the lowest possible amount.
+			const changePubkey = await $syncWallet.setSigningKey({
+				feeToken: 'ETH',
+				ethAuthType: 'ECDSA'
+			});
+
+			// Wait until the tx is committed
+			await changePubkey.awaitReceipt();
+		}
 	};
 
 	// @todo Move to utils
@@ -84,13 +101,17 @@
 									<p class="text-sm text-gray-500">
 										To mint or buy an nft over the mofy app you need to have some ETH on zkSync L2.
 									</p>
-                                    <p class="mt-2 text-sm text-gray-500">
-                                        {#await balanceL2}
-                                            <span>waiting...</span>
-                                        {:then value}
-                                            <span>Current L2 balance: {`${ethers.utils.formatEther(value)} ${ethers.constants.EtherSymbol}`}</span>
-                                        {/await}
-                                    </p>
+									<p class="mt-2 text-sm text-gray-500">
+										{#await balanceL2}
+											<span>waiting...</span>
+										{:then value}
+											<span
+												>Current L2 balance: {`${ethers.utils.formatEther(value)} ${
+													ethers.constants.EtherSymbol
+												}`}</span
+											>
+										{/await}
+									</p>
 								</div>
 
 								<div>
