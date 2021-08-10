@@ -10,7 +10,7 @@
 	const dispatch = createEventDispatcher();
 	const close = () => dispatch('close');
 
-	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
+	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
 
 	onMount(async () => {});
 
