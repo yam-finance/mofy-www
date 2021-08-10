@@ -1,6 +1,5 @@
 <!-- src/lib/components/Gallery/index.svelte -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import {
 		syncWallet,
 		syncProvider,
@@ -61,7 +60,7 @@
 	};
 </script>
 
-<p>
+<!-- <p>
 	Connected chain: chainId = {$chainId}
 </p>
 <p>
@@ -85,7 +84,7 @@
 		<span>{value}</span>
 	{/await}
 	{$chainData.nativeCurrency?.symbol}
-</p>
+</p> -->
 
 <input type="text" bind:value={searchTerm} placeholder="Searh for a specific nft id" />
 

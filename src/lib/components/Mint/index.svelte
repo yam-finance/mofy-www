@@ -1,6 +1,9 @@
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
 	import { syncWallet, syncProvider } from '$lib/stores/web3-store';
+	import { NFTStorage, File } from 'nft.storage';
+	import CID from 'cids';
+	import { ethers } from 'ethers';
 
 	let txFee;
 	let amount;
@@ -8,12 +11,14 @@
 	let propertyValues = {};
 	let attributes = {};
 	let files;
+	let description;
+	let name;
 	let recipientAddress = $syncWallet.address();
 
 	$: if (files) {
 		// Note that `files` is of type `FileList`, not an Array:
 		// https://developer.mozilla.org/en-US/docs/Web/API/FileList
-		console.log(files);
+		// console.log(files);
 
 		for (const file of files) {
 			console.log(`${file.name}: ${file.size} bytes`);
@@ -42,9 +47,24 @@
 		);
 
 		txFee = fee;
+		const accountETHBalance = await $syncWallet.getBalance('ETH', 'verified');
 
-		// @todo Replace the content hash with the ipfs hash represented by a 32-byte hex string
-		const contentHash = '0xbd7289936758c562235a3a42ba2c4a56cbb23a263bb8f8d27aead80d74d9d996';
+		// @todo Open modal to onboard the user
+		if (accountETHBalance.toNumber() < txFee.toNumber()) {
+			console.log('onboard user');
+		}
+
+		const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
+
+		const metadata = await client.store({
+			name,
+			description,
+			image: new File([files[0]], files[0].name, { type: 'image/png' }),
+			properties: attributes
+		});
+
+		const array = new CID(metadata.ipnft).bytes;
+		const contentHash = '0x' + ethers.utils.hexlify(array).substring(10);
 		const nft = await $syncWallet.mintNFT({
 			recipient: recipientAddress,
 			contentHash,
@@ -70,7 +90,7 @@
 			<div class="max-w-lg mx-auto">
 				<input
 					type="file"
-					accept="image/png, image/jpeg"
+					accept="image/png"
 					bind:files
 					class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 				/>
@@ -98,6 +118,7 @@
 						<input
 							required
 							type="text"
+							bind:value={name}
 							name="full-name"
 							id="full-name"
 							autocomplete="name"
@@ -109,6 +130,7 @@
 						<label for="description" class="sr-only">Description</label>
 						<textarea
 							required
+							bind:value={description}
 							id="description"
 							name="description"
 							rows="4"

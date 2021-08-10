@@ -8,7 +8,8 @@
 
 	const id = Number($page.params.id);
 	let nft;
-	let imageLink: string;
+	let metadata;
+	let nftImage;
 
 	// @todo Check for a more suitable solution
 	onMount(async () => {
@@ -19,23 +20,15 @@
 			nft = await $zkSyncNfts.nfts[nftPosition];
 		}
 
-		console.log(nft);
 		const contentHash = nft.contentHash;
 		const ipfsHash = new CID(
 			ethers.utils.arrayify('0x01711220' + contentHash.substring(2))
 		).toString('base32');
-		// const ipfsLink = `https://ipfs.io/ipfs/${ipfsHash}/metadata.json`;
-		const ipfsLink =
-			'https://ipfs.io/ipfs/bafyreib3ywduljhcokmtoiyoiz5kk5ffrn4uhcclgjwzufuz3kugofh2by/metadata.json';
-		const res = await fetch(ipfsLink, {
-			method: 'GET',
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
+		const ipfsLink = `https://ipfs.io/ipfs/${ipfsHash}/metadata.json`;
+		const res = await fetch(ipfsLink);
 
-		const metadata = await res.json();
-		console.log(metadata);
+		metadata = await res.json();
+		nftImage = 'https://ipfs.io/ipfs/' + metadata.image.slice(7);
 	});
 
 	// @todo Move to utils
@@ -72,7 +65,11 @@
 			>
 				<!-- Testimonial card-->
 				<div class="relative pt-64 pb-10 rounded-2xl shadow-xl overflow-hidden">
-					<img class="absolute inset-0 h-full w-full object-cover" src={imageLink} alt="NFT" />
+					{#if !nftImage}
+						<img class="absolute inset-0 h-full w-full object-cover" src="" alt="loading NFT ..." />
+					{:else}
+						<img class="absolute inset-0 h-full w-full object-cover" src={nftImage} alt="NFT" />
+					{/if}
 					<div class="absolute inset-0 bg-gray-500 mix-blend-multiply" />
 					<div class="absolute inset-0 bg-gradient-to-t from-gray-600 via-gray-600 opacity-90" />
 					<div class="relative px-8">
@@ -93,7 +90,15 @@
 		<div class="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0">
 			<!-- Content area -->
 			<div class="pt-12 sm:pt-16 lg:pt-20">
-				<h2 class="text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl">NFT NAME</h2>
+				{#if !metadata}
+					<h2 class="text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl">
+						loading ...
+					</h2>
+				{:else}
+					<h2 class="text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl">
+						{metadata.name}
+					</h2>
+				{/if}
 				<div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-8">
 					<div class="mt-2 flex items-center text-sm text-gray-500">
 						<!-- Heroicon name: solid/briefcase -->
@@ -143,23 +148,25 @@
 					</div>
 				</div>
 				<div class="mt-6 text-gray-500 space-y-6">
-					<p class="text-lg">
-						Description
-					</p>
+					{#if !metadata}
+						<p class="text-lg">loading ...</p>
+					{:else}
+						<p class="text-lg">{metadata.description}</p>
+					{/if}
 				</div>
 			</div>
 
 			<!-- Attributes section -->
 			<div class="mt-10">
 				<dl class="grid grid-cols-2 gap-x-4 gap-y-8">
-					<div class="sm:col-span-1">
-						<dt class="text-sm font-medium text-gray-500">Attribute Name</dt>
-						<dd class="mt-1 text-sm text-gray-900">Attribute Value</dd>
-					</div>
-					<div class="sm:col-span-1">
-						<dt class="text-sm font-medium text-gray-500">Attribute Name</dt>
-						<dd class="mt-1 text-sm text-gray-900">Attribute Value</dd>
-					</div>
+					{#if metadata}
+						{#each Object.keys(metadata.properties) as attribute}
+							<div class="sm:col-span-1">
+								<dt class="text-sm font-medium text-gray-500">{attribute}</dt>
+								<dd class="mt-1 text-sm text-gray-900">{metadata.properties[attribute]}</dd>
+							</div>
+						{/each}
+					{/if}
 				</dl>
 				<!-- <div class="mt-10">
 			<a href="#" class="text-base font-medium text-gray-600">Visit our metaverse space to <span aria-hidden="true">&rarr;</span> </a>
