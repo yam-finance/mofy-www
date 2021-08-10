@@ -1,6 +1,6 @@
-// @todo Move address to second input
-// @todo make attribute name editable
-// @todo loading 
+<!-- @todo Move address to second input
+	 @todo make attribute name editable
+     @todo modal should close after depositing and loading finishing  -->
 
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
@@ -53,7 +53,7 @@
 		);
 
 		txFee = fee;
-		const accountETHBalance = await $syncWallet.getBalance('ETH', 'verified');
+		const accountETHBalance = await $syncWallet.getBalance('ETH');
 
 		// @todo Open modal to onboard the user
 		if (accountETHBalance.toNumber() < txFee.toNumber()) {
