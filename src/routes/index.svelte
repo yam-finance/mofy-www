@@ -32,12 +32,12 @@
 	<title>Home</title>
 </svelte:head>
 
-{#if visible}
+<!-- {#if visible}
 	<p in:typewriter>Welcome to Mofy - the Museum of fine Yams</p>
-{/if}
+{/if} -->
 
 <iframe
-	src="https://svelte.dev/docs"
+	src="https://museum-of-fine-yams.webflow.io/"
 	title="Mofy Webflow site"
 	style="
     position: absolute;
