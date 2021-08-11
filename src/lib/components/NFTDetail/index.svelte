@@ -52,6 +52,8 @@
 			}
 		});
 
+		console.log(`https://api.yam.finance/museum/orders/${id}`)
+
 		const data = await orderRes.json();
 		order = data.order == undefined ? false : data.order;
 
@@ -64,7 +66,7 @@
 			tokenSell: nft.id,
 			amount: 1,
 			ratio: zkUtils.tokenRatio({
-				ETH: 1,
+				ETH: 0.0003,
 				[nft.id]: 1
 			})
 		};
@@ -301,7 +303,7 @@
 									type="button"
 									class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
 								>
-									{order.amount + ethers.constants.EtherSymbol}
+									{order.ratio[String(order.tokenBuy)] + ethers.constants.EtherSymbol}
 								</button>
 							{/if}
 						{:else if !order}
@@ -320,7 +322,7 @@
 								type="button"
 								class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
 							>
-								{order.amount + ethers.constants.EtherSymbol}
+								{order.ratio[String(order.tokenBuy)] + ethers.constants.EtherSymbol}
 							</button>
 						{/if}
 					{/if}
