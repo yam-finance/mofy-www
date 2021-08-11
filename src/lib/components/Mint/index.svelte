@@ -32,7 +32,7 @@
 			attributes = { ...attributes, [attributeName]: '' };
 		}
 
-		attributeName = "";
+		attributeName = '';
 	};
 
 	const updateAttribute = async (_attributeName: string) => {

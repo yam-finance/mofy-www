@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { syncWallet, selectedAccount } from '$lib/stores/web3-store';
+	import { syncWallet, syncProvider, selectedAccount } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
+	import { utils as zkUtils } from 'zksync';
 	import { ethers } from 'ethers';
 	import CID from 'cids';
 
@@ -35,30 +36,90 @@
 		metadata = await res.json();
 		nftImage = 'https://ipfs.io/ipfs/' + metadata.image.slice(7);
 
+		const orderRes = await fetch('/api/order', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				ID: id
+			}
+		});
+
+		const data = await orderRes.json();
+		order = Object.keys(data.orderDetails.order).length === 0 ? undefined : data.orderDetails.order;
+
+		console.log(order);
+
 		loading = false;
 	});
 
-	const setOrder = async () => {
-		/// @dev Set an order
+	const setSellOrder = async () => {
+		const _order = {
+			tokenBuy: 'ETH',
+			tokenSell: nft.id,
+			amount: 1,
+			ratio: zkUtils.tokenRatio({
+				ETH: 1,
+				[nft.id]: 1
+			})
+		};
+
+		const sellingNFT = await $syncWallet.getOrder(_order);
+
+		console.log(sellingNFT);
+
 		const res = await fetch('/api/order', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				ID: '1'
+				ID: id
 			},
-			body: JSON.stringify({ test2: 'test2' })
+			body: JSON.stringify(_order)
 		});
 
-		/// @dev Get an order
-		// const res = await fetch('/api/order', {
-		// 	method: 'GET',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 		ID: '1'
-		// 	}
-		// });
+		order = _order;
 
 		console.log(await res.json());
+	};
+
+	const setBuyOrder = async () => {
+		const _order = {
+			tokenSell: order.tokenBuy,
+			tokenBuy: parseInt(nft.id),
+			amount: $syncProvider.tokenSet.parseToken(
+				order.tokenBuy,
+				String(order.ratio[String(order.tokenBuy)])
+			),
+			ratio: zkUtils.tokenRatio({
+				[order.tokenBuy]: order.ratio[String(order.tokenBuy)],
+				[parseInt(nft.id)]: 1
+			})
+		};
+
+		await $syncWallet.getOrder(_order);
+
+		console.log(order);
+		console.log(_order);
+
+		const swap = await $syncWallet.syncSwap({
+			orders: [_order, order],
+			feeToken: 'ETH'
+		});
+
+		const receipt = await swap.awaitReceipt();
+		console.log(receipt);
+	};
+
+	const cancelOrder = async () => {
+		await fetch('/api/order', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				ID: id
+			},
+			body: JSON.stringify({})
+		});
+
+		order = undefined;
 	};
 
 	// @todo Move to utils
@@ -206,22 +267,46 @@
 			<div class="mt-10">
 				<span class="relative z-0 inline-flex shadow-sm rounded-md">
 					{#if !loading}
-						{#if !order && ethers.utils.getAddress(nft.creatorAddress) == $selectedAccount}
+						{#if ethers.utils.getAddress(nft.creatorAddress) == $selectedAccount}
+							{#if !order}
+								<!-- set price -->
+								<button
+									type="button"
+									class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+								>
+									currently not for sale
+								</button>
+								<button
+									type="button"
+									on:click={setSellOrder}
+									class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+								>
+									set price
+								</button>
+							{:else}
+								<!-- cancel order -->
+								<button
+									type="button"
+									on:click={cancelOrder}
+									class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+								>
+									cancel order
+								</button>
+								<button
+									type="button"
+									class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+								>
+									{order.amount + ethers.constants.EtherSymbol}
+								</button>
+							{/if}
+						{:else if !order}
+							<!-- not for sale -->
+							<p>not for sale</p>
+						{:else}
+							<!-- show price -->
 							<button
 								type="button"
-								class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-							>
-								currently not for sale
-							</button>
-							<button
-								type="button"
-								class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-							>
-								set price
-							</button>
-						{:else if order}
-							<button
-								type="button"
+								on:click={setBuyOrder}
 								class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
 							>
 								buy for
@@ -231,7 +316,7 @@
 								class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
 							>
 								{order.amount + ethers.constants.EtherSymbol}
-							</button>>
+							</button>
 						{/if}
 					{/if}
 				</span>
