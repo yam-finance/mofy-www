@@ -1,6 +1,8 @@
 // src/routes/api/order.ts
 import type { Request, Response } from '@sveltejs/kit';
 
+// @todo The following endpoints can be combined in the future
+
 export async function post(req: Request): Promise<Response> {
 	try {
 		console.log(req.body);

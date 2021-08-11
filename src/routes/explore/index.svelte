@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Protected from '$lib/components/Protected/index.svelte';
 	import Gallery from '$lib/components/Gallery/index.svelte';
-	import { selectedAccount } from '$lib/stores/web3-store';
 	// @todo Add types for artists.json
 	import Artists from '$lib/config/artists.json';
 
@@ -31,7 +30,7 @@
 			</div>
 			<div class="mt-10 w-full max-w-xs">
 				<label for="search" class="block text-base font-medium text-gray-500"
-					>Filter for an nft</label
+					>Filter for nft id or creator address</label
 				>
 				<div class="mt-1 relative flex items-center">
 					<input
@@ -53,6 +52,5 @@
 		</div>
 	</div>
 
-	<!-- @todo Replace with artists address array -->
 	<Gallery accounts={Artists.addresses} {searchTerm} />
 </Protected>

@@ -1,13 +1,7 @@
 <!-- src/lib/components/Gallery/index.svelte -->
 <script lang="ts">
-	import {
-		syncWallet,
-		syncProvider,
-		web3,
-		connected,
-		chainId,
-		chainData
-	} from '$lib/stores/web3-store';
+	import { page } from '$app/stores';
+	import { syncWallet, syncProvider, web3, connected } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import NFTCard from '$lib/components/NFTCard/index.svelte';
 
@@ -22,22 +16,26 @@
 			getZkSyncNfts();
 		}
 	}
+	$: nfts = $page.path == '/explore' ? $zkSyncNfts.whitelistedNFTs : $zkSyncNfts.nfts;
 	$: {
-		// @todo Check if term is equal to address and link to artist gallery
 		if (searchTerm) {
-			// @todo Update search after meeting
-			filteredNFT = $zkSyncNfts.nfts.filter((nft) =>
-				String(nft.id).toLowerCase().includes(searchTerm.toLowerCase())
-			);
+			if (searchTerm.lastIndexOf('x', 1)) {
+				filteredNFT = nfts.filter((nft) =>
+					String(nft.creatorAddress).toLowerCase().includes(searchTerm.toLowerCase())
+				);
+			} else {
+				filteredNFT = nfts.filter((nft) =>
+					String(nft.id).toLowerCase().includes(searchTerm.toLowerCase())
+				);
+			}
 		} else {
-			filteredNFT = [...$zkSyncNfts.nfts];
+			filteredNFT = [...nfts];
 		}
 	}
 
 	/**
 	 * @todo Check how this function behaves with a bigger gallery
 	 * and add $zkSyncNfts.nfts.length == 0 check if necessary.
-	 * @todo Add check so explore and personal galleries don't overwrite themselves
 	 */
 	export const getZkSyncNfts = async () => {
 		zkSyncNfts.update((previous) => ({
@@ -53,10 +51,19 @@
 			// verifiedNFT = {...verifiedNFT, ...state.verified.nfts};
 		}
 
-		zkSyncNfts.update(() => ({
-			loading: false,
-			nfts: Object.values(committedNFT)
-		}));
+		if ($page.path == '/explore') {
+			zkSyncNfts.update((previous) => ({
+				...previous,
+				loading: false,
+				whitelistedNFTs: Object.values(committedNFT)
+			}));
+		} else {
+			zkSyncNfts.update((previous) => ({
+				...previous,
+				loading: false,
+				nfts: Object.values(committedNFT)
+			}));
+		}
 	};
 </script>
 
@@ -86,7 +93,7 @@
 	{$chainData.nativeCurrency?.symbol}
 </p> -->
 
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="pb-16 max-w-7xl mx-auto sm:px-6 lg:px-8">
 	<ul
 		role="list"
 		class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
