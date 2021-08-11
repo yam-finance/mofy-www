@@ -7,6 +7,7 @@
 
 	export let visible;
 	let amount;
+	let loading = false;
 	const dispatch = createEventDispatcher();
 	const close = () => dispatch('close');
 
@@ -15,6 +16,7 @@
 	onMount(async () => {});
 
 	const deposit = async () => {
+		loading = true;
 		const deposit = await $syncWallet.depositToSyncFromEthereum({
 			depositTo: $syncWallet.address(),
 			token: 'ETH',
@@ -40,6 +42,9 @@
 			// Wait until the tx is committed
 			await changePubkey.awaitReceipt();
 		}
+
+		loading = false;
+		close();
 	};
 
 	// @todo Move to utils
@@ -151,7 +156,11 @@
 								type="submit"
 								class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:text-sm"
 							>
-								Deposit
+								{#if !loading}
+									Deposit
+								{:else}
+									loading ..
+								{/if}
 							</button>
 						</div>
 					</form>

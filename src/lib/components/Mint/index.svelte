@@ -16,6 +16,7 @@
 	let name;
 	let recipientAddress = $syncWallet.address();
 	let showModal = false;
+	let loading = false;
 
 	$: if (files) {
 		// Note that `files` is of type `FileList`, not an Array:
@@ -43,6 +44,7 @@
 
 	// @todo Move partly to modal component
 	const mint = async () => {
+		loading = true;
 		const feeToken = 'ETH';
 		const { totalFee: fee } = await $syncProvider.getTransactionFee(
 			'MintNFT',
@@ -102,6 +104,7 @@
 		console.log('NFT', nft);
 		console.log('TxReceipt', receipt);
 		console.log(nft.txHash.substring(8));
+		loading = false;
 	};
 </script>
 
@@ -252,7 +255,11 @@
 							type="submit"
 							class="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 						>
-							Mint NFT
+							{#if !loading}
+								Mint NFT
+							{:else}
+								loading ...
+							{/if}
 						</button>
 					</div>
 				</form>
