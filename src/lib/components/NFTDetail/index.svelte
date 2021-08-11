@@ -45,16 +45,15 @@
 		metadata = await res.json();
 		nftImage = 'https://ipfs.io/ipfs/' + metadata.image.slice(7);
 
-		const orderRes = await fetch('/api/order', {
+		const orderRes = await fetch(`https://api.yam.finance/museum/orders/${id}`, {
 			method: 'GET',
 			headers: {
-				'Content-Type': 'application/json',
-				ID: id
+				'content-type': 'application/json'
 			}
 		});
 
 		const data = await orderRes.json();
-		order = data.orderDetails.order == undefined ? false : data.orderDetails.order;
+		order = data.order == undefined ? false : data.orderDetails.order;
 
 		loading = false;
 	});
@@ -74,11 +73,10 @@
 
 		console.log(sellingNFT);
 
-		const res = await fetch('/api/order', {
+		const res = await fetch(`https://api.yam.finance/museum/orders/${id}`, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				ID: id
+				'content-type': 'application/json'
 			},
 			body: JSON.stringify(_order)
 		});
@@ -119,11 +117,10 @@
 	};
 
 	const cancelOrder = async () => {
-		await fetch('/api/order', {
+		await fetch(`https://api.yam.finance/museum/orders/${id}`, {
 			method: 'DELETE',
 			headers: {
-				'Content-Type': 'application/json',
-				ID: id
+				'content-type': 'application/json'
 			}
 		});
 
