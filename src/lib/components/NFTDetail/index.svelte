@@ -66,7 +66,7 @@
 			tokenSell: nft.id,
 			amount: 1,
 			ratio: zkUtils.tokenRatio({
-				ETH: 0.0003,
+				0: 0.0003,
 				[nft.id]: 1
 			})
 		};
@@ -97,15 +97,23 @@
 				String(order.ratio[String(order.tokenBuy)])
 			),
 			ratio: zkUtils.tokenRatio({
-				[order.tokenBuy]: order.ratio[String(order.tokenBuy)],
+				0: order.ratio[String(order.tokenBuy)],
 				[parseInt(nft.id)]: 1
-			})
+			}),
+			recipient: $selectedAccount
 		};
 
 		await $syncWallet.getOrder(_order);
 
 		console.log(order);
 		console.log(_order);
+		console.log($syncProvider.tokenSet.parseToken(
+				order.tokenBuy,
+				String(order.ratio[String(order.tokenBuy)])
+			).toNumber()
+		);
+
+		await $syncWallet.getOrder(_order);
 
 		const swap = await $syncWallet.syncSwap({
 			orders: [_order, order],
