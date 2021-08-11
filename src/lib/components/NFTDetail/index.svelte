@@ -66,13 +66,12 @@
 			tokenSell: nft.id,
 			amount: 1,
 			ratio: zkUtils.tokenRatio({
-				'ETH': 0.0003,
-				[nft.id]: 1
+				ETH: 0.0003,
+				[parseInt(nft.id)]: 1
 			})
 		};
 
 		const sellOrder = await $syncWallet.getOrder(_order);
-
 		console.log(sellOrder);
 
 		const res = await fetch(`https://api.yam.finance/museum/orders/${id}`, {
@@ -83,7 +82,7 @@
 			body: JSON.stringify(sellOrder)
 		});
 
-		order = sellOrder;
+		order = JSON.stringify(sellOrder);
 
 		console.log(await res.json());
 	};
@@ -97,14 +96,14 @@
 				String(order.ratio[String(order.tokenBuy)])
 			),
 			ratio: zkUtils.tokenRatio({
-				'ETH': order.ratio[String(order.tokenBuy)],
+				ETH: order.ratio[String(order.tokenBuy)],
 				[parseInt(nft.id)]: 1
-			}),
-			recipient: $selectedAccount
+			})
 		};
 
 		const buyOrder = await $syncWallet.getOrder(_order);
 		console.log(buyOrder);
+		console.log(order);
 
 		await $syncWallet.getOrder(buyOrder);
 
