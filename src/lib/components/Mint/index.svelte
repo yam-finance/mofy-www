@@ -49,7 +49,6 @@
 		);
 
 		txFee = fee;
-		const accountETHBalance = await $syncWallet.getBalance('ETH');
 
 		if (!(await $syncWallet.isSigningKeySet())) {
 			if ((await $syncWallet.getAccountId()) == undefined) {
@@ -67,6 +66,8 @@
 			// Wait until the tx is committed
 			await changePubkey.awaitReceipt();
 		}
+
+		const accountETHBalance = await $syncWallet.getBalance('ETH');
 
 		// @todo Open modal to onboard the user
 		if (txFee.gte(accountETHBalance)) {
