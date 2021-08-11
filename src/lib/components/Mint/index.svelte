@@ -52,6 +52,14 @@
 
 		txFee = fee;
 
+		const accountETHBalance = await $syncWallet.getBalance('ETH');
+
+		// @todo Open modal to onboard the user
+		if (txFee.gte(accountETHBalance)) {
+			showModal = true;
+			return 1;
+		}
+
 		if (!(await $syncWallet.isSigningKeySet())) {
 			if ((await $syncWallet.getAccountId()) == undefined) {
 				throw new Error('Unknown account');
@@ -69,14 +77,6 @@
 
 			// Wait until the tx is committed
 			await changePubkey.awaitReceipt();
-		}
-
-		const accountETHBalance = await $syncWallet.getBalance('ETH');
-
-		// @todo Open modal to onboard the user
-		if (txFee.gte(accountETHBalance)) {
-			showModal = true;
-			return 1;
 		}
 
 		const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
