@@ -153,7 +153,6 @@
 								type="button"
 								class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 							>
-								<!-- @todo Use address shortener function -->
 								<span>Disconnect {$selectedAccount.substring(0, 8)}</span>
 							</button>
 						{/if}

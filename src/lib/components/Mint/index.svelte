@@ -1,7 +1,3 @@
-<!-- @todo Move address to second input
-	 @todo make attribute name editable
-     @todo modal should close after depositing and loading finishing  -->
-
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
@@ -35,6 +31,8 @@
 		if (!attributes[attributeName]) {
 			attributes = { ...attributes, [attributeName]: '' };
 		}
+
+		attributeName = "";
 	};
 
 	const updateAttribute = async (_attributeName: string) => {
@@ -53,10 +51,30 @@
 		);
 
 		txFee = fee;
+
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				throw new Error('Unknown account');
+			}
+
+			// @todo Open Modal to tell the user what to do and continue on the modal
+
+			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+			// the lowest possible amount.
+			const changePubkey = await $syncWallet.setSigningKey({
+				feeToken: 'ETH',
+				ethAuthType: 'ECDSA'
+			});
+
+			// Wait until the tx is committed
+			await changePubkey.awaitReceipt();
+		}
+
 		const accountETHBalance = await $syncWallet.getBalance('ETH');
 
 		// @todo Open modal to onboard the user
-		if (accountETHBalance.toNumber() < txFee.toNumber()) {
+		if (txFee.gte(accountETHBalance)) {
 			showModal = true;
 			return 1;
 		}
@@ -87,6 +105,12 @@
 	};
 </script>
 
+<!-- @todo Move address to second input
+	 @todo make attribute name editable
+     @todo modal should close after depositing and loading finishing
+	 @todo Page not found when pasting the wrong address
+	 @todo Create order endpoints -->
+
 <!-- TODO Pass txFee to Modal as a prop -->
 <div class="relative bg-white">
 	<div class="absolute inset-0">
@@ -107,6 +131,19 @@
 			<div class="max-w-lg mx-auto lg:max-w-none">
 				<form on:submit|preventDefault={mint} class="grid grid-cols-1 gap-y-6">
 					<div>
+						<label for="full-name" class="sr-only">Name of the art piece</label>
+						<input
+							required
+							type="text"
+							bind:value={name}
+							name="full-name"
+							id="full-name"
+							autocomplete="name"
+							class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-gray-500 focus:border-gray-500 border-gray-300 rounded-md"
+							placeholder="Name of the art piece"
+						/>
+					</div>
+					<div>
 						<label for="recipient-address" class="sr-only">Recipient address of the art piece</label
 						>
 						<input
@@ -118,19 +155,6 @@
 							autocomplete="address"
 							class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-gray-500 focus:border-gray-500 border-gray-300 rounded-md"
 							placeholder="Recipient address of the art piece"
-						/>
-					</div>
-					<div>
-						<label for="full-name" class="sr-only">Name of the art piece</label>
-						<input
-							required
-							type="text"
-							bind:value={name}
-							name="full-name"
-							id="full-name"
-							autocomplete="name"
-							class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-gray-500 focus:border-gray-500 border-gray-300 rounded-md"
-							placeholder="Name of the art piece"
 						/>
 					</div>
 					<div>
