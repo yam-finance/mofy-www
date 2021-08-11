@@ -66,7 +66,7 @@
 			tokenSell: nft.id,
 			amount: 1,
 			ratio: zkUtils.tokenRatio({
-				0: 0.0003,
+				'ETH': 0.0003,
 				[nft.id]: 1
 			})
 		};
@@ -97,7 +97,7 @@
 				String(order.ratio[String(order.tokenBuy)])
 			),
 			ratio: zkUtils.tokenRatio({
-				0: order.ratio[String(order.tokenBuy)],
+				'ETH': order.ratio[String(order.tokenBuy)],
 				[parseInt(nft.id)]: 1
 			}),
 			recipient: $selectedAccount
