@@ -53,7 +53,7 @@
 		});
 
 		const data = await orderRes.json();
-		order = data.order == undefined ? false : data.orderDetails.order;
+		order = data.order == undefined ? false : data.order;
 
 		loading = false;
 	});
