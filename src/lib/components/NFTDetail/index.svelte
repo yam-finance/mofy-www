@@ -17,20 +17,29 @@
 	// @todo Check for a more suitable solution
 	onMount(async () => {
 		loading = true;
-		const mofyNFTs = [...$zkSyncNfts.nfts, ...$zkSyncNfts.whitelistedNFTs];
+		const mofyNFTs = [...$zkSyncNfts.whitelistedNFTs, ...$zkSyncNfts.nfts];
+
+		// @todo Check why this object is empty sometimes
+		console.log($zkSyncNfts.nfts)
+		console.log($zkSyncNfts.whitelistedNFTs)
+		console.log(mofyNFTs)
 
 		if (mofyNFTs.length == 0) {
 			nft = await $syncWallet.getNFT(id, 'committed');
 		} else {
 			const nftPosition = binarySearch(mofyNFTs, id);
+			console.log(nftPosition)
 			nft = await mofyNFTs[nftPosition];
 		}
+
+		console.log(nft);
 
 		const contentHash = nft.contentHash;
 		const ipfsHash = new CID(
 			ethers.utils.arrayify('0x01711220' + contentHash.substring(2))
 		).toString('base32');
 		const ipfsLink = `https://ipfs.io/ipfs/${ipfsHash}/metadata.json`;
+		console.log(ipfsLink)
 		const res = await fetch(ipfsLink);
 
 		metadata = await res.json();
