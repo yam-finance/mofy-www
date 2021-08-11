@@ -56,7 +56,7 @@
 		const accountETHBalance = await $syncWallet.getBalance('ETH');
 
 		// @todo Open modal to onboard the user
-		if (accountETHBalance.toNumber() < txFee.toNumber()) {
+		if (txFee.gte(accountETHBalance)) {
 			showModal = true;
 			return 1;
 		}
