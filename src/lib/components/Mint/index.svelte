@@ -51,6 +51,23 @@
 		txFee = fee;
 		const accountETHBalance = await $syncWallet.getBalance('ETH');
 
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				throw new Error('Unknown account');
+			}
+
+			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+			// the lowest possible amount.
+			const changePubkey = await $syncWallet.setSigningKey({
+				feeToken: 'ETH',
+				ethAuthType: 'ECDSA'
+			});
+
+			// Wait until the tx is committed
+			await changePubkey.awaitReceipt();
+		}
+
 		// @todo Open modal to onboard the user
 		if (txFee.gte(accountETHBalance)) {
 			showModal = true;
