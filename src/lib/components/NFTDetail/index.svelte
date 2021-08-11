@@ -36,6 +36,29 @@
 		loading = false;
 	});
 
+	const setOrder = async () => {
+		/// @dev Set an order
+		const res = await fetch('/api/order', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				ID: '1'
+			},
+			body: JSON.stringify({ test2: 'test2' })
+		});
+
+		/// @dev Get an order
+		// const res = await fetch('/api/order', {
+		// 	method: 'GET',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		ID: '1'
+		// 	}
+		// });
+
+		console.log(await res.json());
+	};
+
 	// @todo Move to utils
 	export function binarySearch(array: object[], target: number) {
 		return binarySearchHelper(array, target, 0, array.length - 1);

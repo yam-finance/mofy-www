@@ -50,6 +50,7 @@
 
 		txFee = fee;
 
+		// @todo Open Modal
 		if (!(await $syncWallet.isSigningKeySet())) {
 			if ((await $syncWallet.getAccountId()) == undefined) {
 				throw new Error('Unknown account');
@@ -103,9 +104,10 @@
 
 <!-- @todo Move address to second input
 	 @todo make attribute name editable
-     @todo modal should close after depositing and loading finishing  -->
-
-
+     @todo modal should close after depositing and loading finishing
+	 @todo Page not found when pasting the wrong address
+	 @todo gallery -> nft -> explore bug 
+	 @todo Create order endpoints -->
 
 <!-- TODO Pass txFee to Modal as a prop -->
 <div class="relative bg-white">
