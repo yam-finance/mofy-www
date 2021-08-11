@@ -12,7 +12,7 @@
 	import NFTCard from '$lib/components/NFTCard/index.svelte';
 
 	export let accounts;
-	let searchTerm = '';
+	export let searchTerm = '';
 	let filteredNFT = [];
 
 	$: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
@@ -86,17 +86,17 @@
 	{$chainData.nativeCurrency?.symbol}
 </p> -->
 
-<input type="text" bind:value={searchTerm} placeholder="Searh for a specific nft id" />
-
-<ul
-	role="list"
-	class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
->
-	{#if $zkSyncNfts.loading && filteredNFT.length == 0}
-		<p>loading ...</p>
-	{:else}
-		{#each filteredNFT as nft}
-			<NFTCard {nft} />
-		{/each}
-	{/if}
-</ul>
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+	<ul
+		role="list"
+		class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+	>
+		{#if $zkSyncNfts.loading && filteredNFT.length == 0}
+			<p>loading ...</p>
+		{:else}
+			{#each filteredNFT as nft}
+				<NFTCard {nft} />
+			{/each}
+		{/if}
+	</ul>
+</div>

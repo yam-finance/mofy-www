@@ -1,7 +1,3 @@
-<!-- @todo Move address to second input
-	 @todo make attribute name editable
-     @todo modal should close after depositing and loading finishing  -->
-
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
@@ -86,6 +82,12 @@
 		console.log(nft.txHash.substring(8));
 	};
 </script>
+
+<!-- @todo Move address to second input
+	 @todo make attribute name editable
+     @todo modal should close after depositing and loading finishing  -->
+
+
 
 <!-- TODO Pass txFee to Modal as a prop -->
 <div class="relative bg-white">
