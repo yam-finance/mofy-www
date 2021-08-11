@@ -45,9 +45,7 @@
 		});
 
 		const data = await orderRes.json();
-		order = Object.keys(data.orderDetails.order).length === 0 ? undefined : data.orderDetails.order;
-
-		console.log(order);
+		order = data.orderDetails.order == undefined ? false : data.orderDetails.order;
 
 		loading = false;
 	});
@@ -107,16 +105,17 @@
 
 		const receipt = await swap.awaitReceipt();
 		console.log(receipt);
+
+		await cancelOrder();
 	};
 
 	const cancelOrder = async () => {
 		await fetch('/api/order', {
-			method: 'POST',
+			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
 				ID: id
 			},
-			body: JSON.stringify({})
 		});
 
 		order = undefined;
