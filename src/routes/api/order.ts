@@ -8,7 +8,7 @@ export async function post(req: Request): Promise<Response> {
 		console.log(req.body);
 
 		// @todo Replace in prod
-		const res = await fetch(`https://api.yam.finance/mofy/orders/${req.headers['id']}`, {
+		const res = await fetch(`https://api.yam.finance/museum/orders/${req.headers['id']}`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
@@ -41,7 +41,7 @@ export async function post(req: Request): Promise<Response> {
 export async function get(req: Request): Promise<Response> {
 	try {
 		// @todo Replace in prod
-		const res = await fetch(`https://api.yam.finance/mofy/orders/${req.headers['id']}`, {
+		const res = await fetch(`https://api.yam.finance/museum/orders/${req.headers['id']}`, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json'
@@ -73,7 +73,7 @@ export async function get(req: Request): Promise<Response> {
 export async function del(req: Request): Promise<Response> {
 	try {
 		// @todo Replace in prod
-		const res = await fetch(`https://api.yam.finance/mofy/orders/${req.headers['id']}`, {
+		const res = await fetch(`https://api.yam.finance/museum/orders/${req.headers['id']}`, {
 			method: 'DELETE',
 			headers: {
 				'content-type': 'application/json'
