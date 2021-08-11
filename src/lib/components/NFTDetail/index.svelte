@@ -71,19 +71,19 @@
 			})
 		};
 
-		const sellingNFT = await $syncWallet.getOrder(_order);
+		const sellOrder = await $syncWallet.getOrder(_order);
 
-		console.log(sellingNFT);
+		console.log(sellOrder);
 
 		const res = await fetch(`https://api.yam.finance/museum/orders/${id}`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
 			},
-			body: JSON.stringify(_order)
+			body: JSON.stringify(sellOrder)
 		});
 
-		order = _order;
+		order = sellOrder;
 
 		console.log(await res.json());
 	};
@@ -103,13 +103,13 @@
 			recipient: $selectedAccount
 		};
 
-		const newOrder = await $syncWallet.getOrder(_order);
-		console.log(newOrder);
+		const buyOrder = await $syncWallet.getOrder(_order);
+		console.log(buyOrder);
 
-		await $syncWallet.getOrder(_order);
+		await $syncWallet.getOrder(buyOrder);
 
 		const swap = await $syncWallet.syncSwap({
-			orders: [_order, order],
+			orders: [buyOrder, order],
 			feeToken: 'ETH'
 		});
 
