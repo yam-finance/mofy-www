@@ -115,7 +115,7 @@
 			headers: {
 				'Content-Type': 'application/json',
 				ID: id
-			},
+			}
 		});
 
 		order = undefined;
