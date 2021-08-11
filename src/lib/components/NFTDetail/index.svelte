@@ -103,15 +103,8 @@
 			recipient: $selectedAccount
 		};
 
-		await $syncWallet.getOrder(_order);
-
-		console.log(order);
-		console.log(_order);
-		console.log($syncProvider.tokenSet.parseToken(
-				order.tokenBuy,
-				String(order.ratio[String(order.tokenBuy)])
-			).toNumber()
-		);
+		const newOrder = await $syncWallet.getOrder(_order);
+		console.log(newOrder);
 
 		await $syncWallet.getOrder(_order);
 
