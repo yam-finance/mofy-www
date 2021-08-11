@@ -16,11 +16,13 @@
 	// @todo Check for a more suitable solution
 	onMount(async () => {
 		loading = true;
-		if ($zkSyncNfts.nfts.length == 0) {
+		const mofyNFTs = [...$zkSyncNfts.nfts, ...$zkSyncNfts.whitelistedNFTs];
+
+		if (mofyNFTs.length == 0) {
 			nft = await $syncWallet.getNFT(id, 'committed');
 		} else {
-			const nftPosition = binarySearch($zkSyncNfts.nfts, id);
-			nft = await $zkSyncNfts.nfts[nftPosition];
+			const nftPosition = binarySearch(mofyNFTs, id);
+			nft = await mofyNFTs[nftPosition];
 		}
 
 		const contentHash = nft.contentHash;
