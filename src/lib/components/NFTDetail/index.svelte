@@ -28,13 +28,13 @@
 		console.log(mofyNFTs);
 
 		if (mofyNFTs.length == 0) {
-			nft = await $syncWallet.getNFT(id, 'committed');
+			// @todo Update docs
+			nft = await $syncProvider.getNFT(id);
 		} else {
 			const nftPosition = binarySearch(mofyNFTs, id);
 			console.log(nftPosition);
 			nft = await mofyNFTs[nftPosition];
 		}
-
 		console.log(nft);
 
 		const contentHash = nft.contentHash;
@@ -292,7 +292,7 @@
 											bind:value={sellAmount}
 											name="price"
 											id="price"
-											class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-t-md"
+											class="focus:ring-gray-500 focus:border-gray-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-t-md"
 											placeholder="0.00"
 										/>
 										<div class="absolute inset-y-0 right-0 flex items-center">
@@ -300,7 +300,7 @@
 											<select
 												id="currency"
 												name="currency"
-												class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+												class="focus:ring-gray-500 focus:border-gray-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
 											>
 												<option>ETH</option>
 											</select>
@@ -309,7 +309,7 @@
 									<button
 										type="button"
 										on:click={setSellOrder}
-										class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-b-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+										class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-b-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 									>
 										Set price
 									</button>
