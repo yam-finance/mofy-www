@@ -34,14 +34,14 @@
 		console.log($zkSyncNfts.whitelistedNFTs);
 		console.log(mofyNFTs);
 
-		// if (mofyNFTs.length == 0) {
-		// @todo Update docs
-		nft = await $syncProvider.getNFT(id);
-		// } else {
-		// 	const nftPosition = binarySearch(mofyNFTs, id);
-		// 	console.log(nftPosition);
-		// 	nft = await mofyNFTs[nftPosition];
-		// }
+		if (mofyNFTs.length == 0) {
+			// @todo Update docs
+			nft = await $syncProvider.getNFT(id);
+		} else {
+			const nftPosition = binarySearch(mofyNFTs, id);
+			console.log(nftPosition);
+			nft = await mofyNFTs[nftPosition];
+		}
 		console.log(nft);
 
 		// @todo Move to store
