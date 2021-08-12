@@ -15,7 +15,7 @@
 	let order;
 	let loading = true;
 	let owner;
-	let amount;
+	let sellAmount;
 
 	// @todo Check for a more suitable solution
 	onMount(async () => {
@@ -76,7 +76,7 @@
 			tokenSell: parseInt(nft.id),
 			amount: 1,
 			ratio: zkUtils.tokenRatio({
-				ETH: 0.0003,
+				ETH: sellAmount,
 				[parseInt(nft.id)]: 1
 			})
 		};
@@ -283,7 +283,7 @@
 										</div>
 										<input
 											type="text"
-											bind:value={amount}
+											bind:value={sellAmount}
 											name="price"
 											id="price"
 											class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-t-md"
@@ -321,7 +321,7 @@
 									type="button"
 									class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
 								>
-								0.0003 {ethers.constants.EtherSymbol}
+								{ethers.utils.formatEther(order.ratio[1]) + ethers.constants.EtherSymbol}
 								</button>
 							{/if}
 						{:else if !order}
@@ -340,7 +340,7 @@
 								type="button"
 								class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
 							>
-							0.0003 {ethers.constants.EtherSymbol}
+							{ethers.utils.formatEther(order.ratio[1]) + ethers.constants.EtherSymbol}
 							</button>
 						{/if}
 					{/if}
