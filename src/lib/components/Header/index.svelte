@@ -45,6 +45,12 @@
 
 		const provider = await web3Modal.connect();
 		defaultChainStore.setProvider(provider);
+
+		if ($page.path == '/') {
+			goto('/explore');
+		} else {
+			goto($page.path)
+		}
 	};
 
 	const disconnect = async () => {
