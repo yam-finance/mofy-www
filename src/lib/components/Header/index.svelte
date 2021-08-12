@@ -49,11 +49,7 @@
 		await defaultChainStore.setProvider(provider);
 
 
-		if ($page.path == '/') {
-			goto('/explore');
-		} else {
-			goto(window.location.href)
-		}
+		goto(window.location.href)
 	};
 
 	const disconnect = async () => {
