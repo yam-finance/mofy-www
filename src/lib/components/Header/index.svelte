@@ -24,6 +24,8 @@
 	onMount(async () => {
 		Web3Modal = window.Web3Modal.default;
 		WalletConnectProvider = window.WalletConnectProvider.default;
+		// @todo Check better solution
+		goto(window.location.href)
 	});
 
 	function toggle() {
@@ -47,9 +49,6 @@
 
 		const provider = await web3Modal.connect();
 		await defaultChainStore.setProvider(provider);
-
-
-		goto(window.location.href)
 	};
 
 	const disconnect = async () => {
