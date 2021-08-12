@@ -1,9 +1,18 @@
 <!-- src/lib/components/Header/index.svelte -->
+<script lang="ts" context="module">
+	export async function load({ page, fetch, session, context }) {
+ 	   return { props: { currentSlug: page.params.slug } };
+  }
+
+</script>
+
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { defaultChainStore, web3, connected, selectedAccount } from '$lib/stores/web3-store';
+
+	export let currentSlug;
 
 	let Web3Modal;
 	let WalletConnectProvider;
@@ -46,13 +55,12 @@
 		const provider = await web3Modal.connect();
 		await defaultChainStore.setProvider(provider);
 
-		console.log($page.path);
+
+		console.log(currentSlug);
 
 		if ($page.path == '/') {
-			console.log("Go to explore");
 			goto('/explore');
 		} else {
-			console.log($page.path)
 			goto($page.path)
 		}
 	};
