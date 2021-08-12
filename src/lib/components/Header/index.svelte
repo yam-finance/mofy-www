@@ -101,9 +101,10 @@
 						{/if}
 					</button>
 				</div>
-				<div class="flex-shrink-0 flex items-center">
-					<img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Mofy" />
-					<img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Mofy" />
+				<div class="flex-shrink-0 flex items-center cursor-pointer">
+					<!-- <img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Yam Museum" /> -->
+					<!-- <img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Yam Museum" /> -->
+                    <div on:click={() => goto('/')}>Yam Museum</div>
 				</div>
 			</div>
 			<div class="flex items-center">
@@ -133,7 +134,7 @@
 							class="{$page.path == '/mint'
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} hidden rounded-md py-2 px-3 md:inline-flex items-center text-sm font-medium"
+										.default} hidden rounded-md py-2 px-3 md:inline-flex items-center text-sm font-medium mr-5"
 						>
 							Mint
 						</a>

@@ -8,7 +8,7 @@
 		visible = true;
 	});
 
-	function typewriter(node, { speed = 50 }) {
+	function typewriter(node, { speed = 40 }) {
 		const valid = node.childNodes.length === 1 && node.childNodes[0].nodeType === Node.TEXT_NODE;
 
 		if (!valid) {
@@ -32,10 +32,15 @@
 	<title>Home</title>
 </svelte:head>
 
-<!-- {#if visible}
-	<p in:typewriter>Welcome to Mofy - the Museum of fine Yams</p>
-{/if} -->
+{#if visible}
+    <div class="flex justify-center">
+        <div class="p-20 w-full text-4xl text-center text-gray-500">
+            <p in:typewriter>Welcome to Yam Museum, a museum of fine Yams!</p>
+        </div>
+    </div>
+{/if}
 
+<!-- 
 <iframe
 	src="https://museum-of-fine-yams.webflow.io/"
 	title="Mofy Webflow site"
@@ -51,4 +56,4 @@
     height: 100%;
 	z-index: -1;
   "
-/>
+/> -->

@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { ethers } from 'ethers';
 	import CID from 'cids';
+	import Loading from '$lib/components/Loading/index.svelte';
 
 	export let nft;
 	let metadata;
@@ -28,11 +29,9 @@
 		class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-gray-500 overflow-hidden"
 	>
 		{#if !nftImage}
-			<img
-				src=""
-				alt="loading NFT ..."
-				class="object-cover pointer-events-none group-hover:opacity-75"
-			/>
+            <div class="flex justify-center">
+                <Loading />
+            </div>
 		{:else}
 			<img
 				src={nftImage}
