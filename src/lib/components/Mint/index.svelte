@@ -140,7 +140,7 @@
 		<div class="bg-gray-50 py-16 px-4 sm:px-6 lg:col-span-2 lg:px-8 lg:py-16 xl:pr-8">
 			<div class="max-w-lg mx-auto">
                 <div class="grid grid-cols-1 gap-y-6">
-                    <img class="w-full rounded-md" src={ imageFile ? imageFile : "/static/empty-nft.png" } />
+                    <img class="w-full rounded-md" src={ imageFile ? imageFile : "/empty-nft.png" } />
                     <input
 					type="file"
 					accept="image/png"
