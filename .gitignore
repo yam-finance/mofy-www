@@ -2,4 +2,7 @@
 node_modules
 /.svelte-kit
 /package
+.vscode
+.idea
 build
+yarn-error.log

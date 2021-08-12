@@ -10,15 +10,15 @@
 
 <Protected>
 	<div class="bg-white">
-		<div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-			<div class="text-center">
-				<h2 class="text-base font-semibold text-gray-600 tracking-wide uppercase">
-					Personal Gallery
-				</h2>
+		<div class="max-w-7xl mx-auto py-16 px-4 sm:py-16 sm:px-6 lg:px-8">
+			<div>
+				<span class="text-base font-semibold text-gray-600 tracking-wide">
+					Your Personal Gallery
+				</span>
 
-				<p class="max-w-xl mt-5 mx-auto text-xl text-gray-500">
-					The following is a list of the mofy nfts you own.
-				</p>
+				<span class="max-w-xl mt-5 mx-auto text-md text-gray-500">
+					- A list of the museum nfts that you own.
+				</span>
 			</div>
 		</div>
 	</div>
