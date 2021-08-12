@@ -143,7 +143,7 @@
 					<img class="w-full rounded-md" src={imageFile ? imageFile : '/empty-nft.png'} />
 					<input
 						type="file"
-						accept="image/png"
+						accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"
 						bind:files
 						on:change={(e) => updateImage(e)}
 						class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-5 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
