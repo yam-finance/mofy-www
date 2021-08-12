@@ -3,7 +3,6 @@ name: Fix request
 about: Create a fix request
 title: ''
 labels: ''
-
 ---
 
 **Describe the issue of the fix request:**

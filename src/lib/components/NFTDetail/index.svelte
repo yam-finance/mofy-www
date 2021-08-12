@@ -319,15 +319,10 @@
 								<button
 									type="button"
 									on:click={cancelOrder}
-									class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+									class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 								>
-									Cancel order
-								</button>
-								<button
-									type="button"
-									class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-								>
-									{ethers.utils.formatEther(order['ratio'][1]) + ethers.constants.EtherSymbol}
+									Cancel order {ethers.utils.formatEther(order['ratio'][1]) +
+										ethers.constants.EtherSymbol}
 								</button>
 							{/if}
 						{:else if !order}
@@ -338,15 +333,9 @@
 							<button
 								type="button"
 								on:click={setBuyOrder}
-								class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+								class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 							>
-								Buy for
-							</button>
-							<button
-								type="button"
-								class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-							>
-								{ethers.utils.formatEther(order['ratio'][1]) + ethers.constants.EtherSymbol}
+								Buy for {ethers.utils.formatEther(order['ratio'][1]) + ethers.constants.EtherSymbol}
 							</button>
 						{/if}
 					{/if}
