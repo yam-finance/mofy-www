@@ -13,6 +13,8 @@
 	let nftImage;
 	let order;
 	let loading = true;
+	let owner;
+	let amount;
 
 	// @todo Check for a more suitable solution
 	onMount(async () => {
@@ -20,15 +22,15 @@
 		const mofyNFTs = [...$zkSyncNfts.whitelistedNFTs, ...$zkSyncNfts.nfts];
 
 		// @todo Check why this object is empty sometimes
-		console.log($zkSyncNfts.nfts)
-		console.log($zkSyncNfts.whitelistedNFTs)
-		console.log(mofyNFTs)
+		console.log($zkSyncNfts.nfts);
+		console.log($zkSyncNfts.whitelistedNFTs);
+		console.log(mofyNFTs);
 
 		if (mofyNFTs.length == 0) {
 			nft = await $syncWallet.getNFT(id, 'committed');
 		} else {
 			const nftPosition = binarySearch(mofyNFTs, id);
-			console.log(nftPosition)
+			console.log(nftPosition);
 			nft = await mofyNFTs[nftPosition];
 		}
 
@@ -39,7 +41,7 @@
 			ethers.utils.arrayify('0x01711220' + contentHash.substring(2))
 		).toString('base32');
 		const ipfsLink = `https://ipfs.io/ipfs/${ipfsHash}/metadata.json`;
-		console.log(ipfsLink)
+		console.log(ipfsLink);
 		const res = await fetch(ipfsLink);
 
 		metadata = await res.json();
@@ -52,10 +54,17 @@
 			}
 		});
 
-		console.log(`https://api.yam.finance/museum/orders/${id}`)
+		console.log(`https://api.yam.finance/museum/orders/${id}`);
 
 		const data = await orderRes.json();
 		order = data.order == undefined ? false : data.order;
+
+		// Check if selected address is the owner of the current nft
+		for (const _nft in $zkSyncNfts.nfts) {
+			if ($zkSyncNfts.nfts[_nft].id == nft.id) {
+				owner = true;
+			}
+		}
 
 		loading = false;
 	});
@@ -88,15 +97,10 @@
 	};
 
 	const setBuyOrder = async () => {
-		console.log(order.ratio[String(order.tokenBuy)])
-
 		const _order = {
 			tokenSell: 'ETH',
 			tokenBuy: parseInt(nft.id),
-			amount: $syncProvider.tokenSet.parseToken(
-				'ETH',
-				String(0.0003)
-			),
+			amount: $syncProvider.tokenSet.parseToken('ETH', String(0.0003)),
 			ratio: zkUtils.tokenRatio({
 				ETH: 0.0003,
 				[parseInt(nft.id)]: 1
@@ -272,22 +276,46 @@
 			<div class="mt-10">
 				<span class="relative z-0 inline-flex shadow-sm rounded-md">
 					{#if !loading}
-						{#if ethers.utils.getAddress(nft.creatorAddress) == $selectedAccount}
+						<!-- @todo check if nft.id exists in $zkSyncNfts.nfts -->
+						{#if owner}
 							{#if !order}
 								<!-- set price -->
-								<button
-									type="button"
-									class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-								>
-									currently not for sale
-								</button>
-								<button
-									type="button"
-									on:click={setSellOrder}
-									class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-								>
-									set price
-								</button>
+								<div>
+									<div class="mt-1 relative rounded-md shadow-sm">
+										<div
+											class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+										>
+											<span class="text-gray-500 sm:text-sm">
+												{ethers.constants.EtherSymbol}
+											</span>
+										</div>
+										<input
+											type="text"
+											bind:value={amount}
+											name="price"
+											id="price"
+											class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-t-md"
+											placeholder="0.00"
+										/>
+										<div class="absolute inset-y-0 right-0 flex items-center">
+											<label for="currency" class="sr-only">Currency</label>
+											<select
+												id="currency"
+												name="currency"
+												class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+											>
+												<option>ETH</option>
+											</select>
+										</div>
+									</div>
+									<button
+										type="button"
+										on:click={setSellOrder}
+										class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-b-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+									>
+										Set price
+									</button>
+								</div>
 							{:else}
 								<!-- cancel order -->
 								<button
@@ -301,7 +329,7 @@
 									type="button"
 									class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
 								>
-									{order.ratio[String(order.tokenBuy)] + ethers.constants.EtherSymbol}
+								0.0003 {ethers.constants.EtherSymbol}
 								</button>
 							{/if}
 						{:else if !order}
@@ -320,7 +348,7 @@
 								type="button"
 								class="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
 							>
-								{order.ratio[String(order.tokenBuy)] + ethers.constants.EtherSymbol}
+							0.0003 {ethers.constants.EtherSymbol}
 							</button>
 						{/if}
 					{/if}
