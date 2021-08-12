@@ -1,9 +1,22 @@
 <!-- src/lib/components/Header/index.svelte -->
-<script lang="ts" context="module">
+<script context="module" lang="ts" >
+	/**
+	 * @type {import('@sveltejs/kit').Load}
+	 */
 	export async function load({ page, fetch, session, context }) {
- 	   return { props: { currentSlug: page.params.slug } };
-  }
+		const url = `/${page.path}/${page.params.slug}.json`;
+		// const res = await fetch(url);
 
+		
+			return {
+				props: {
+					currentSlug: url
+				}
+			};
+		
+
+
+	}
 </script>
 
 <script lang="ts">
