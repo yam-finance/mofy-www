@@ -4,7 +4,7 @@
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import NFTCard from '$lib/components/NFTCard/index.svelte';
 	import Loading from '$lib/components/Loading/index.svelte';
-import { attr } from 'svelte/internal';
+	import { attr } from 'svelte/internal';
 
 	export let accounts;
 	export let searchTerm = '';
@@ -33,7 +33,7 @@ import { attr } from 'svelte/internal';
 			filteredNFT = [...nfts];
 		}
 
-		filteredNFT.sort((a, b) => a.creatorAddress.localeCompare(b.creatorAddress))
+		filteredNFT.sort((a, b) => a.creatorAddress.localeCompare(b.creatorAddress));
 	}
 
 	/**

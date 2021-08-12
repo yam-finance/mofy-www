@@ -27,16 +27,6 @@
 		loading = true;
 		owner = false;
 
-		// @todo Move to store
-		const state = await $syncProvider.getState($selectedAccount);
-		const committedNFT = state.committed.nfts;
-		
-		zkSyncNfts.update((previous) => ({
-				...previous,
-				loading: false,
-				nfts: Object.values(committedNFT)
-			}));
-
 		const mofyNFTs = [...$zkSyncNfts.whitelistedNFTs, ...$zkSyncNfts.nfts];
 
 		// @todo Check why this object is empty sometimes
@@ -44,15 +34,25 @@
 		console.log($zkSyncNfts.whitelistedNFTs);
 		console.log(mofyNFTs);
 
-		if (mofyNFTs.length == 0) {
-			// @todo Update docs
-			nft = await $syncProvider.getNFT(id);
-		} else {
-			const nftPosition = binarySearch(mofyNFTs, id);
-			console.log(nftPosition);
-			nft = await mofyNFTs[nftPosition];
-		}
+		// if (mofyNFTs.length == 0) {
+		// @todo Update docs
+		nft = await $syncProvider.getNFT(id);
+		// } else {
+		// 	const nftPosition = binarySearch(mofyNFTs, id);
+		// 	console.log(nftPosition);
+		// 	nft = await mofyNFTs[nftPosition];
+		// }
 		console.log(nft);
+
+		// @todo Move to store
+		const state = await $syncProvider.getState($selectedAccount);
+		const committedNFT = state.committed.nfts;
+
+		zkSyncNfts.update((previous) => ({
+			...previous,
+			loading: false,
+			nfts: Object.values(committedNFT)
+		}));
 
 		const contentHash = nft.contentHash;
 		const ipfsHash = new CID(
@@ -88,7 +88,6 @@
 	};
 
 	const setSellOrder = async () => {
-
 		// @todo Move
 		if (!(await $syncWallet.isSigningKeySet())) {
 			if ((await $syncWallet.getAccountId()) == undefined) {
