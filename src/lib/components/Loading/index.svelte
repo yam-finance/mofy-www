@@ -27,7 +27,7 @@
 		height: 36px;
 		background: #fff;
 		filter: contrast(20);
-    
+
 		.dot {
 			position: absolute;
 			width: 12px;

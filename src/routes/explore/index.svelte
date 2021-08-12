@@ -9,7 +9,7 @@
 	function handleKeydown(event) {
 		if ((event.metaKey && event.keyCode === 75) || (event.ctrlKey && event.keyCode === 75)) {
 			event.preventDefault();
-            document.getElementById('search').focus();
+			document.getElementById('search').focus();
 		}
 	}
 </script>
@@ -36,7 +36,7 @@
 						bind:value={searchTerm}
 						name="search"
 						id="search"
-                        placeholder="Filter for creator addresses or ids"
+						placeholder="Filter for creator addresses or ids"
 						class="shadow-sm focus:ring-gray-500 focus:border-gray-500 block w-full pr-12 sm:text-sm border-gray-300 rounded-md"
 					/>
 					<div class="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">

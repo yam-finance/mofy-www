@@ -29,9 +29,9 @@
 		class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-gray-500 overflow-hidden"
 	>
 		{#if !nftImage}
-            <div class="flex justify-center">
-                <Loading />
-            </div>
+			<div class="flex justify-center">
+				<Loading />
+			</div>
 		{:else}
 			<img
 				src={nftImage}

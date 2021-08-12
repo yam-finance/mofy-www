@@ -33,11 +33,11 @@
 </svelte:head>
 
 {#if visible}
-    <div class="flex justify-center">
-        <div class="p-20 w-full text-4xl text-center text-gray-500">
-            <p in:typewriter>Welcome to Yam Museum, a museum of fine Yams!</p>
-        </div>
-    </div>
+	<div class="flex justify-center">
+		<div class="p-20 w-full text-4xl text-center text-gray-500">
+			<p in:typewriter>Welcome to Yam Museum, a museum of fine Yams!</p>
+		</div>
+	</div>
 {/if}
 
 <!-- 

@@ -53,9 +53,9 @@
 	};
 
 	const removeAttribute = async (_attributeName: string) => {
-        if (_attributeName != undefined) {
-            delete attributes[_attributeName]
-            attributes = attributes;
+		if (_attributeName != undefined) {
+			delete attributes[_attributeName];
+			attributes = attributes;
 		}
 	};
 
@@ -139,16 +139,16 @@
 	<div class="relative max-w-7xl mx-auto lg:grid lg:grid-cols-5">
 		<div class="bg-gray-50 py-16 px-4 sm:px-6 lg:col-span-2 lg:px-8 lg:py-16 xl:pr-8">
 			<div class="max-w-lg mx-auto">
-                <div class="grid grid-cols-1 gap-y-6">
-                    <img class="w-full rounded-md" src={ imageFile ? imageFile : "/empty-nft.png" } />
-                    <input
-					type="file"
-					accept="image/png"
-					bind:files
-					on:change={(e) => updateImage(e)}
-					class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-5 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-				/>
-                </div>
+				<div class="grid grid-cols-1 gap-y-6">
+					<img class="w-full rounded-md" src={imageFile ? imageFile : '/empty-nft.png'} />
+					<input
+						type="file"
+						accept="image/png"
+						bind:files
+						on:change={(e) => updateImage(e)}
+						class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-5 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+					/>
+				</div>
 			</div>
 		</div>
 		<div class="bg-white py-16 px-4 sm:px-6 lg:col-span-3 lg:py-16 lg:px-8 xl:pl-8">
@@ -267,14 +267,24 @@
 										class="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
 										placeholder="Value"
 									/>
-                                    <div class="absolute right-2 top-2 cursor-pointer " on:click={() => removeAttribute(attributeName)}>
-                                        <!--  -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" 
-										class="h-5 w-5 text-gray-400"
-                                        viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
+									<div
+										class="absolute right-2 top-2 cursor-pointer "
+										on:click={() => removeAttribute(attributeName)}
+									>
+										<!--  -->
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="h-5 w-5 text-gray-400"
+											viewBox="0 0 20 20"
+											fill="currentColor"
+										>
+											<path
+												fill-rule="evenodd"
+												d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+												clip-rule="evenodd"
+											/>
+										</svg>
+									</div>
 								</div>
 							{/each}
 						</dl>

@@ -104,7 +104,7 @@
 				<div class="flex-shrink-0 flex items-center cursor-pointer">
 					<!-- <img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Yam Museum" /> -->
 					<!-- <img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Yam Museum" /> -->
-                    <div on:click={() => goto('/')}>Yam Museum</div>
+					<div on:click={() => goto('/')}>Yam Museum</div>
 				</div>
 			</div>
 			<div class="flex items-center">
