@@ -1,23 +1,9 @@
 <!-- src/lib/components/Header/index.svelte -->
-<script context="module" lang="ts">
-	/**
-	 * @type {import('@sveltejs/kit').Load}
-	 */
-	export async function load({ page }) {
-		return {
-			status: 200,
-			redirect: page.path
-		}
-	}
-</script>
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { defaultChainStore, web3, connected, selectedAccount } from '$lib/stores/web3-store';
-
-	export let currentSlug;
 
 	let Web3Modal;
 	let WalletConnectProvider;
@@ -36,6 +22,7 @@
 	onMount(async () => {
 		Web3Modal = window.Web3Modal.default;
 		WalletConnectProvider = window.WalletConnectProvider.default;
+		goto(window.location.href);
 	});
 
 	function toggle() {
