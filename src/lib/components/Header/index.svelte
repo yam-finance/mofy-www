@@ -51,11 +51,6 @@
 
 	const disconnect = async () => {
 		defaultChainStore.disconnect();
-		zkSyncNfts.update(() => ({
-			loading: false,
-			nfts: [],
-			whitelistedNFTs: []
-		}));
 	};
 </script>
 

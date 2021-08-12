@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { syncWallet, syncProvider } from '$lib/stores/web3-store';
+	import { syncWallet, syncProvider, selectedAccount } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import { utils as zkUtils } from 'zksync';
 	import { ethers } from 'ethers';
@@ -17,9 +17,26 @@
 	let owner;
 	let sellAmount;
 
-	// @todo Check for a more suitable solution
-	onMount(async () => {
+	$: {
+		if ($selectedAccount) {
+			getNFTInfo();
+		}
+	}
+
+	const getNFTInfo = async () => {
 		loading = true;
+		owner = false;
+
+		// @todo Move to store
+		const state = await $syncProvider.getState($selectedAccount);
+		const committedNFT = state.committed.nfts;
+		
+		zkSyncNfts.update((previous) => ({
+				...previous,
+				loading: false,
+				nfts: Object.values(committedNFT)
+			}));
+
 		const mofyNFTs = [...$zkSyncNfts.whitelistedNFTs, ...$zkSyncNfts.nfts];
 
 		// @todo Check why this object is empty sometimes
@@ -68,9 +85,30 @@
 		}
 
 		loading = false;
-	});
+	};
 
 	const setSellOrder = async () => {
+
+		// @todo Move
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				throw new Error('Unknown account');
+			}
+
+			// @todo Open Modal to tell the user what to do and continue on the modal
+
+			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+			// the lowest possible amount.
+			const changePubkey = await $syncWallet.setSigningKey({
+				feeToken: 'ETH',
+				ethAuthType: 'ECDSA'
+			});
+
+			// Wait until the tx is committed
+			await changePubkey.awaitReceipt();
+		}
+
 		const _order = {
 			tokenBuy: 'ETH',
 			tokenSell: parseInt(nft.id),
@@ -106,6 +144,26 @@
 	};
 
 	const setBuyOrder = async () => {
+		// @todo Move
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				throw new Error('Unknown account');
+			}
+
+			// @todo Open Modal to tell the user what to do and continue on the modal
+
+			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+			// the lowest possible amount.
+			const changePubkey = await $syncWallet.setSigningKey({
+				feeToken: 'ETH',
+				ethAuthType: 'ECDSA'
+			});
+
+			// Wait until the tx is committed
+			await changePubkey.awaitReceipt();
+		}
+
 		const _order = {
 			tokenSell: 'ETH',
 			tokenBuy: parseInt(nft.id),

@@ -4,19 +4,20 @@
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import NFTCard from '$lib/components/NFTCard/index.svelte';
 	import Loading from '$lib/components/Loading/index.svelte';
+import { attr } from 'svelte/internal';
 
 	export let accounts;
 	export let searchTerm = '';
 	let filteredNFT = [];
 
-	$: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
-	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
+	// $: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
+	// $: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
+	$: nfts = $page.path == '/explore' ? $zkSyncNfts.whitelistedNFTs : $zkSyncNfts.nfts;
 	$: {
 		if (accounts) {
 			getZkSyncNfts();
 		}
 	}
-	$: nfts = $page.path == '/explore' ? $zkSyncNfts.whitelistedNFTs : $zkSyncNfts.nfts;
 	$: {
 		if (searchTerm) {
 			if (searchTerm.lastIndexOf('x', 1)) {
@@ -31,6 +32,8 @@
 		} else {
 			filteredNFT = [...nfts];
 		}
+
+		filteredNFT.sort((a, b) => a.creatorAddress.localeCompare(b.creatorAddress))
 	}
 
 	/**
@@ -58,6 +61,7 @@
 				whitelistedNFTs: Object.values(committedNFT)
 			}));
 		} else {
+			// @todo Move to store
 			zkSyncNfts.update((previous) => ({
 				...previous,
 				loading: false,
