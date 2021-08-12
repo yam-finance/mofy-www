@@ -44,7 +44,7 @@
 		});
 
 		const provider = await web3Modal.connect();
-		defaultChainStore.setProvider(provider);
+		await defaultChainStore.setProvider(provider);
 
 		if ($page.path == '/') {
 			goto('/explore');
