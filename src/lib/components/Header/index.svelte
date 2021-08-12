@@ -49,7 +49,7 @@
 		if ($page.path == '/') {
 			goto('/explore');
 		} else {
-			goto($page.path)
+			goto($page.path);
 		}
 	};
 
