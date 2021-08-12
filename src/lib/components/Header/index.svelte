@@ -46,10 +46,14 @@
 		const provider = await web3Modal.connect();
 		await defaultChainStore.setProvider(provider);
 
-		if ($page.path != '/') {
-			goto($page.path);
-		} else {
+		console.log($page.path);
+
+		if ($page.path == '/') {
+			console.log("Go to explore");
 			goto('/explore');
+		} else {
+			console.log($page.path)
+			goto($page.path)
 		}
 	};
 
