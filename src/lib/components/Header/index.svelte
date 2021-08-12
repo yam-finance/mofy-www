@@ -1,24 +1,4 @@
 <!-- src/lib/components/Header/index.svelte -->
-<script context="module" lang="ts" >
-	/**
-	 * @type {import('@sveltejs/kit').Load}
-	 */
-	export async function load({ page, fetch, session, context }) {
-		const url = `/${page.path}/${page.params.slug}.json`;
-		// const res = await fetch(url);
-
-		
-			return {
-				props: {
-					currentSlug: url
-				}
-			};
-		
-
-
-	}
-</script>
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -69,12 +49,10 @@
 		await defaultChainStore.setProvider(provider);
 
 
-		console.log(currentSlug);
-
 		if ($page.path == '/') {
 			goto('/explore');
 		} else {
-			goto($page.path)
+			goto(window.location.href)
 		}
 	};
 
