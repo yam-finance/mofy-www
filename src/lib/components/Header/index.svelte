@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { defaultChainStore, web3, connected, selectedAccount } from '$lib/stores/web3-store';
+	import { zkSyncNfts } from '$lib/stores/nft-store';
 
 	let Web3Modal;
 	let WalletConnectProvider;
@@ -50,6 +51,11 @@
 
 	const disconnect = async () => {
 		defaultChainStore.disconnect();
+		zkSyncNfts.update(() => ({
+			loading: false,
+			nfts: [],
+			whitelistedNFTs: []
+		}));
 	};
 </script>
 
