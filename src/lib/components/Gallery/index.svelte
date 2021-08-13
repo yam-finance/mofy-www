@@ -42,8 +42,9 @@
 	 */
 	export const getZkSyncNfts = async () => {
 		zkSyncNfts.update((previous) => ({
-			...previous,
-			loading: true
+			loading: false,
+			nfts: [],
+			whitelistedNFTs: []
 		}));
 
 		let committedNFT;
