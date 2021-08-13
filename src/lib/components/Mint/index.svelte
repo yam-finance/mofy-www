@@ -64,6 +64,10 @@
 
 	// @todo Move partly to modal component
 	const mint = async () => {
+		if (!files) {
+			return 1;
+		}
+
 		loading = true;
 		const feeToken = 'ETH';
 		const { totalFee: fee } = await $syncProvider.getTransactionFee(
@@ -165,7 +169,7 @@
 		</div>
 		<div class="bg-white py-16 px-4 sm:px-6 lg:col-span-3 lg:py-16 lg:px-8 xl:pl-8">
 			<div class="max-w-lg mx-auto lg:max-w-none">
-				<form on:submit|preventDefault={mint} class="grid grid-cols-1 gap-y-6">
+				<form on:submit|once|preventDefault={mint} class="grid grid-cols-1 gap-y-6">
 					<div>
 						<label for="full-name" class="sr-only">Name of the art piece</label>
 						<input
