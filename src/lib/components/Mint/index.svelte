@@ -1,6 +1,7 @@
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
+	import Notification from '$lib/components/Notification/index.svelte';
 	import { syncWallet, syncProvider } from '$lib/stores/web3-store';
 	import { NFTStorage, File } from 'nft.storage';
 	import CID from 'cids';
@@ -16,6 +17,8 @@
 	let name;
 	let recipientAddress = $syncWallet.address();
 	let showModal = false;
+	let showNotification = false;
+	let message = '';
 	let loading = false;
 	let imageFile;
 
@@ -83,6 +86,9 @@
 			if ((await $syncWallet.getAccountId()) == undefined) {
 				throw new Error('Unknown account');
 			}
+
+			message = 'You need to register your account on zkSync first.';
+			showNotification = true;
 
 			// @todo Open Modal to tell the user what to do and continue on the modal
 
@@ -306,4 +312,5 @@
 		</div>
 	</div>
 	<DepositModal on:close={() => (showModal = false)} visible={showModal} />
+	<Notification on:close={() => (showNotification = false)} visible={showNotification} {message} />
 </div>

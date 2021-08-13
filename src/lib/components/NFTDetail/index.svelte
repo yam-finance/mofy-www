@@ -8,7 +8,7 @@
 	import { ethers } from 'ethers';
 	import Loading from '$lib/components/Loading/index.svelte';
 	import CID from 'cids';
-import { verifyERC1271Signature } from 'zksync/build/utils';
+	import Notification from '$lib/components/Notification/index.svelte';
 
 	const id = Number($page.params.id);
 	let nft;
@@ -18,7 +18,9 @@ import { verifyERC1271Signature } from 'zksync/build/utils';
 	let loading = true;
 	let owner;
 	let sellAmount;
-	let verified = false;
+	let showNotification = false;
+	let message = '';
+	let verified;
 
 	$: {
 		if ($selectedAccount) {
@@ -50,13 +52,17 @@ import { verifyERC1271Signature } from 'zksync/build/utils';
 		const nftPosition = binarySearch(mofyNFTs, id);
 		console.log(nftPosition);
 		nft = await mofyNFTs[nftPosition];
-		
+
 		if (nft == undefined) {
 			nft = await $syncProvider.getNFT(id);
 		}
 
-		const verified = await $syncWallet.getNFT(id);
-		console.log(verified)
+		verified = await $syncWallet.getNFT(id, 'verified');
+		if (verified == undefined) {
+			message =
+				"Your nft is not yet verified on the zkSync network, therefore you won't be able to publicly share this nft or sell / transfer it.";
+			showNotification = true;
+		}
 
 		console.log(nft);
 
@@ -339,7 +345,7 @@ import { verifyERC1271Signature } from 'zksync/build/utils';
 					{#if !loading}
 						<!-- @todo check if nft.id exists in $zkSyncNfts.nfts -->
 						{#if owner}
-							{#if !order}
+							{#if !order && verified}
 								<!-- set price -->
 								<div>
 									<div class="mt-1 relative rounded-md shadow-sm">
@@ -406,4 +412,5 @@ import { verifyERC1271Signature } from 'zksync/build/utils';
 			</div>
 		</div>
 	</div>
+	<Notification on:close={() => (showNotification = false)} visible={showNotification} {message} />
 </div>
