@@ -154,6 +154,7 @@
 		console.log(await res.json());
 	};
 
+	// @todo add loader when buying the nft
 	const setBuyOrder = async () => {
 		// @todo Move
 		if (!(await $syncWallet.isSigningKeySet())) {
@@ -379,7 +380,7 @@
 										</div>
 										<button
 											type="button"
-											on:click={setSellOrder}
+											on:click|once={setSellOrder}
 											class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-b-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 										>
 											Set price
@@ -390,7 +391,7 @@
 								<!-- cancel order -->
 								<button
 									type="button"
-									on:click={cancelOrder}
+									on:click|once={cancelOrder}
 									class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 								>
 									Cancel order {ethers.utils.formatEther(order['ratio'][1]) +
@@ -404,7 +405,7 @@
 							<!-- show price -->
 							<button
 								type="button"
-								on:click={setBuyOrder}
+								on:click|once={setBuyOrder}
 								class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 							>
 								Buy for {ethers.utils.formatEther(order['ratio'][1]) + ethers.constants.EtherSymbol}
