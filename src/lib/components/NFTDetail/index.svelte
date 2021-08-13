@@ -1,3 +1,4 @@
+<!-- // @todo Add message that we only show verified messages on the explore page and you can also only share verified nft links with others -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -34,14 +35,14 @@
 		console.log($zkSyncNfts.whitelistedNFTs);
 		console.log(mofyNFTs);
 
-		if (mofyNFTs.length == 0) {
-			// @todo Update docs
+		const nftPosition = binarySearch(mofyNFTs, id);
+		console.log(nftPosition);
+		nft = await mofyNFTs[nftPosition];
+		
+		if (nft == undefined) {
 			nft = await $syncProvider.getNFT(id);
-		} else {
-			const nftPosition = binarySearch(mofyNFTs, id);
-			console.log(nftPosition);
-			nft = await mofyNFTs[nftPosition];
 		}
+
 		console.log(nft);
 
 		// @todo Move to store
