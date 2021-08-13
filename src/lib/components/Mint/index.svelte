@@ -102,6 +102,8 @@
 
 			// Wait until the tx is committed
 			await changePubkey.awaitReceipt();
+
+			showNotification = false;
 		}
 
 		const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
@@ -121,6 +123,10 @@
 			feeToken: feeToken,
 			fee
 		});
+
+		message = 'Please wait a little bit until your nft has been minted.';
+		showNotification = true;
+
 		const receipt = await nft.awaitReceipt();
 
 		console.log('Fee', fee);
