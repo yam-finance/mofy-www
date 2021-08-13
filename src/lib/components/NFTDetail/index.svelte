@@ -345,7 +345,8 @@
 					{#if !loading}
 						<!-- @todo check if nft.id exists in $zkSyncNfts.nfts -->
 						{#if owner}
-							{#if !order && verified}
+							{#if !order}
+								{#if verified}
 								<!-- set price -->
 								<div>
 									<div class="mt-1 relative rounded-md shadow-sm">
@@ -383,6 +384,7 @@
 										Set price
 									</button>
 								</div>
+								{/if}
 							{:else}
 								<!-- cancel order -->
 								<button
