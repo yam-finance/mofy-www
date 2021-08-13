@@ -10,8 +10,13 @@
 	let metadata;
 	let nftImage;
 
-	// @todo Check for a more suitable solution
-	onMount(async () => {
+	$: {
+		if (nft) {
+			getNFTInfo();
+		}
+	}
+
+	const getNFTInfo = async () => {
 		const contentHash = nft.contentHash;
 		const ipfsHash = new CID(
 			ethers.utils.arrayify('0x01711220' + contentHash.substring(2))
@@ -21,7 +26,7 @@
 
 		metadata = await res.json();
 		nftImage = 'https://ipfs.io/ipfs/' + metadata.image.slice(7);
-	});
+	};
 </script>
 
 <li class="relative">

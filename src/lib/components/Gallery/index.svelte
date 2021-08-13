@@ -4,7 +4,6 @@
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import NFTCard from '$lib/components/NFTCard/index.svelte';
 	import Loading from '$lib/components/Loading/index.svelte';
-	import { attr } from 'svelte/internal';
 
 	export let accounts;
 	export let searchTerm = '';
