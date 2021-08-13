@@ -57,13 +57,6 @@
 			nft = await $syncProvider.getNFT(id);
 		}
 
-		verified = await $syncWallet.getNFT(id, 'verified');
-		if (verified == undefined) {
-			message =
-				"Your nft is not yet verified on the zkSync network, therefore you won't be able to publicly share this nft or sell / transfer it.";
-			showNotification = true;
-		}
-
 		console.log(nft);
 
 		const contentHash = nft.contentHash;
@@ -93,6 +86,12 @@
 		for (const _nft in $zkSyncNfts.nfts) {
 			if ($zkSyncNfts.nfts[_nft].id == nft.id) {
 				owner = true;
+				verified = await $syncWallet.getNFT(id, 'verified');
+				if (verified == undefined) {
+					message =
+						"Your nft is not yet verified on the zkSync network, therefore you won't be able to publicly share this nft or sell / transfer it.";
+					showNotification = true;
+				}
 			}
 		}
 
