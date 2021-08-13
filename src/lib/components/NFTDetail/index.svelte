@@ -8,6 +8,7 @@
 	import { ethers } from 'ethers';
 	import Loading from '$lib/components/Loading/index.svelte';
 	import CID from 'cids';
+import { verifyERC1271Signature } from 'zksync/build/utils';
 
 	const id = Number($page.params.id);
 	let nft;
@@ -17,6 +18,7 @@
 	let loading = true;
 	let owner;
 	let sellAmount;
+	let verified = false;
 
 	$: {
 		if ($selectedAccount) {
@@ -27,6 +29,16 @@
 	const getNFTInfo = async () => {
 		loading = true;
 		owner = false;
+
+		// @todo Move to store
+		const state = await $syncProvider.getState($selectedAccount);
+		const committedNFT = state.committed.nfts;
+
+		zkSyncNfts.update((previous) => ({
+			...previous,
+			loading: false,
+			nfts: Object.values(committedNFT)
+		}));
 
 		const mofyNFTs = [...$zkSyncNfts.whitelistedNFTs, ...$zkSyncNfts.nfts];
 
@@ -43,17 +55,10 @@
 			nft = await $syncProvider.getNFT(id);
 		}
 
+		const verified = await $syncWallet.getNFT(id);
+		console.log(verified)
+
 		console.log(nft);
-
-		// @todo Move to store
-		const state = await $syncProvider.getState($selectedAccount);
-		const committedNFT = state.committed.nfts;
-
-		zkSyncNfts.update((previous) => ({
-			...previous,
-			loading: false,
-			nfts: Object.values(committedNFT)
-		}));
 
 		const contentHash = nft.contentHash;
 		const ipfsHash = new CID(
