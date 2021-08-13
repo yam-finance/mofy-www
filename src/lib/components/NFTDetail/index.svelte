@@ -106,7 +106,8 @@
 				throw new Error('Unknown account');
 			}
 
-			// @todo Open Modal to tell the user what to do and continue on the modal
+			message = 'You need to register your account on zkSync first.';
+			showNotification = true;
 
 			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
 			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
@@ -161,7 +162,8 @@
 				throw new Error('Unknown account');
 			}
 
-			// @todo Open Modal to tell the user what to do and continue on the modal
+			message = 'You need to register your account on zkSync first.';
+			showNotification = true;
 
 			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
 			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
