@@ -23,7 +23,6 @@
 	onMount(async () => {
 		Web3Modal = window.Web3Modal.default;
 		WalletConnectProvider = window.WalletConnectProvider.default;
-		goto(window.location.href);
 	});
 
 	function toggle() {
