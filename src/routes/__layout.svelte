@@ -19,7 +19,9 @@
 	export let path;
 
 	onMount(async () => {
-		goto(path);
+		// @todo Test with netlify adapter
+		// goto(path)
+		goto(window.location.href);
 	});
 </script>
 
