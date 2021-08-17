@@ -148,30 +148,30 @@
 	 @todo Create order endpoints -->
 
 <!-- TODO Pass txFee to Modal as a prop -->
-<div class="relative bg-white">
+<div class="relative px-8 sm:px-0">
 	<div class="absolute inset-0">
-		<div class="absolute inset-y-0 left-0 w-1/2 bg-gray-50" />
+		<div class="absolute inset-y-0 left-0 w-1/2" />
 	</div>
-	<div class="relative max-w-7xl mx-auto lg:grid lg:grid-cols-5">
-		<div class="bg-gray-50 py-16 px-4 sm:px-6 lg:col-span-2 lg:px-8 lg:py-16 xl:pr-8">
+	<div class="relative max-w-7xl mx-auto grid grid-cols-2">
+		<div class="py-16 sm:py-4 px-4 sm:px-4 lg:col-span-2">
 			<div class="max-w-lg mx-auto">
 				<div class="grid grid-cols-1 gap-y-6">
-					<img class="w-full rounded-md" src={imageFile ? imageFile : '/empty-nft.png'} />
+					<img alt="placeholder" class="w-full" src={imageFile ? imageFile : '/empty-nft.png'} />
 					<input
 						type="file"
 						accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"
 						bind:files
 						on:change={(e) => updateImage(e)}
-						class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-5 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+						class="relative block w-full border border-black text-black dark:text-white dark:border-white border-dashed p-5 text-center hover:border-opacity-50 focus:outline-none focus:border-opacity-50"
 					/>
 				</div>
 			</div>
 		</div>
-		<div class="bg-white py-16 px-4 sm:px-6 lg:col-span-3 lg:py-16 lg:px-8 xl:pl-8">
+		<div class="py-16 px-4 lg:col-span-3 lg:py-16">
 			<div class="max-w-lg mx-auto lg:max-w-none">
 				<form on:submit|once|preventDefault={mint} class="grid grid-cols-1 gap-y-6">
 					<div>
-						<label for="full-name" class="sr-only">Name of the art piece</label>
+						<label class="text-black dark:text-white" for="full-name">Name of the art piece</label>
 						<input
 							required
 							type="text"
@@ -179,12 +179,11 @@
 							name="full-name"
 							id="full-name"
 							autocomplete="name"
-							class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-gray-500 focus:border-gray-500 border-gray-300 rounded-md"
-							placeholder="Name of the art piece"
+							class="focus:ring-white text-lg mt-1 focus:border-none block w-full text-black placeholder-black dark:text-white dark:placeholder-white placeholder-opacity-50 bg-gray bg-opacity-20 border-none"
 						/>
 					</div>
 					<div>
-						<label for="recipient-address" class="sr-only">Recipient address of the art piece</label
+						<label class="text-black dark:text-white" for="recipient-address">Recipient address of the art piece</label
 						>
 						<input
 							required
@@ -193,24 +192,22 @@
 							name="recipient-address"
 							id="recipient-address"
 							autocomplete="address"
-							class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-gray-500 focus:border-gray-500 border-gray-300 rounded-md"
-							placeholder="Recipient address of the art piece"
+							class="focus:ring-white text-lg mt-1 focus:border-none block w-full text-black placeholder-black dark:text-white dark:placeholder-white placeholder-opacity-50 bg-gray bg-opacity-20 border-none"
 						/>
 					</div>
 					<div>
-						<label for="description" class="sr-only">Description</label>
+						<label class="text-black dark:text-white" for="description">Description</label>
 						<textarea
 							required
 							bind:value={description}
 							id="description"
 							name="description"
 							rows="4"
-							class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-gray-500 focus:border-gray-500 border border-gray-300 rounded-md"
-							placeholder="Description"
+							class="focus:ring-white text-lg mt-1 focus:border-none block w-full text-black placeholder-black dark:text-white dark:placeholder-white placeholder-opacity-50 bg-gray bg-opacity-20 border-none"
 						/>
 					</div>
 					<div>
-						<label for="mint-amount" class="sr-only">Mint amount</label>
+						<label class="text-black dark:text-white" for="mint-amount">How many should be minted?</label>
 						<input
 							required
 							type="number"
@@ -220,16 +217,16 @@
 							name="mint-amount"
 							id="mint-amount"
 							autocomplete="amount"
-							class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-gray-500 focus:border-gray-500 border-gray-300 rounded-md"
-							placeholder="Mint amount"
+							class="focus:ring-white text-lg mt-1 focus:border-none block w-full text-black placeholder-black dark:text-white dark:placeholder-white placeholder-opacity-50 bg-gray bg-opacity-20 border-none"
+							placeholder="0"
 						/>
 					</div>
 					<div>
 						<form on:submit|preventDefault={addAttribute}>
-							<label for="attribute-name" class="block text-sm font-medium text-gray-700"
+							<label class="text-black dark:text-white" for="attribute-name"
 								>Attributes</label
 							>
-							<div class="mt-1 flex rounded-md shadow-sm">
+							<div class="mt-1 flex  shadow-sm">
 								<div class="relative flex items-stretch flex-grow focus-within:z-10">
 									<input
 										required
@@ -237,17 +234,17 @@
 										bind:value={attributeName}
 										name="attribute-name"
 										id="attribute-name"
-										class="block w-full shadow-sm py-3 px-4 rounded-none rounded-l-md placeholder-gray-500 focus:ring-gray-500 focus:border-gray-500 border-gray-300"
+										class="focus:ring-white text-lg focus:border-none block w-full text-black placeholder-gray dark:text-white placeholder-opacity-60 bg-gray bg-opacity-20 border-none"
 										placeholder="Name of the attribute"
 									/>
 								</div>
 								<button
 									type="submit"
-									class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+									class="relative inline-flex items-center space-x-2 px-4 py-2 border-white border-opacity-0 text-sm font-medium text-black dark:text-white bg-gray bg-opacity-30 hover:bg-opacity-40 focus:outline-none focus:ring-1 focus:border-opacity-100"
 								>
 									<!-- Heroicon name: solid/sort-ascending -->
 									<svg
-										class="h-5 w-5 text-gray-400"
+										class="h-5 w-5 text-black dark:text-white opacity-50"
 										xmlns="http://www.w3.org/2000/svg"
 										viewBox="0 0 20 20"
 										fill="currentColor"
@@ -263,16 +260,12 @@
 						</form>
 					</div>
 					<div>
-						<dl class="grid grid-cols-2 gap-x-4 gap-y-8">
+						<dl>
 							{#each Object.keys(attributes) as attributeName}
 								<div
-									class="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-gray-600 focus-within:border-gray-600"
+									class="relative border w-full flex items-stretch border-white border-opacity-0 my-2 focus-within:ring-1 focus-within:ring-white focus-within:white"
 								>
-									<label
-										for="name"
-										class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900"
-										>{attributeName}</label
-									>
+									<label class="relative block items-center py-3 px-4 border-white border-opacity-0 font-medium h-full text-white bg-gray bg-opacity-20" for="name">{attributeName}</label>
 									<input
 										required
 										type="text"
@@ -280,8 +273,8 @@
 										bind:value={propertyValues[attributeName]}
 										name="name"
 										id="name"
-										class="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
-										placeholder="Value"
+										class="text-lg block flex-grow border-transparent focus:outline-none focus:border-transparent focus:ring-transparent text-black placeholder-black dark:text-white dark:placeholder-white placeholder-opacity-50 bg-gray bg-opacity-20"
+										placeholder="Enter value"
 									/>
 									<div
 										class="absolute right-2 top-2 cursor-pointer "
@@ -290,7 +283,7 @@
 										<!--  -->
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
-											class="h-5 w-5 text-gray-400"
+											class="h-5 w-5 text-white mt-1.5"
 											viewBox="0 0 20 20"
 											fill="currentColor"
 										>
@@ -308,7 +301,7 @@
 					<div>
 						<button
 							type="submit"
-							class="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+							class="inline-flex justify-center py-4 px-8 border border-transparent text-base font-medium  text-white bg-black dark:text-black dark:bg-white dark:white hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white"
 						>
 							{#if !loading}
 								Mint NFT

@@ -67,26 +67,31 @@
 	}
 </script>
 
+<style>
+	.modal {
+		backdrop-filter: blur(16px);
+	}
+</style>
 {#if visible}
 	<div
-		class="fixed z-10 inset-0 overflow-y-auto"
+		class="fixed z-10 inset-0 overflow-y-auto modal"
 		aria-labelledby="modal-title"
 		role="dialog"
 		aria-modal="true"
 	>
 		<div
-			class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+			class="sm:flex sm:justify-center sm:items-end min-h-screen p-4 text-center block"
 		>
 			{#if visible}
 				<div
 					transition:fade
-					class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+					class="fixed inset-0 bg-gray bg-opacity-60 transition-opacity"
 					aria-hidden="true"
 				/>
 			{/if}
 
 			<!-- This element is to trick the browser into centering the modal contents. -->
-			<span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"
+			<span class="inline-block align-middle h-screen" aria-hidden="true"
 				>&#8203;</span
 			>
 
@@ -94,19 +99,19 @@
 				<div
 					use:clickOutside={close}
 					transition:fade
-					class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
+					class="inline-block sm:align-bottom bg-white dark:bg-black p-16 sm:p-8 pt-12 text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle max-w-sm w-full"
 				>
 					<form on:submit|preventDefault={deposit}>
 						<div>
-							<div class="mt-3 text-center sm:mt-5">
-								<h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+							<div class="mt-3 text-center">
+								<h3 class="text-lg leading-6 font-medium text-black dark:text-white" id="modal-title">
 									Deposit ETH from L1 into L2
 								</h3>
 								<div class="mt-2">
-									<p class="text-sm text-gray-500">
+									<p class="text-sm text-black dark:text-white opacity-50 mb-8">
 										To mint or buy an nft over the mofy app you need to have some ETH on zkSync L2.
 									</p>
-									<p class="mt-2 text-sm text-gray-500">
+									<p class="mt-2 text-sm text-black dark:text-white">
 										{#await balanceL2}
 											<span>waiting...</span>
 										{:then value}
@@ -120,11 +125,11 @@
 								</div>
 
 								<div>
-									<div class="mt-4 relative rounded-md shadow-sm">
+									<div class="mt-4 relative">
 										<div
 											class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
 										>
-											<span class="text-gray-500 sm:text-sm">
+											<span class="text-black dark:text-white sm:text-sm">
 												{ethers.constants.EtherSymbol}
 											</span>
 										</div>
@@ -134,7 +139,7 @@
 											bind:value={amount}
 											name="price"
 											id="price"
-											class="focus:ring-gray-500 focus:border-gray-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+											class="focus:ring-white text-black dark:text-white placeholder-black dark:placeholder-white placeholder-opacity-30 focus:border-white block w-full pl-7 pr-12 sm:text-sm border-transparent bg-gray bg-opacity-20"
 											placeholder="0.01"
 										/>
 										<div class="absolute inset-y-0 right-0 flex items-center">
@@ -142,7 +147,7 @@
 											<select
 												id="currency"
 												name="currency"
-												class="focus:ring-gray-500 focus:border-gray-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+												class="focus:ring-black dark:focus:ring-white dark:focus:border-white focus:border-black h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-black dark:text-white opacity-50 sm:text-sm"
 											>
 												<option>ETH</option>
 											</select>
@@ -154,7 +159,7 @@
 						<div class="mt-5 sm:mt-6">
 							<button
 								type="submit"
-								class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:text-sm"
+								class="inline-flex justify-center w-full py-4 px-8 border border-transparent bg-black dark:bg-white text-base font-bold text-white dark:text-black hover:bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white sm:text-sm"
 							>
 								{#if !loading}
 									Deposit

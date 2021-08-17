@@ -11,12 +11,12 @@
 	let mobileMenu = { open: false };
 	let dynamicClass = {
 		desktop: {
-			current: 'bg-gray-100 text-gray-900',
-			default: 'text-gray-900 hover:bg-gray-50 hover:text-gray-900'
+			current: 'opacity-40',
+			default: 'text-black dark:text-white hover:opacity-70 hover:opacity-70'
 		},
 		mobile: {
-			current: 'bg-gray-100 text-gray-900',
-			default: 'text-gray-900 hover:bg-gray-50 hover:text-gray-900'
+			current: 'opacity-40',
+			default: 'text-black dark:text-white hover:opacity-70 hover:italic hover:pl-2'
 		}
 	};
 
@@ -54,89 +54,70 @@
 	};
 </script>
 
-<nav class="bg-white shadow">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<div class="flex justify-between h-16">
+<style>
+	.open {
+		@apply rotate-45 translate-y-1 w-10 ml-0;
+	}
+	.openN {
+		@apply -rotate-45 -translate-y-1 w-10 ml-0;
+	}
+</style>
+<nav>
+	<div class="mx-16 py-8 border-b sm:mx-4 sm:py-4">
+		<div class="flex justify-between">
 			<div class="flex">
-				<div class="-ml-2 mr-2 flex items-center md:hidden">
+				<div class="flex-shrink-0 mr-8 sm:mr-2 flex items-center cursor-pointer">
+					<!-- <img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Yam Museum" /> -->
+					<!-- <img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Yam Museum" /> -->
+					<img src="/yam.png" on:click={() => goto('/')} class="w-8 sm:w-6 mr-2 hover:opacity-70" alt="Yam Museum" />
+					<img src="/mofy-blk.svg" on:click={() => goto('/')} class="w-10 sm:w-8 hover:opacity-70 dark:hidden" alt="Yam Museum" />
+					<img src="/mofy-wht.svg" on:click={() => goto('/')} class="w-10 sm:w-8 hover:opacity-70 hidden dark:block" alt="Yam Museum" />
+				</div>
+				<div class="items-center hidden md:flex">
 					<!-- Mobile menu button -->
 					<button
 						on:click={toggle}
 						type="button"
-						class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+						class="inline-flex items-center justify-center p-2 text-white hover:opacity-70 focus:outline-none"
 						aria-controls="mobile-menu"
 						aria-expanded="false"
 					>
 						<span class="sr-only">Open mobile menu</span>
-						{#if !mobileMenu.open}
-							<svg
-								class="block h-6 w-6"
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								aria-hidden="true"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M4 6h16M4 12h16M4 18h16"
-								/>
-							</svg>
-						{:else}
-							<svg
-								class="block h-6 w-6"
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								aria-hidden="true"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M6 18L18 6M6 6l12 12"
-								/>
-							</svg>
-						{/if}
+							<div>
+								<div class="h-0.5 w-16 sm:w-10 mb-1.5 bg-black dark:bg-white" class:open="{mobileMenu.open}"></div>
+								<div class="h-0.5 w-16 sm:w-10 bg-black dark:bg-white" class:openN="{mobileMenu.open}"></div>
+							</div>
 					</button>
-				</div>
-				<div class="flex-shrink-0 flex items-center cursor-pointer">
-					<!-- <img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Yam Museum" /> -->
-					<!-- <img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Yam Museum" /> -->
-					<div on:click={() => goto('/')}>Yam Museum</div>
 				</div>
 			</div>
 			<div class="flex items-center">
-				<div class="flex-shrink-0">
+				<div class="flex flex-shrink-0 items-center text-black dark:text-white">
 					{#if $connected}
 						<a
 							href="/explore"
-							class="{$page.path == '/explore'
+							class="md:hidden {$page.path == '/explore'
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} hidden rounded-md py-2 px-3 md:inline-flex items-center text-sm font-medium"
+										.default} rounded-md py-2 px-3 items-center text-base font-medium"
 							aria-current="page"
 						>
 							Explore
 						</a>
 						<a
 							href="/gallery/{$selectedAccount}"
-							class="{$page.path == `/gallery/${$selectedAccount}`
+							class="md:hidden {$page.path == `/gallery/${$selectedAccount}`
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} hidden rounded-md py-2 px-3 md:inline-flex items-center text-sm font-medium"
+										.default} rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Your Gallery
 						</a>
 						<a
 							href="/mint"
-							class="{$page.path == '/mint'
+							class="md:hidden mr-16 {$page.path == '/mint'
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} hidden rounded-md py-2 px-3 md:inline-flex items-center text-sm font-medium mr-5"
+										.default} rounded-md py-2 px-3 items-center text-base font-medium mr-5"
 						>
 							Mint
 						</a>
@@ -146,7 +127,7 @@
 							<button
 								on:click={enable}
 								type="button"
-								class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+								class="relative inline-flex items-center px-8 py-4 sm:px-2 sm:py-1 border border-transparent text-sm font-medium text-white dark:text-black bg-black dark:bg-white hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-800"
 							>
 								<span>Connect Account</span>
 							</button>
@@ -154,15 +135,19 @@
 							<button
 								on:click={disconnect}
 								type="button"
-								class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+								class="text-black dark:text-white flex items-center hover:opacity-70"
 							>
-								<span>Disconnect {$selectedAccount.substring(0, 8)}</span>
+								<span class="font-medium sm:text-xs">Log out {$selectedAccount.substring(0, 6)}</span>
+								<div class="ml-2 w-6 h-6 rounded-full border-black dark:border-white border-2 flex flex-col items-center overflow-hidden">
+									<div class="w-2 h-2 mb-0.5 mt-1 flex-shrink-0 border-black dark:border-white rounded-full border-2"></div>
+									<div class="w-4 h-4 rounded-full flex-shrink-0 border-black dark:border-white border-2"></div>
+								</div>
 							</button>
 						{/if}
 					{:else}
 						<button
 							type="button"
-							class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+							class="relative inline-flex items-center px-8 py-4 sm:px-2 sm:py-1 border border-transparent text-sm font-medium text-white dark:text-black bg-black dark:bg-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 						>
 							<span>. . .</span>
 						</button>
@@ -173,37 +158,37 @@
 	</div>
 
 	{#if mobileMenu.open}
-		<div class="md:hidden" id="mobile-menu">
+		<div class="hidden md:block mx-16 border-b sm:mx-4" id="mobile-menu">
 			{#if $connected}
-				<div class="pt-2 pb-3 px-2 space-y-1">
+				<div class="pt-2">
 					<a
 						href="/explore"
 						class="{$page.path == '/explore'
 							? dynamicClass.mobile.current
-							: dynamicClass.mobile.default} block rounded-md py-2 px-3 text-base font-medium"
+							: dynamicClass.mobile.default} block py-2 text-lg text-black dark:text-white font-medium"
 						aria-current="page">Explore</a
 					>
 					<a
 						href="/gallery/{$selectedAccount}"
 						class="{$page.path == `/gallery/${$selectedAccount}`
 							? dynamicClass.mobile.current
-							: dynamicClass.mobile.default} block rounded-md py-2 px-3 text-base font-medium"
+							: dynamicClass.mobile.default} block py-2 text-lg text-black dark:text-white font-medium"
 						>Your Gallery</a
 					>
 					<a
 						href="/mint"
 						class="{$page.path == '/mint'
 							? dynamicClass.mobile.current
-							: dynamicClass.mobile.default} block rounded-md py-2 px-3 text-base font-medium"
+							: dynamicClass.mobile.default} block py-2 text-lg text-black dark:text-white font-medium"
 						>Mint</a
 					>
 				</div>
 			{/if}
-			<div class="pb-3 px-2 border-t border-gray-200">
+			<div class="pb-3">
 				<div class="mt-3 space-y-1">
 					<a
 						href="https://yam.finance/"
-						class="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 sm:px-6"
+						class="block py-2 text-base text-black dark:text-white font-medium opacity-60 hover:opacity-30"
 						>Built by Yam</a
 					>
 				</div>
