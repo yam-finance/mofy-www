@@ -900,6 +900,13 @@ braces@^3.0.1, braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
+bricks.js@^1.8.0:
+  version "1.8.0"
+  resolved "https://r.cnpmjs.org/bricks.js/download/bricks.js-1.8.0.tgz#8fdeb3c0226af251f4d5727a7df7f9ac0092b4b2"
+  integrity sha1-j96zwCJq8lH01XJ6fff5rACStLI=
+  dependencies:
+    knot.js "^1.1.5"
+
 brorand@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
@@ -1066,6 +1073,11 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
+
+colcade@^0.2.0:
+  version "0.2.0"
+  resolved "https://r.cnpmjs.org/colcade/download/colcade-0.2.0.tgz#1d4c949d677655865089ba0b78769693beca0b32"
+  integrity sha1-HUyUnWd2VYZQiboLeHaWk77KCzI=
 
 color-convert@^1.9.0, color-convert@^1.9.3:
   version "1.9.3"
@@ -1242,6 +1254,11 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
+
+desandro-matches-selector@^2.0.0:
+  version "2.0.2"
+  resolved "https://r.cnpmjs.org/desandro-matches-selector/download/desandro-matches-selector-2.0.2.tgz#717beed4dc13e7d8f3762f707a6d58a6774218e1"
+  integrity sha1-cXvu1NwT59jzdi9wem1YpndCGOE=
 
 detect-indent@^6.0.0:
   version "6.1.0"
@@ -1591,6 +1608,11 @@ ethers@^5.4.2:
     "@ethersproject/web" "5.4.0"
     "@ethersproject/wordlists" "5.4.0"
 
+ev-emitter@^1.0.0:
+  version "1.1.1"
+  resolved "https://r.cnpmjs.org/ev-emitter/download/ev-emitter-1.1.1.tgz#8f18b0ce5c76a5d18017f71c0a795c65b9138f2a"
+  integrity sha1-jxiwzlx2pdGAF/ccCnlcZbkTjyo=
+
 ext@^1.1.2:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ext/-/ext-1.4.0.tgz#89ae7a07158f79d35517882904324077e4379244"
@@ -1674,6 +1696,13 @@ find-up@^4.1.0:
   dependencies:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
+
+fizzy-ui-utils@^2.0.0:
+  version "2.0.7"
+  resolved "https://r.cnpmjs.org/fizzy-ui-utils/download/fizzy-ui-utils-2.0.7.tgz#7df45dcc4eb374a08b65d39bb9a4beedf7330505"
+  integrity sha1-ffRdzE6zdKCLZdObuaS+7fczBQU=
+  dependencies:
+    desandro-matches-selector "^2.0.0"
 
 flat-cache@^3.0.4:
   version "3.0.4"
@@ -1787,6 +1816,11 @@ get-intrinsic@^1.0.2, get-intrinsic@^1.1.0, get-intrinsic@^1.1.1:
     function-bind "^1.1.1"
     has "^1.0.3"
     has-symbols "^1.0.1"
+
+get-size@^2.0.2:
+  version "2.0.3"
+  resolved "https://r.cnpmjs.org/get-size/download/get-size-2.0.3.tgz#54a1d0256b20ea7ac646516756202769941ad2ef"
+  integrity sha1-VKHQJWsg6nrGRlFnViAnaZQa0u8=
 
 get-stdin@^4.0.1:
   version "4.0.1"
@@ -2287,6 +2321,11 @@ kleur@^4.1.4:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-4.1.4.tgz#8c202987d7e577766d039a8cd461934c01cda04d"
   integrity sha512-8QADVssbrFjivHWQU7KkMgptGTl6WAcSdlbBPY4uNF+mWr6DGcKrvY2w4FQJoXch7+fKMjj0dRrL75vk3k23OA==
 
+knot.js@^1.1.5:
+  version "1.1.5"
+  resolved "https://r.cnpmjs.org/knot.js/download/knot.js-1.1.5.tgz#28e72522f703f50fe98812fde224dd72728fef5d"
+  integrity sha1-KOclIvcD9Q/piBL94iTdcnKP710=
+
 levn@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.4.1.tgz#ae4562c007473b932a6200d403268dd2fffc6ade"
@@ -2368,6 +2407,14 @@ map-obj@^4.0.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-4.2.1.tgz#e4ea399dbc979ae735c83c863dd31bdf364277b7"
   integrity sha512-+WA2/1sPmDj1dlvvJmB5G6JKfY9dpn7EVBUL06+y6PoljPkh+6V1QihwxNkbcGxCRjt2b0F9K0taiCuo7MbdFQ==
+
+masonry-layout@^4.2.2:
+  version "4.2.2"
+  resolved "https://r.cnpmjs.org/masonry-layout/download/masonry-layout-4.2.2.tgz#d57b44af13e601bfcdc423f1dd8348b5524de348"
+  integrity sha1-1XtErxPmAb/NxCPx3YNItVJN40g=
+  dependencies:
+    get-size "^2.0.2"
+    outlayer "^2.1.0"
 
 meow@^9.0.0:
   version "9.0.0"
@@ -2714,6 +2761,15 @@ optionator@^0.9.1:
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
     word-wrap "^1.2.3"
+
+outlayer@^2.1.0:
+  version "2.1.1"
+  resolved "https://r.cnpmjs.org/outlayer/download/outlayer-2.1.1.tgz#29863b6de10ea5dadfffcadfa0d728907387e9a2"
+  integrity sha1-KYY7beEOpdrf/8rfoNcokHOH6aI=
+  dependencies:
+    ev-emitter "^1.0.0"
+    fizzy-ui-utils "^2.0.0"
+    get-size "^2.0.2"
 
 p-limit@^2.0.0, p-limit@^2.2.0:
   version "2.3.0"
@@ -3401,6 +3457,11 @@ supports-color@^7.1.0:
   integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
   dependencies:
     has-flag "^4.0.0"
+
+svelte-bricks@^0.1.0:
+  version "0.1.0"
+  resolved "https://r.cnpmjs.org/svelte-bricks/download/svelte-bricks-0.1.0.tgz#2e78511477e6c984fba3182106534ae5804b7093"
+  integrity sha1-LnhRFHfmyYT7oxghBlNK5YBLcJM=
 
 svelte-check@^2.0.0:
   version "2.2.4"

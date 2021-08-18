@@ -9,19 +9,18 @@
 </svelte:head>
 
 <Protected>
-	<div class="bg-white">
-		<div class="max-w-7xl mx-auto py-16 px-4 sm:py-16 sm:px-6 lg:px-8">
+	<div>
+		<div class="px-16 py-8 sm:py-16 sm:px-4 ">
 			<div>
-				<span class="text-base font-semibold text-gray-600 tracking-wide">
+				<h3 class="text-3xl font-bold text-black dark:text-white mb-2 text-bold">
 					Your Personal Gallery
-				</span>
-
-				<span class="max-w-xl mt-5 mx-auto text-md text-gray-500">
-					- A list of the museum nfts that you own.
-				</span>
+				</h3>
+				<span class="text-black dark:text-white opacity-50">The MoFY NFTs in your wallet</span>
 			</div>
 		</div>
 	</div>
 
-	<Gallery accounts={[$page.params.address]} />
+	<div class="px-8 py-8 sm:py-16 sm:px-4">
+		<Gallery accounts={[$page.params.address]} />
+	</div>
 </Protected>

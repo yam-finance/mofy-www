@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { syncWallet, syncProvider, web3, connected } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
-	import NFTCard from '$lib/components/NFTCard/index.svelte';
+	import Masonry from '$lib/components/Masonry/index.svelte';
 	import Loading from '$lib/components/Loading/index.svelte';
 
 	export let accounts;
@@ -97,23 +97,18 @@
 	{$chainData.nativeCurrency?.symbol}
 </p> -->
 
-<div class="pb-16 max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="px-8 sm:px-4">
 	{#if $zkSyncNfts.loading && filteredNFT.length == 0}
 		<div class="flex justify-center">
 			<Loading />
 		</div>
 	{:else if filteredNFT.length > 0}
-		<ul
-			role="list"
-			class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
-		>
-			{#each filteredNFT as nft}
-				<NFTCard {nft} />
-			{/each}
-		</ul>
+		<Masonry {filteredNFT} />
 	{:else}
 		<div class="flex justify-center">
-			<div class="bg-gray-100 rounded-md py-5 w-full text-md text-center text-gray-500">
+			<div
+				class="bg-gray bg-opacity-20 py-5 mx-0 w-full text-md text-center text-black dark:text-white"
+			>
 				Nothing found
 			</div>
 		</div>

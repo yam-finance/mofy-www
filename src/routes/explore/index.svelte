@@ -21,27 +21,27 @@
 </svelte:head>
 
 <Protected>
-	<div class="bg-white">
-		<div class="max-w-7xl mx-auto py-16 px-4 sm:py-12 sm:px-6 lg:px-8 lg:flex lg:justify-between">
+	<div>
+		<div class="px-16 sm:px-4 py-8 flex justify-between items-end md:block">
 			<div class="max-w-xl">
-				<h2 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-					Yam Museum
-				</h2>
-				<p class="mt-2 text-lg text-gray-500">A curated list of yam museum artists.</p>
+				<h2 class="text-black dark:text-white font-extrabold text-6xl sm:text-2xl">Yam Museum</h2>
+				<p class="mt-2 text-2xl sm:text-lg opacity-50 text-black dark:text-white">
+					A curated list of yam museum artists
+				</p>
 			</div>
-			<div class="mt-10 w-full max-w-xs">
+			<div class="mt-8 w-full max-w-xs">
 				<div class="mt-1 relative flex items-center">
 					<input
 						type="text"
 						bind:value={searchTerm}
 						name="search"
 						id="search"
-						placeholder="Filter for creator addresses or ids"
-						class="shadow-sm focus:ring-gray-500 focus:border-gray-500 block w-full pr-12 sm:text-sm border-gray-300 rounded-md"
+						placeholder="Search by addresses or ids"
+						class="focus:ring-black dark:focus:ring-white text-lg h-12 focus:border-none block w-full pr-12 pl-6 placeholder-black dark:placeholder-white placeholder-opacity-50 bg-gray bg-opacity-20 sm:text-sm border-none"
 					/>
 					<div class="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
 						<kbd
-							class="inline-flex items-center border border-gray-200 rounded px-2 text-sm font-sans font-medium text-gray-400"
+							class="inline-flex items-center px-3 bg-gray bg-opacity-10 text-sm font-sans font-medium text-black dark:text-white"
 						>
 							⌘+K
 						</kbd>

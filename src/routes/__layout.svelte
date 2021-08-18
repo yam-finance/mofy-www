@@ -31,8 +31,27 @@
 	<slot />
 </main>
 
-<style>
+<style global>
 	@tailwind base;
 	@tailwind components;
 	@tailwind utilities;
+
+	body {
+		background-color: white;
+		text-color: black;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		body {
+			background-color: black;
+			text-color: white;
+		}
+	}
+
+	* {
+		transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+		-webkit-transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 </style>

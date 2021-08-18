@@ -237,91 +237,59 @@
 	}
 </script>
 
-<div class="relative bg-white py-16 sm:py-24">
-	<div class="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-24 lg:items-start">
-		<div class="relative p-10 sm:py-16 lg:py-0">
-			<div class="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0 lg:max-w-none">
+<div class="relative py-16 sm:py-24">
+	<div class="mx-auto max-w-7xl px-16 grid grid-cols-2 gap-24 items-start lg:block">
+		<div class="relative">
+			<div class="relative mx-auto lg:mx-0 max-w-3xl">
 				<!-- Testimonial card-->
-				<div class="relative pt-64 pb-10 rounded-2xl shadow-xl overflow-hidden">
+				<div class="relative pb-10 overflow-hidden">
 					{#if !loading}
-						<img class="absolute inset-0 h-full w-full object-cover" src={nftImage} alt="NFT" />
+						<img class="inset-0 w-full" src={nftImage} alt="NFT" />
 					{/if}
-					<div class="absolute inset-0 bg-gray-200 mix-blend-multiply" />
-					<div class="absolute inset-0 bg-gradient-to-t from-gray-200 via-gray-100 opacity-20" />
-					<div class="relative px-8">
+					<div class="relative mt-4">
+						<div class="mt-1 mx-0 flex items-center text-sm text-black dark:text-white opacity-50">
+							<!-- @todo Check which address this is -->
+							{#if loading}
+								loading ...
+							{:else}
+								{nft.address.substring(0, 8)}
+							{/if}
+						</div>
 						{#if loading}
-							<p class="text-base font-semibold text-md text-gray-700">loading ...</p>
+							<p class="text-base text-md text-black dark:text-white">loading ...</p>
 						{:else}
-							<p class="text-base font-semibold text-md text-gray-700">{nft.id}</p>
+							<p class="text-base font-semibold text-md text-black dark:text-white">{nft.id}</p>
 						{/if}
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0">
+		<div class="relative mx-auto lg:mx-0 lg:px-0 max-w-md px-4 sm:max-w-3xl">
 			{#if loading}
-				<h2 class="text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl">
+				<h2 class="text-3xl text-black dark:text-white font-extrabold tracking-tight sm:text-4xl">
 					loading ...
 				</h2>
 			{:else}
-				<h2 class="text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl">
+				<h2 class="text-4xl text-black dark:text-white font-bold md:text-3xl">
 					{metadata.name}
 				</h2>
 			{/if}
 			<div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-8">
-				<div class="mt-2 flex items-center text-sm text-gray-500">
+				<div class="flex items-center text-sm text-black dark:text-white opacity-50">
 					<!-- Heroicon name: solid/briefcase -->
-					<svg
-						class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
-							clip-rule="evenodd"
-						/>
-						<path
-							d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"
-						/>
-					</svg>
 					{#if loading}
 						loading ...
 					{:else}
-						{nft.creatorAddress.substring(0, 8)}
-					{/if}
-				</div>
-				<div class="mt-2 flex items-center text-sm text-gray-500">
-					<!-- Heroicon name: solid/location-marker -->
-					<svg
-						class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					<!-- @todo Check which address this is -->
-					{#if loading}
-						loading ...
-					{:else}
-						{nft.address.substring(0, 8)}
+						by {nft.creatorAddress.substring(0, 8)}
 					{/if}
 				</div>
 			</div>
-			<div class="mt-6 text-gray-500 space-y-6">
+			<div class="mt-6 space-y-6">
 				{#if loading}
-					<p class="text-lg">loading ...</p>
+					<p class="text-lg text-black dark:text-white">loading ...</p>
 				{:else}
-					<p class="text-lg">{metadata.description}</p>
+					<p class="text-lg text-black dark:text-white">{metadata.description}</p>
 				{/if}
 			</div>
 
@@ -331,8 +299,10 @@
 					{#if !loading}
 						{#each Object.keys(metadata.properties) as attribute}
 							<div class="sm:col-span-1">
-								<dt class="text-sm font-medium text-gray-500">{attribute}</dt>
-								<dd class="mt-1 text-sm text-gray-900">{metadata.properties[attribute]}</dd>
+								<dt class="text-sm font-medium text-black dark:text-white opacity-50">
+									{attribute}
+								</dt>
+								<dd class="mt-1 text-black dark:text-white">{metadata.properties[attribute]}</dd>
 							</div>
 						{/each}
 					{/if}
@@ -343,7 +313,7 @@
 			</div>
 
 			<div class="mt-10">
-				<span class="relative z-0 inline-flex shadow-sm rounded-md">
+				<span class="relative z-0 inline-flex">
 					{#if !loading}
 						<!-- @todo check if nft.id exists in $zkSyncNfts.nfts -->
 						{#if owner}
@@ -351,11 +321,12 @@
 								{#if verified}
 									<!-- set price -->
 									<div>
-										<div class="mt-1 relative rounded-md shadow-sm">
+										<label for="">Set a price</label>
+										<div class="mt-1 mb-2 relative">
 											<div
 												class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
 											>
-												<span class="text-gray-500 sm:text-sm">
+												<span class="text-black dark:text-white sm:text-sm">
 													{ethers.constants.EtherSymbol}
 												</span>
 											</div>
@@ -364,7 +335,7 @@
 												bind:value={sellAmount}
 												name="price"
 												id="price"
-												class="focus:ring-gray-500 focus:border-gray-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-t-md"
+												class="focus:ring-black dark:focus:ring-white placeholder-black dark:placeholder-white placeholder-opacity-30  focus:border-white block w-full pl-7 pr-12 sm:text-sm border-none bg-gray bg-opacity-20"
 												placeholder="0.00"
 											/>
 											<div class="absolute inset-y-0 right-0 flex items-center">
@@ -372,7 +343,7 @@
 												<select
 													id="currency"
 													name="currency"
-													class="focus:ring-gray-500 focus:border-gray-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+													class="focus:ring-black focus:border-black dark:focus:ring-white dark:focus:border-white block w-full sm:text-sm border-none bg-gray bg-opacity-0"
 												>
 													<option>ETH</option>
 												</select>
@@ -381,7 +352,7 @@
 										<button
 											type="button"
 											on:click|once={setSellOrder}
-											class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-b-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+											class="items-center text-center px-8 py-4 w-full border border-transparent font-medium text-white dark:text-black bg-black dark:bg-white hover:bg-opacity-50 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white"
 										>
 											Set price
 										</button>
@@ -392,7 +363,7 @@
 								<button
 									type="button"
 									on:click|once={cancelOrder}
-									class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+									class="items-center text-center px-8 py-4 w-full border border-transparent font-medium shadow-sm dark:text-black text-white bg-black dark:bg-white hover:bg-opacity-50 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white"
 								>
 									Cancel order {ethers.utils.formatEther(order['ratio'][1]) +
 										ethers.constants.EtherSymbol}
@@ -400,13 +371,13 @@
 							{/if}
 						{:else if !order}
 							<!-- not for sale -->
-							<p>Not for sale</p>
+							<p class="text-black dark:text-white">Not for sale</p>
 						{:else}
 							<!-- show price -->
 							<button
 								type="button"
 								on:click|once={setBuyOrder}
-								class="items-center text-center px-2.5 py-1.5 w-full border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+								class="items-center text-center px-8 py-4 w-full border border-transparent font-medium text-white dark:text-black bg-black dark:bg-white hover:bg-opacity-50 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white"
 							>
 								Buy for {ethers.utils.formatEther(order['ratio'][1]) + ethers.constants.EtherSymbol}
 							</button>
