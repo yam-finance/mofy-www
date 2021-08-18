@@ -6,9 +6,6 @@
 
 	let Colcade;
 	let colc;
-	let instance, container;
-	let imgLoaded = 0;
-	const sizes = [{ columns: 3, gutter: 0 }, {}];
 
 	onMount(async () => {
 		Colcade = (await import('colcade')).default;
