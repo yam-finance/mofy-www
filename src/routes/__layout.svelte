@@ -18,7 +18,7 @@
 		background-color: white;
 		text-color: black;
 	}
-	
+
 	@media (prefers-color-scheme: dark) {
 		body {
 			background-color: black;
@@ -33,7 +33,13 @@
 		-moz-osx-font-smoothing: grayscale;
 	}
 
-	h1, h2, h3, h4, h5, h6, p {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p {
 		@apply text-white;
 	}
 </style>

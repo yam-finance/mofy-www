@@ -35,7 +35,9 @@
 {#if visible}
 	<main class="mt-16 mx-auto max-w-7xl px-4 sm:mt-24">
 		<div class="text-center">
-			<h1 class="text-3xl tracking-tight font-extrabold text-black dark:text-white sm:text-4xl md:text-5xl">
+			<h1
+				class="text-3xl tracking-tight font-extrabold text-black dark:text-white sm:text-4xl md:text-5xl"
+			>
 				<span in:typewriter class="block xl:inline">Welcome to MOFY, the museum of fine Yams!</span>
 			</h1>
 			<p

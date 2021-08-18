@@ -250,7 +250,7 @@
 						<div class="mt-1 mx-0 flex items-center text-sm text-black dark:text-white opacity-50">
 							<!-- @todo Check which address this is -->
 							{#if loading}
-							loading ...
+								loading ...
 							{:else}
 								{nft.address.substring(0, 8)}
 							{/if}
@@ -284,7 +284,6 @@
 						by {nft.creatorAddress.substring(0, 8)}
 					{/if}
 				</div>
-				
 			</div>
 			<div class="mt-6 space-y-6">
 				{#if loading}
@@ -300,7 +299,9 @@
 					{#if !loading}
 						{#each Object.keys(metadata.properties) as attribute}
 							<div class="sm:col-span-1">
-								<dt class="text-sm font-medium text-black dark:text-white opacity-50">{attribute}</dt>
+								<dt class="text-sm font-medium text-black dark:text-white opacity-50">
+									{attribute}
+								</dt>
 								<dd class="mt-1 text-black dark:text-white">{metadata.properties[attribute]}</dd>
 							</div>
 						{/each}

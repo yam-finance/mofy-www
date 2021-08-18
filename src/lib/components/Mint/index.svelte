@@ -183,7 +183,8 @@
 						/>
 					</div>
 					<div>
-						<label class="text-black dark:text-white" for="recipient-address">Recipient address of the art piece</label
+						<label class="text-black dark:text-white" for="recipient-address"
+							>Recipient address of the art piece</label
 						>
 						<input
 							required
@@ -207,7 +208,9 @@
 						/>
 					</div>
 					<div>
-						<label class="text-black dark:text-white" for="mint-amount">How many should be minted?</label>
+						<label class="text-black dark:text-white" for="mint-amount"
+							>How many should be minted?</label
+						>
 						<input
 							required
 							type="number"
@@ -223,9 +226,7 @@
 					</div>
 					<div>
 						<form on:submit|preventDefault={addAttribute}>
-							<label class="text-black dark:text-white" for="attribute-name"
-								>Attributes</label
-							>
+							<label class="text-black dark:text-white" for="attribute-name">Attributes</label>
 							<div class="mt-1 flex  shadow-sm">
 								<div class="relative flex items-stretch flex-grow focus-within:z-10">
 									<input
@@ -265,7 +266,10 @@
 								<div
 									class="relative border w-full flex items-stretch border-white border-opacity-0 my-2 focus-within:ring-1 focus-within:ring-white focus-within:white"
 								>
-									<label class="relative block items-center py-3 px-4 border-white border-opacity-0 font-medium h-full text-white bg-gray bg-opacity-20" for="name">{attributeName}</label>
+									<label
+										class="relative block items-center py-3 px-4 border-white border-opacity-0 font-medium h-full text-white bg-gray bg-opacity-20"
+										for="name">{attributeName}</label
+									>
 									<input
 										required
 										type="text"

@@ -54,14 +54,6 @@
 	};
 </script>
 
-<style>
-	.open {
-		@apply rotate-45 translate-y-1 w-10 ml-0;
-	}
-	.openN {
-		@apply -rotate-45 -translate-y-1 w-10 ml-0;
-	}
-</style>
 <nav>
 	<div class="mx-16 py-8 border-b sm:mx-4 sm:py-4">
 		<div class="flex justify-between">
@@ -69,9 +61,24 @@
 				<div class="flex-shrink-0 mr-8 sm:mr-2 flex items-center cursor-pointer">
 					<!-- <img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Yam Museum" /> -->
 					<!-- <img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Yam Museum" /> -->
-					<img src="/yam.png" on:click={() => goto('/')} class="w-8 sm:w-6 mr-2 hover:opacity-70" alt="Yam Museum" />
-					<img src="/mofy-blk.svg" on:click={() => goto('/')} class="w-10 sm:w-8 hover:opacity-70 dark:hidden" alt="Yam Museum" />
-					<img src="/mofy-wht.svg" on:click={() => goto('/')} class="w-10 sm:w-8 hover:opacity-70 hidden dark:block" alt="Yam Museum" />
+					<img
+						src="/yam.png"
+						on:click={() => goto('/')}
+						class="w-8 sm:w-6 mr-2 hover:opacity-70"
+						alt="Yam Museum"
+					/>
+					<img
+						src="/mofy-blk.svg"
+						on:click={() => goto('/')}
+						class="w-10 sm:w-8 hover:opacity-70 dark:hidden"
+						alt="Yam Museum"
+					/>
+					<img
+						src="/mofy-wht.svg"
+						on:click={() => goto('/')}
+						class="w-10 sm:w-8 hover:opacity-70 hidden dark:block"
+						alt="Yam Museum"
+					/>
 				</div>
 				<div class="items-center hidden md:flex">
 					<!-- Mobile menu button -->
@@ -83,10 +90,16 @@
 						aria-expanded="false"
 					>
 						<span class="sr-only">Open mobile menu</span>
-							<div>
-								<div class="h-0.5 w-16 sm:w-10 mb-1.5 bg-black dark:bg-white" class:open="{mobileMenu.open}"></div>
-								<div class="h-0.5 w-16 sm:w-10 bg-black dark:bg-white" class:openN="{mobileMenu.open}"></div>
-							</div>
+						<div>
+							<div
+								class="h-0.5 w-16 sm:w-10 mb-1.5 bg-black dark:bg-white"
+								class:open={mobileMenu.open}
+							/>
+							<div
+								class="h-0.5 w-16 sm:w-10 bg-black dark:bg-white"
+								class:openN={mobileMenu.open}
+							/>
+						</div>
 					</button>
 				</div>
 			</div>
@@ -137,10 +150,18 @@
 								type="button"
 								class="text-black dark:text-white flex items-center hover:opacity-70"
 							>
-								<span class="font-medium sm:text-xs">Log out {$selectedAccount.substring(0, 6)}</span>
-								<div class="ml-2 w-6 h-6 rounded-full border-black dark:border-white border-2 flex flex-col items-center overflow-hidden">
-									<div class="w-2 h-2 mb-0.5 mt-1 flex-shrink-0 border-black dark:border-white rounded-full border-2"></div>
-									<div class="w-4 h-4 rounded-full flex-shrink-0 border-black dark:border-white border-2"></div>
+								<span class="font-medium sm:text-xs"
+									>Log out {$selectedAccount.substring(0, 6)}</span
+								>
+								<div
+									class="ml-2 w-6 h-6 rounded-full border-black dark:border-white border-2 flex flex-col items-center overflow-hidden"
+								>
+									<div
+										class="w-2 h-2 mb-0.5 mt-1 flex-shrink-0 border-black dark:border-white rounded-full border-2"
+									/>
+									<div
+										class="w-4 h-4 rounded-full flex-shrink-0 border-black dark:border-white border-2"
+									/>
 								</div>
 							</button>
 						{/if}
@@ -165,22 +186,24 @@
 						href="/explore"
 						class="{$page.path == '/explore'
 							? dynamicClass.mobile.current
-							: dynamicClass.mobile.default} block py-2 text-lg text-black dark:text-white font-medium"
+							: dynamicClass.mobile
+									.default} block py-2 text-lg text-black dark:text-white font-medium"
 						aria-current="page">Explore</a
 					>
 					<a
 						href="/gallery/{$selectedAccount}"
 						class="{$page.path == `/gallery/${$selectedAccount}`
 							? dynamicClass.mobile.current
-							: dynamicClass.mobile.default} block py-2 text-lg text-black dark:text-white font-medium"
+							: dynamicClass.mobile
+									.default} block py-2 text-lg text-black dark:text-white font-medium"
 						>Your Gallery</a
 					>
 					<a
 						href="/mint"
 						class="{$page.path == '/mint'
 							? dynamicClass.mobile.current
-							: dynamicClass.mobile.default} block py-2 text-lg text-black dark:text-white font-medium"
-						>Mint</a
+							: dynamicClass.mobile
+									.default} block py-2 text-lg text-black dark:text-white font-medium">Mint</a
 					>
 				</div>
 			{/if}
@@ -196,3 +219,12 @@
 		</div>
 	{/if}
 </nav>
+
+<style>
+	.open {
+		@apply rotate-45 translate-y-1 w-10 ml-0;
+	}
+	.openN {
+		@apply -rotate-45 -translate-y-1 w-10 ml-0;
+	}
+</style>

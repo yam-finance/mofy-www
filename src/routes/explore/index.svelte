@@ -24,10 +24,10 @@
 	<div>
 		<div class="px-16 sm:px-4 py-8 flex justify-between items-end md:block">
 			<div class="max-w-xl">
-				<h2 class="text-black dark:text-white font-extrabold text-6xl sm:text-2xl">
-					Yam Museum
-				</h2>
-				<p class="mt-2 text-2xl sm:text-lg opacity-50 text-black dark:text-white">A curated list of yam museum artists</p>
+				<h2 class="text-black dark:text-white font-extrabold text-6xl sm:text-2xl">Yam Museum</h2>
+				<p class="mt-2 text-2xl sm:text-lg opacity-50 text-black dark:text-white">
+					A curated list of yam museum artists
+				</p>
 			</div>
 			<div class="mt-8 w-full max-w-xs">
 				<div class="mt-1 relative flex items-center">

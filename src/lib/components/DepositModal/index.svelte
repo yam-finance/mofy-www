@@ -67,11 +67,6 @@
 	}
 </script>
 
-<style>
-	.modal {
-		backdrop-filter: blur(16px);
-	}
-</style>
 {#if visible}
 	<div
 		class="fixed z-10 inset-0 overflow-y-auto modal"
@@ -79,9 +74,7 @@
 		role="dialog"
 		aria-modal="true"
 	>
-		<div
-			class="sm:flex sm:justify-center sm:items-end min-h-screen p-4 text-center block"
-		>
+		<div class="sm:flex sm:justify-center sm:items-end min-h-screen p-4 text-center block">
 			{#if visible}
 				<div
 					transition:fade
@@ -91,9 +84,7 @@
 			{/if}
 
 			<!-- This element is to trick the browser into centering the modal contents. -->
-			<span class="inline-block align-middle h-screen" aria-hidden="true"
-				>&#8203;</span
-			>
+			<span class="inline-block align-middle h-screen" aria-hidden="true">&#8203;</span>
 
 			{#if visible}
 				<div
@@ -104,7 +95,10 @@
 					<form on:submit|preventDefault={deposit}>
 						<div>
 							<div class="mt-3 text-center">
-								<h3 class="text-lg leading-6 font-medium text-black dark:text-white" id="modal-title">
+								<h3
+									class="text-lg leading-6 font-medium text-black dark:text-white"
+									id="modal-title"
+								>
 									Deposit ETH from L1 into L2
 								</h3>
 								<div class="mt-2">
@@ -174,3 +168,9 @@
 		</div>
 	</div>
 {/if}
+
+<style>
+	.modal {
+		backdrop-filter: blur(16px);
+	}
+</style>

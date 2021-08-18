@@ -34,7 +34,7 @@
 
 		filteredNFT.sort((a, b) => a.creatorAddress.localeCompare(b.creatorAddress));
 	}
-	
+
 	/**
 	 * @todo Check how this function behaves with a bigger gallery
 	 * and add $zkSyncNfts.nfts.length == 0 check if necessary.
@@ -106,7 +106,9 @@
 		<Masonry {filteredNFT} />
 	{:else}
 		<div class="flex justify-center">
-			<div class="bg-gray bg-opacity-20 py-5 mx-0 w-full text-md text-center text-black dark:text-white">
+			<div
+				class="bg-gray bg-opacity-20 py-5 mx-0 w-full text-md text-center text-black dark:text-white"
+			>
 				Nothing found
 			</div>
 		</div>
