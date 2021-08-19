@@ -73,11 +73,12 @@
 
 	// @todo Move partly to modal component
 	const mint = async () => {
+		let customError = '';
+
 		if (!files) {
-			message = 'You should upload a photo for your nft.';
-			showNotification = true;
-			return 1;
+			customError = 'Please upload a photo to your nft';
 		}
+
 		try {
 
 		loading = true;
@@ -94,13 +95,12 @@
 
 		// @todo Open modal to onboard the user
 		if (txFee.gte(accountETHBalance)) {
-			showModal = true;
-			return 1;
+			customError = 'You have to register your account on zkSync first in order to mint.';
 		}
 
 		if (!(await $syncWallet.isSigningKeySet())) {
 			if ((await $syncWallet.getAccountId()) == undefined) {
-				throw new Error('Unknown account');
+				customError = 'Unknown account';
 			}
 
 			message = 'You need to register your account on zkSync first.';
@@ -159,7 +159,7 @@
 		description = '';
 		name = '';
 	} catch (err) {
-		message = `${err} Please look at your browser console to get more information about the error.`;
+		message = `${customError} ${err}`;
 		showNotification = true;
 		loading = false;
 		amount = null;
@@ -200,7 +200,7 @@
 		</div>
 		<div class="py-16 px-4 lg:col-span-3 lg:py-16">
 			<div class="max-w-lg mx-auto lg:max-w-none">
-				<form on:submit|once|preventDefault={mint} class="grid grid-cols-1 gap-y-6">
+				<form on:submit|preventDefault={mint} class="grid grid-cols-1 gap-y-6">
 					<div>
 						<label class="text-black dark:text-white" for="full-name">Name of the art piece</label>
 						<input
