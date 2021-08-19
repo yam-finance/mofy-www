@@ -62,7 +62,7 @@
 			<div class="line leading-tight flex-grow">
 				{#if !metadata}
 					<p class="my-0 block text-black dark:text-white opacity-50 truncate pointer-events-none">
-						loading Name ...
+						loading ipfs data ...
 					</p>
 				{:else}
 					<p class="my-0 block text-black dark:text-white truncate pointer-events-none">
@@ -83,6 +83,3 @@
 		</div>
 	</a>
 </div>
-
-<style>
-</style>

@@ -2,7 +2,7 @@
 <script lang="ts">
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
 	import Notification from '$lib/components/Notification/index.svelte';
-	import { syncWallet, syncProvider } from '$lib/stores/web3-store';
+	import { syncWallet, syncProvider, chainId } from '$lib/stores/web3-store';
 	import { NFTStorage, File } from 'nft.storage';
 	import CID from 'cids';
 	import { ethers } from 'ethers';
@@ -29,6 +29,15 @@
 
 		for (const file of files) {
 			console.log(`${file.name}: ${file.size} bytes`);
+		}
+	}
+
+	/// @todo Move to utils
+	function zkExplorer(_networkId: number) {
+		if (_networkId === 1) {
+			return 'https://zkscan.io/explorer/transactions/';
+		} else if (_networkId === 4) {
+			return 'https://rinkeby.zkscan.io/explorer/transactions/';
 		}
 	}
 
@@ -128,7 +137,8 @@
 			fee
 		});
 
-		message = 'Please wait a little bit until your nft has been minted.';
+		const zkScanURL = zkExplorer(chainId);
+		message = `Please wait a little bit until your nft has been minted. ${zkScanURL}${nft.txHash}`;
 		showNotification = true;
 
 		const receipt = await nft.awaitReceipt();
