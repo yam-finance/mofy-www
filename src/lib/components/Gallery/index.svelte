@@ -33,6 +33,10 @@
 		}
 
 		filteredNFT.sort((a, b) => a.creatorAddress.localeCompare(b.creatorAddress));
+
+		filteredNFT = filteredNFT.filter(
+			(nft) => ![99337, 99357, 99382, 99387, 99393, 99398, 99406].includes(nft.id)
+		);
 	}
 
 	/**
