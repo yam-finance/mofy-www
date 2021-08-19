@@ -13,8 +13,8 @@
 	let propertyValues = {};
 	let attributes = {};
 	let files;
-	let description;
-	let name;
+	let description = '';
+	let name = '';
 	let recipientAddress = $syncWallet.address();
 	let showModal = false;
 	let showNotification = false;
@@ -78,6 +78,7 @@
 			showNotification = true;
 			return 1;
 		}
+		try {
 
 		loading = true;
 		const feeToken = 'ETH';
@@ -150,6 +151,25 @@
 		console.log('TxReceipt', receipt);
 		console.log(nft.txHash.substring(8));
 		loading = false;
+		amount = null;
+		attributeName = '';
+		propertyValues = {};
+		attributes = {};
+		files = null;
+		description = '';
+		name = '';
+	} catch (err) {
+		message = `${err}`;
+		showNotification = true;
+		loading = false;
+		amount = null;
+		attributeName = '';
+		propertyValues = {};
+		attributes = {};
+		files = null;
+		description = '';
+		name = '';
+	}
 	};
 </script>
 

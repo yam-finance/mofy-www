@@ -1,6 +1,6 @@
 <!-- src/lib/components/DepositModal/index.svelte -->
 <script lang="ts">
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { syncWallet, connected } from '$lib/stores/web3-store';
 	import { fade } from 'svelte/transition';
 	import { ethers } from 'ethers';
@@ -12,8 +12,6 @@
 	const close = () => dispatch('close');
 
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
-
-	onMount(async () => {});
 
 	const deposit = async () => {
 		loading = true;
