@@ -129,7 +129,7 @@
 							class="md:hidden mr-16 {$page.path == '/mint'
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+										.default} rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Mint
 						</a>
