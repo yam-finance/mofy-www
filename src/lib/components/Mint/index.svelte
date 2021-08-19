@@ -33,7 +33,7 @@
 	}
 
 	/// @todo Move to utils
-	function zkExplorer(_networkId: number) {
+	async function zkExplorer(_networkId: number) {
 		if (_networkId === 1) {
 			return 'https://zkscan.io/explorer/transactions/';
 		} else if (_networkId === 4) {
@@ -74,6 +74,8 @@
 	// @todo Move partly to modal component
 	const mint = async () => {
 		if (!files) {
+			message = 'You should upload a photo for your nft.';
+			showNotification = true;
 			return 1;
 		}
 
@@ -137,8 +139,8 @@
 			fee
 		});
 
-		const zkScanURL = zkExplorer(chainId);
-		message = `Please wait a little bit until your nft has been minted. ${zkScanURL}${nft.txHash}`;
+		const zkScanURL = await zkExplorer($chainId);
+		message = `${zkScanURL}${nft.txHash.substring(8)}`;
 		showNotification = true;
 
 		const receipt = await nft.awaitReceipt();
@@ -151,8 +153,7 @@
 	};
 </script>
 
-<!-- @todo Move address to second input
-	 @todo make attribute name editable
+<!-- @todo make attribute name editable
      @todo modal should close after depositing and loading finishing
 	 @todo Page not found when pasting the wrong address
 	 @todo Create order endpoints -->

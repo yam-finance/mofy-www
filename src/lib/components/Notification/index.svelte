@@ -5,7 +5,6 @@
 
 	export let visible;
 	export let message;
-	let loading = false;
 	const dispatch = createEventDispatcher();
 	const close = () => dispatch('close');
 
@@ -62,7 +61,7 @@
 						</div>
 						<div class="ml-3 w-0 flex-1 pt-0.5">
 							<p class="text-sm font-medium text-gray-900">Notification</p>
-							<p class="mt-1 text-sm text-gray-500">
+							<p class="mt-1 text-sm text-gray-500 break-all">
 								{message}
 							</p>
 						</div>
