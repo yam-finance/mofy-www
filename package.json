@@ -1,5 +1,5 @@
 {
-	"name": "~TODO~",
+	"name": "mofy",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "svelte-kit dev",
@@ -11,8 +11,9 @@
 		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
-		"@sveltejs/kit": "next",
+		"@sveltejs/kit": "^1.0.0-next.146",
 		"@tailwindcss/aspect-ratio": "^0.2.1",
+		"@tailwindcss/forms": "^0.3.3",
 		"@typescript-eslint/eslint-plugin": "^4.19.0",
 		"@typescript-eslint/parser": "^4.19.0",
 		"autoprefixer": "^10.3.1",
@@ -22,6 +23,7 @@
 		"prettier": "~2.2.1",
 		"prettier-plugin-svelte": "^2.2.0",
 		"svelte": "3.40.1",
+		"svelte-bricks": "^0.1.0",
 		"svelte-check": "^2.0.0",
 		"svelte-preprocess": "^4.0.0",
 		"tailwindcss": "^2.2.7",
@@ -31,10 +33,17 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.15",
+		"bricks.js": "^1.8.0",
+		"cids": "^1.1.7",
+		"colcade": "^0.2.0",
+		"dotenv": "^10.0.0",
 		"ethers": "^5.4.2",
+		"masonry-layout": "^4.2.2",
+		"nft.storage": "^3.0.1",
+		"node-sass": "^6.0.1",
 		"zksync": "^0.11.1"
 	},
 	"engines": {
-		"node": "14.13.x"
+		"node": "14.13.1"
 	}
 }

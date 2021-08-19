@@ -2,6 +2,7 @@ import chains from '../config/chains.json';
 import { derived, writable } from 'svelte/store';
 import * as zksync from 'zksync';
 import { ethers } from 'ethers';
+import { zkSyncNfts } from '$lib/stores/nft-store';
 
 const getGlobalObject = () => {
 	if (typeof globalThis !== 'undefined') {
@@ -71,6 +72,13 @@ export const createStore = () => {
 				instance._provider.on('chainChanged', () => setProvider(provider, true));
 			}
 		}
+
+		zkSyncNfts.update((previous) => ({
+			...previous,
+			loading: false,
+			nfts: []
+		}));
+
 		update(() => ({
 			signer,
 			syncWallet,
@@ -105,6 +113,13 @@ export const createStore = () => {
 		if (provider && provider.disconnect) {
 			await provider.disconnect();
 		}
+
+		zkSyncNfts.update(() => ({
+			loading: false,
+			nfts: [],
+			whitelistedNFTs: []
+		}));
+
 		update(() => ({
 			connected: false,
 			accounts: []

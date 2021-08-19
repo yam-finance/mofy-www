@@ -1,49 +1,49 @@
-<!-- src/lib/components/Gallery/index.svelte -->
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import {
-		syncWallet,
-		syncProvider,
-		web3,
-		connected,
-		chainId,
-		chainData
-	} from '$lib/stores/web3-store';
+	import { page } from '$app/stores';
+	import { syncWallet, syncProvider, web3, connected } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
-	import NFTCard from '$lib/components/NFTCard/index.svelte';
+	import Masonry from '$lib/components/Masonry/index.svelte';
+	import Loading from '$lib/components/Loading/index.svelte';
 
 	export let accounts;
-	let searchTerm = '';
+	export let searchTerm = '';
 	let filteredNFT = [];
 
-	$: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
-	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH', 'verified') : '';
+	// $: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
+	// $: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
+	$: nfts = $page.path == '/explore' ? $zkSyncNfts.whitelistedNFTs : $zkSyncNfts.nfts;
 	$: {
 		if (accounts) {
 			getZkSyncNfts();
 		}
 	}
 	$: {
-		// @todo Check if term is equal to address and link to artist gallery
 		if (searchTerm) {
-			// @todo Update search after meeting
-			filteredNFT = $zkSyncNfts.nfts.filter((nft) =>
-				String(nft.id).toLowerCase().includes(searchTerm.toLowerCase())
-			);
+			if (searchTerm.lastIndexOf('x', 1)) {
+				filteredNFT = nfts.filter((nft) =>
+					String(nft.creatorAddress).toLowerCase().includes(searchTerm.toLowerCase())
+				);
+			} else {
+				filteredNFT = nfts.filter((nft) =>
+					String(nft.id).toLowerCase().includes(searchTerm.toLowerCase())
+				);
+			}
 		} else {
-			filteredNFT = [...$zkSyncNfts.nfts];
+			filteredNFT = [...nfts];
 		}
+
+		filteredNFT.sort((a, b) => a.creatorAddress.localeCompare(b.creatorAddress));
 	}
 
 	/**
 	 * @todo Check how this function behaves with a bigger gallery
 	 * and add $zkSyncNfts.nfts.length == 0 check if necessary.
-	 * @todo Add check so explore and personal galleries don't overwrite themselves
 	 */
 	export const getZkSyncNfts = async () => {
 		zkSyncNfts.update((previous) => ({
-			...previous,
-			loading: true
+			loading: false,
+			nfts: [],
+			whitelistedNFTs: []
 		}));
 
 		let committedNFT;
@@ -54,14 +54,24 @@
 			// verifiedNFT = {...verifiedNFT, ...state.verified.nfts};
 		}
 
-		zkSyncNfts.update(() => ({
-			loading: false,
-			nfts: Object.values(committedNFT)
-		}));
+		if ($page.path == '/explore') {
+			zkSyncNfts.update((previous) => ({
+				...previous,
+				loading: false,
+				whitelistedNFTs: Object.values(committedNFT)
+			}));
+		} else {
+			// @todo Move to store
+			zkSyncNfts.update((previous) => ({
+				...previous,
+				loading: false,
+				nfts: Object.values(committedNFT)
+			}));
+		}
 	};
 </script>
 
-<p>
+<!-- <p>
 	Connected chain: chainId = {$chainId}
 </p>
 <p>
@@ -85,16 +95,22 @@
 		<span>{value}</span>
 	{/await}
 	{$chainData.nativeCurrency?.symbol}
-</p>
+</p> -->
 
-<input type="text" bind:value={searchTerm} placeholder="Searh for a specific nft id" />
-
-<ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+<div class="px-8 sm:px-4">
 	{#if $zkSyncNfts.loading && filteredNFT.length == 0}
-		<p>loading ...</p>	
+		<div class="flex justify-center">
+			<Loading />
+		</div>
+	{:else if filteredNFT.length > 0}
+		<Masonry {filteredNFT} />
 	{:else}
-		{#each filteredNFT as nft}
-			<NFTCard {nft} />
-		{/each}
+		<div class="flex justify-center">
+			<div
+				class="bg-gray bg-opacity-20 py-5 mx-0 w-full text-md text-center text-black dark:text-white"
+			>
+				Nothing found
+			</div>
+		</div>
 	{/if}
-  </ul>
+</div>
