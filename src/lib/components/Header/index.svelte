@@ -204,6 +204,10 @@
 							: dynamicClass.mobile
 									.default} block py-2 text-lg text-black dark:text-white font-medium">Mint</a
 					>
+					<a
+						href="https://docs.yam.finance/museum"
+						class="block py-2 text-lg text-black dark:text-white font-medium">FAQ</a
+					>
 				</div>
 			{/if}
 			<div class="pb-3">
