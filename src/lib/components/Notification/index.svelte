@@ -61,7 +61,7 @@
 						</div>
 						<div class="ml-3 w-0 flex-1 pt-0.5">
 							<p class="text-sm font-medium text-gray-900">Notification</p>
-							<p class="mt-1 text-sm text-gray-500 break-all">
+							<p class="mt-1 text-sm text-gray-500 break-words">
 								{message}
 							</p>
 						</div>

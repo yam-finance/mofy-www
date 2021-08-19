@@ -159,7 +159,7 @@
 		description = '';
 		name = '';
 	} catch (err) {
-		message = `${err}`;
+		message = `${err} Please look at your browser console to get more information about the error.`;
 		showNotification = true;
 		loading = false;
 		amount = null;
