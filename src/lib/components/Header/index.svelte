@@ -129,9 +129,15 @@
 							class="md:hidden mr-16 {$page.path == '/mint'
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+										.default} rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Mint
+						</a>
+						<a
+							href="https://docs.yam.finance/projects/museum" target="_blank"
+							class="md:hidden mr-16 rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+						>
+							FAQ
 						</a>
 					{/if}
 					{#if $web3.version}
@@ -203,6 +209,10 @@
 							? dynamicClass.mobile.current
 							: dynamicClass.mobile
 									.default} block py-2 text-lg text-black dark:text-white font-medium">Mint</a
+					>
+					<a
+						href="https://docs.yam.finance/projects/museum" target="_blank"
+						class="block py-2 text-lg text-black dark:text-white font-medium">FAQ</a
 					>
 				</div>
 			{/if}

@@ -23,7 +23,6 @@
 		"prettier": "~2.2.1",
 		"prettier-plugin-svelte": "^2.2.0",
 		"svelte": "3.40.1",
-		"svelte-bricks": "^0.1.0",
 		"svelte-check": "^2.0.0",
 		"svelte-preprocess": "^4.0.0",
 		"tailwindcss": "^2.2.7",
@@ -33,7 +32,6 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.15",
-		"bricks.js": "^1.8.0",
 		"cids": "^1.1.7",
 		"colcade": "^0.2.0",
 		"dotenv": "^10.0.0",
