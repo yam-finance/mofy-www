@@ -133,6 +133,12 @@
 						>
 							Mint
 						</a>
+						<a
+							href="https://docs.yam.finance/museum" target="_blank"
+							class="md:hidden mr-16 rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+						>
+							FAQ
+						</a>
 					{/if}
 					{#if $web3.version}
 						{#if !$connected}
