@@ -3,7 +3,7 @@
 	import Protected from '$lib/components/Protected/index.svelte';
 	import Gallery from '$lib/components/Gallery/index.svelte';
 	import { selectedAccount } from '$lib/stores/web3-store';
-	import { ethers } from "ethers";
+	import { ethers } from 'ethers';
 </script>
 
 <svelte:head>

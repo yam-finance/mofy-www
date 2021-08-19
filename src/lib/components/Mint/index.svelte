@@ -80,96 +80,95 @@
 		}
 
 		try {
+			loading = true;
+			const feeToken = 'ETH';
+			const { totalFee: fee } = await $syncProvider.getTransactionFee(
+				'MintNFT',
+				recipientAddress,
+				feeToken
+			);
 
-		loading = true;
-		const feeToken = 'ETH';
-		const { totalFee: fee } = await $syncProvider.getTransactionFee(
-			'MintNFT',
-			recipientAddress,
-			feeToken
-		);
+			txFee = fee;
 
-		txFee = fee;
+			const accountETHBalance = await $syncWallet.getBalance('ETH');
 
-		const accountETHBalance = await $syncWallet.getBalance('ETH');
-
-		// @todo Open modal to onboard the user
-		if (txFee.gte(accountETHBalance)) {
-			customError = 'You have to register your account on zkSync first in order to mint.';
-		}
-
-		if (!(await $syncWallet.isSigningKeySet())) {
-			if ((await $syncWallet.getAccountId()) == undefined) {
-				customError = 'Unknown account';
+			// @todo Open modal to onboard the user
+			if (txFee.gte(accountETHBalance)) {
+				customError = 'You have to register your account on zkSync first in order to mint.';
 			}
 
-			message = 'You need to register your account on zkSync first.';
-			showNotification = true;
+			if (!(await $syncWallet.isSigningKeySet())) {
+				if ((await $syncWallet.getAccountId()) == undefined) {
+					customError = 'Unknown account';
+				}
 
-			// @todo Open Modal to tell the user what to do and continue on the modal
+				message = 'You need to register your account on zkSync first.';
+				showNotification = true;
 
-			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
-			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
-			// the lowest possible amount.
-			const changePubkey = await $syncWallet.setSigningKey({
-				feeToken: 'ETH',
-				ethAuthType: 'ECDSA'
+				// @todo Open Modal to tell the user what to do and continue on the modal
+
+				// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+				// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+				// the lowest possible amount.
+				const changePubkey = await $syncWallet.setSigningKey({
+					feeToken: 'ETH',
+					ethAuthType: 'ECDSA'
+				});
+
+				// Wait until the tx is committed
+				await changePubkey.awaitReceipt();
+
+				showNotification = false;
+			}
+
+			const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
+
+			const metadata = await client.store({
+				name,
+				description,
+				image: new File([files[0]], files[0].name, { type: 'image/png' }),
+				properties: attributes
 			});
 
-			// Wait until the tx is committed
-			await changePubkey.awaitReceipt();
+			const array = new CID(metadata.ipnft).bytes;
+			const contentHash = '0x' + ethers.utils.hexlify(array).substring(10);
+			const nft = await $syncWallet.mintNFT({
+				recipient: recipientAddress,
+				contentHash,
+				feeToken: feeToken,
+				fee
+			});
 
-			showNotification = false;
+			const zkScanURL = await zkExplorer($chainId);
+			message = `${zkScanURL}${nft.txHash.substring(8)}`;
+			showNotification = true;
+
+			const receipt = await nft.awaitReceipt();
+
+			console.log('Fee', fee);
+			console.log('NFT', nft);
+			console.log('TxReceipt', receipt);
+			console.log(nft.txHash.substring(8));
+			loading = false;
+			amount = null;
+			attributeName = '';
+			propertyValues = {};
+			attributes = {};
+			files = null;
+			description = '';
+			name = '';
+		} catch (err) {
+			message = `${customError} ${err}`;
+			showNotification = true;
+			loading = false;
+			amount = null;
+			attributeName = '';
+			propertyValues = {};
+			attributes = {};
+			files = null;
+			description = '';
+			name = '';
 		}
-
-		const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
-
-		const metadata = await client.store({
-			name,
-			description,
-			image: new File([files[0]], files[0].name, { type: 'image/png' }),
-			properties: attributes
-		});
-
-		const array = new CID(metadata.ipnft).bytes;
-		const contentHash = '0x' + ethers.utils.hexlify(array).substring(10);
-		const nft = await $syncWallet.mintNFT({
-			recipient: recipientAddress,
-			contentHash,
-			feeToken: feeToken,
-			fee
-		});
-
-		const zkScanURL = await zkExplorer($chainId);
-		message = `${zkScanURL}${nft.txHash.substring(8)}`;
-		showNotification = true;
-
-		const receipt = await nft.awaitReceipt();
-
-		console.log('Fee', fee);
-		console.log('NFT', nft);
-		console.log('TxReceipt', receipt);
-		console.log(nft.txHash.substring(8));
-		loading = false;
-		amount = null;
-		attributeName = '';
-		propertyValues = {};
-		attributes = {};
-		files = null;
-		description = '';
-		name = '';
-	} catch (err) {
-		message = `${customError} ${err}`;
-		showNotification = true;
-		loading = false;
-		amount = null;
-		attributeName = '';
-		propertyValues = {};
-		attributes = {};
-		files = null;
-		description = '';
-		name = '';
-	}
 	};
 </script>
 
