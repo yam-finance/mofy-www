@@ -1,12 +1,11 @@
 <!-- // @todo Add message that we only show verified messages on the explore page and you can also only share verified nft links with others -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import { syncWallet, syncProvider, selectedAccount } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import { utils as zkUtils } from 'zksync';
 	import { ethers } from 'ethers';
-	import Loading from '$lib/components/Loading/index.svelte';
 	import CID from 'cids';
 	import Notification from '$lib/components/Notification/index.svelte';
 
@@ -276,12 +275,17 @@
 				</h2>
 			{/if}
 			<div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-8">
-				<div class="flex items-center text-sm text-black dark:text-white opacity-50">
+				<div
+					on:click={() => {
+						if (!loading) goto(`/gallery/${nft.creatorAddress}`);
+					}}
+					class="flex items-center text-sm text-black dark:text-white opacity-50 cursor-pointer"
+				>
 					<!-- Heroicon name: solid/briefcase -->
 					{#if loading}
 						loading ...
 					{:else}
-						by {nft.creatorAddress.substring(0, 8)}
+						by {nft.creatorAddress}
 					{/if}
 				</div>
 			</div>

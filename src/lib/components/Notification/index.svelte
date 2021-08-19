@@ -5,7 +5,6 @@
 
 	export let visible;
 	export let message;
-	let loading = false;
 	const dispatch = createEventDispatcher();
 	const close = () => dispatch('close');
 

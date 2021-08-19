@@ -1,6 +1,5 @@
 <!-- src/lib/components/NFTCard/index.svelte -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { ethers } from 'ethers';
 	import CID from 'cids';
