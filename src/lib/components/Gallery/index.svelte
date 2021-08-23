@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { syncWallet, syncProvider, web3, connected } from '$lib/stores/web3-store';
+	import { syncProvider } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import Masonry from '$lib/components/Masonry/index.svelte';
 	import Loading from '$lib/components/Loading/index.svelte';
@@ -34,10 +34,9 @@
 
 		// filteredNFT.sort((a, b) => a.creatorAddress.localeCompare(b.creatorAddress));
 		filteredNFT.sort(() => Math.random() - 0.5);
-		
+
 		filteredNFT = filteredNFT.filter(
 			(nft) => ![99337, 99357, 99382, 99387, 99393, 99398, 99406, 115226].includes(nft.id)
-			
 		);
 	}
 

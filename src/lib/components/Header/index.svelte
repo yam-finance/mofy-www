@@ -134,7 +134,15 @@
 							Mint
 						</a>
 						<a
-							href="https://docs.yam.finance/projects/museum" target="_blank"
+							href="https://mofy.yam.xyz/"
+							target="_blank"
+							class="md:hidden rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+						>
+							Magazine
+						</a>
+						<a
+							href="https://docs.yam.finance/projects/museum"
+							target="_blank"
 							class="md:hidden rounded-md py-2 px-3 items-center text-base font-medium mr-5"
 						>
 							FAQ
@@ -211,7 +219,13 @@
 									.default} block py-2 text-lg text-black dark:text-white font-medium">Mint</a
 					>
 					<a
-						href="https://docs.yam.finance/projects/museum" target="_blank"
+						href="https://mofy.yam.xyz/"
+						target="_blank"
+						class="block py-2 text-lg text-black dark:text-white font-medium">Magazine</a
+					>
+					<a
+						href="https://docs.yam.finance/projects/museum"
+						target="_blank"
 						class="block py-2 text-lg text-black dark:text-white font-medium">FAQ</a
 					>
 				</div>
