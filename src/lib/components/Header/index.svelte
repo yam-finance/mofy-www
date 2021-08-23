@@ -234,6 +234,7 @@
 				<div class="mt-3 space-y-1">
 					<a
 						href="https://yam.finance/"
+                        target="_blank"
 						class="block py-2 text-base text-black dark:text-white font-medium opacity-60 hover:opacity-30"
 						>Built by Yam</a
 					>
