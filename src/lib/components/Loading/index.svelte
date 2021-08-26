@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <div>
 	<div class="loading-2">
 		<div class="loading">
