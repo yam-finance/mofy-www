@@ -4,7 +4,6 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { defaultChainStore, web3, connected, selectedAccount } from '$lib/stores/web3-store';
-	import { zkSyncNfts } from '$lib/stores/nft-store';
 
 	let Web3Modal;
 	let WalletConnectProvider;
@@ -136,14 +135,16 @@
 						<a
 							href="https://mofy.yam.xyz/"
 							target="_blank"
-							class="md:hidden rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+							class="{dynamicClass.desktop
+								.default} rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Magazine
 						</a>
 						<a
 							href="https://docs.yam.finance/projects/museum"
 							target="_blank"
-							class="md:hidden rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+							class="{dynamicClass.desktop
+								.default} rounded-md py-2 px-3 items-center text-base font-medium mr-5"
 						>
 							FAQ
 						</a>
@@ -197,14 +198,15 @@
 				<div class="pt-2">
 					<a
 						href="/explore"
+						target="_blank"
 						class="{$page.path == '/explore'
 							? dynamicClass.mobile.current
 							: dynamicClass.mobile
-									.default} block py-2 text-lg text-black dark:text-white font-medium"
-						aria-current="page">Explore</a
+									.default} block py-2 text-lg text-black dark:text-white font-medium">Explore</a
 					>
 					<a
 						href="/gallery/{$selectedAccount}"
+						target="_blank"
 						class="{$page.path == `/gallery/${$selectedAccount}`
 							? dynamicClass.mobile.current
 							: dynamicClass.mobile
@@ -213,6 +215,7 @@
 					>
 					<a
 						href="/mint"
+						target="_blank"
 						class="{$page.path == '/mint'
 							? dynamicClass.mobile.current
 							: dynamicClass.mobile
@@ -221,12 +224,14 @@
 					<a
 						href="https://mofy.yam.xyz/"
 						target="_blank"
-						class="block py-2 text-lg text-black dark:text-white font-medium">Magazine</a
+						class="{dynamicClass.mobile
+							.default} block py-2 text-lg text-black dark:text-white font-medium">Magazine</a
 					>
 					<a
 						href="https://docs.yam.finance/projects/museum"
 						target="_blank"
-						class="block py-2 text-lg text-black dark:text-white font-medium">FAQ</a
+						class="{dynamicClass.mobile
+							.default} block py-2 text-lg text-black dark:text-white font-medium">FAQ</a
 					>
 				</div>
 			{/if}
@@ -234,7 +239,7 @@
 				<div class="mt-3 space-y-1">
 					<a
 						href="https://yam.finance/"
-                        target="_blank"
+						target="_blank"
 						class="block py-2 text-base text-black dark:text-white font-medium opacity-60 hover:opacity-30"
 						>Built by Yam</a
 					>
