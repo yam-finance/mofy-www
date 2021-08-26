@@ -16,7 +16,7 @@
 	import { goto } from '$app/navigation';
 	import Header from '$lib/components/Header/index.svelte';
 
-	export let path;
+	export const path = '';
 
 	onMount(async () => {
 		// @todo Test with netlify adapter

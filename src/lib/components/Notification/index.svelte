@@ -2,34 +2,16 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { clickOutside } from '$lib/utils';
 
 	export let visible;
 	export let message;
+
 	const dispatch = createEventDispatcher();
 	const close = () => dispatch('close');
-
-	// @todo Move to utils
-	export function clickOutside(node, onEventFunction) {
-		const handleClick = (event) => {
-			var path = event.composedPath();
-
-			if (!path.includes(node)) {
-				onEventFunction();
-			}
-		};
-
-		document.addEventListener('click', handleClick);
-
-		return {
-			destroy() {
-				document.removeEventListener('click', handleClick);
-			}
-		};
-	}
 </script>
 
 {#if visible}
-	<!-- Global notification live region, render this permanently at the end of the document -->
 	<div
 		aria-live="assertive"
 		class="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"

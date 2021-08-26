@@ -2,27 +2,33 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { syncWallet, connected } from '$lib/stores/web3-store';
+	import { clickOutside } from '$lib/utils';
 	import { fade } from 'svelte/transition';
 	import { ethers } from 'ethers';
 
 	export let visible;
 	let amount;
 	let loading = false;
-	const dispatch = createEventDispatcher();
-	const close = () => dispatch('close');
 
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
 
+	const dispatch = createEventDispatcher();
+	const close = () => dispatch('close');
+
+	/**
+	 * @notice This function takes care of depositing ETH from L1 to L2
+	 */
 	const deposit = async () => {
 		loading = true;
+
 		const deposit = await $syncWallet.depositToSyncFromEthereum({
 			depositTo: $syncWallet.address(),
 			token: 'ETH',
 			amount: ethers.utils.parseEther(amount)
 		});
-
 		const depositReceipt = await deposit.awaitReceipt();
-		console.log(depositReceipt);
+
+		console.log('Deposit Receipt: ', depositReceipt);
 
 		if (!(await $syncWallet.isSigningKeySet())) {
 			if ((await $syncWallet.getAccountId()) == undefined) {
@@ -41,28 +47,10 @@
 			await changePubkey.awaitReceipt();
 		}
 
-		loading = false;
 		close();
+
+		loading = false;
 	};
-
-	// @todo Move to utils
-	export function clickOutside(node, onEventFunction) {
-		const handleClick = (event) => {
-			var path = event.composedPath();
-
-			if (!path.includes(node)) {
-				onEventFunction();
-			}
-		};
-
-		document.addEventListener('click', handleClick);
-
-		return {
-			destroy() {
-				document.removeEventListener('click', handleClick);
-			}
-		};
-	}
 </script>
 
 {#if visible}

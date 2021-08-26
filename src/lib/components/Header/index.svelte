@@ -28,6 +28,9 @@
 		mobileMenu.open = !mobileMenu.open;
 	}
 
+	/**
+	 * @notice Use web3Modal to connect a user wallet
+	 */
 	const enable = async () => {
 		let web3Modal = new Web3Modal({
 			cacheProvider: false,
@@ -47,6 +50,9 @@
 		await defaultChainStore.setProvider(provider);
 	};
 
+	/**
+	 * @notice Disconnect the user wallet and clear the account state
+	 */
 	const disconnect = async () => {
 		defaultChainStore.disconnect();
 	};
@@ -57,8 +63,6 @@
 		<div class="flex justify-between">
 			<div class="flex">
 				<div class="flex-shrink-0 mr-8 sm:mr-2 flex items-center cursor-pointer">
-					<!-- <img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Yam Museum" /> -->
-					<!-- <img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Yam Museum" /> -->
 					<img
 						src="/yam.png"
 						on:click={() => goto('/')}
@@ -103,23 +107,22 @@
 			</div>
 			<div class="flex items-center">
 				<div class="flex flex-shrink-0 items-center text-black dark:text-white">
+					<a
+						href="/explore"
+						class="{$page.path == '/explore'
+							? dynamicClass.desktop.current
+							: dynamicClass.desktop
+									.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
+					>
+						Explore
+					</a>
 					{#if $connected}
 						<a
-							href="/explore"
-							class="md:hidden {$page.path == '/explore'
-								? dynamicClass.desktop.current
-								: dynamicClass.desktop
-										.default} rounded-md py-2 px-3 items-center text-base font-medium"
-							aria-current="page"
-						>
-							Explore
-						</a>
-						<a
 							href="/gallery/{$selectedAccount}"
-							class="md:hidden {$page.path == `/gallery/${$selectedAccount}`
+							class="{$page.path == `/gallery/${$selectedAccount}`
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} rounded-md py-2 px-3 items-center text-base font-medium"
+										.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Your Gallery
 						</a>
@@ -128,7 +131,7 @@
 							class="md:hidden {$page.path == '/mint'
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} rounded-md py-2 px-3 items-center text-base font-medium"
+										.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Mint
 						</a>
@@ -136,7 +139,7 @@
 							href="https://mofy.yam.xyz/"
 							target="_blank"
 							class="{dynamicClass.desktop
-								.default} rounded-md py-2 px-3 items-center text-base font-medium"
+								.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Magazine
 						</a>
@@ -144,7 +147,7 @@
 							href="https://docs.yam.finance/projects/museum"
 							target="_blank"
 							class="{dynamicClass.desktop
-								.default} rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+								.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium mr-5"
 						>
 							FAQ
 						</a>
@@ -194,19 +197,17 @@
 
 	{#if mobileMenu.open}
 		<div class="hidden md:block mx-16 border-b sm:mx-4" id="mobile-menu">
-			{#if $connected}
-				<div class="pt-2">
-					<a
-						href="/explore"
-						target="_blank"
-						class="{$page.path == '/explore'
-							? dynamicClass.mobile.current
-							: dynamicClass.mobile
-									.default} block py-2 text-lg text-black dark:text-white font-medium">Explore</a
-					>
+			<div class="pt-2">
+				<a
+					href="/explore"
+					class="{$page.path == '/explore'
+						? dynamicClass.mobile.current
+						: dynamicClass.mobile
+								.default} block py-2 text-lg text-black dark:text-white font-medium">Explore</a
+				>
+				{#if $connected}
 					<a
 						href="/gallery/{$selectedAccount}"
-						target="_blank"
 						class="{$page.path == `/gallery/${$selectedAccount}`
 							? dynamicClass.mobile.current
 							: dynamicClass.mobile
@@ -215,7 +216,6 @@
 					>
 					<a
 						href="/mint"
-						target="_blank"
 						class="{$page.path == '/mint'
 							? dynamicClass.mobile.current
 							: dynamicClass.mobile
@@ -233,8 +233,8 @@
 						class="{dynamicClass.mobile
 							.default} block py-2 text-lg text-black dark:text-white font-medium">FAQ</a
 					>
-				</div>
-			{/if}
+				{/if}
+			</div>
 			<div class="pb-3">
 				<div class="mt-3 space-y-1">
 					<a

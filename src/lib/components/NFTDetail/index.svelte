@@ -1,9 +1,10 @@
-<!-- // @todo Add message that we only show verified messages on the explore page and you can also only share verified nft links with others -->
+<!-- src/lib/components/NFTDetail/index.svelte -->
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { syncWallet, syncProvider, selectedAccount } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
+	import { binarySearch } from '$lib/utils';
 	import { utils as zkUtils } from 'zksync';
 	import { ethers } from 'ethers';
 	import CID from 'cids';
@@ -21,12 +22,18 @@
 	let message = '';
 	let verified;
 
+	/**
+	 * @notice These subscribers react on any changes related to the referenced variable
+	 */
 	$: {
 		if ($selectedAccount) {
 			getNFTInfo();
 		}
 	}
 
+	/**
+	 * @notice Get all information from the nft that we need
+	 */
 	const getNFTInfo = async () => {
 		loading = true;
 		owner = false;
@@ -97,6 +104,9 @@
 		loading = false;
 	};
 
+	/**
+	 * @notice Create a sell order in our db
+	 */
 	const setSellOrder = async () => {
 		// @todo Move
 		if (!(await $syncWallet.isSigningKeySet())) {
@@ -153,8 +163,11 @@
 		console.log(await res.json());
 	};
 
-	// @todo add loader when buying the nft
+	/**
+	 * @notice Create a buy order in our db and execute the trade
+	 */
 	const setBuyOrder = async () => {
+		// @todo Add loader when buying the nft
 		// @todo Move
 		if (!(await $syncWallet.isSigningKeySet())) {
 			if ((await $syncWallet.getAccountId()) == undefined) {
@@ -199,6 +212,9 @@
 		await cancelOrder();
 	};
 
+	/**
+	 * @notice Cancel a sell order by removing the db entry
+	 */
 	const cancelOrder = async () => {
 		await fetch(`https://api.yam.finance/museum/orders/${id}`, {
 			method: 'DELETE',
@@ -209,32 +225,9 @@
 
 		order = undefined;
 	};
-
-	// @todo Move to utils
-	export function binarySearch(array: object[], target: number) {
-		return binarySearchHelper(array, target, 0, array.length - 1);
-	}
-
-	function binarySearchHelper(
-		array: object[],
-		target: number,
-		left: number,
-		right: number
-	): number {
-		if (left > right) return -1;
-
-		const middle = Math.floor((left + right) / 2);
-		const potentialMatch = array[middle]['id'];
-
-		if (target === potentialMatch) {
-			return middle;
-		} else if (target < potentialMatch) {
-			return binarySearchHelper(array, target, left, middle - 1);
-		} else {
-			return binarySearchHelper(array, target, middle + 1, right);
-		}
-	}
 </script>
+
+<!-- // @todo Add message that we only show verified messages on the explore page and you can also only share verified nft links with others -->
 
 <div class="relative py-16 sm:py-24">
 	<div class="mx-auto max-w-7xl px-16 grid grid-cols-2 gap-24 items-start lg:block">

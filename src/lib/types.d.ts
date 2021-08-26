@@ -5,3 +5,7 @@
 export interface Locals {
 	nftid: string;
 }
+
+export interface IArtists {
+	addresses: Array<string>;
+}

@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { syncProvider } from '$lib/stores/web3-store';
+	import { connected, syncProvider } from '$lib/stores/web3-store';
 	import { zkSyncNfts } from '$lib/stores/nft-store';
 	import Masonry from '$lib/components/Masonry/index.svelte';
 	import Loading from '$lib/components/Loading/index.svelte';
+	import * as zksync from 'zksync';
 
 	export let accounts;
 	export let searchTerm = '';
 	let filteredNFT = [];
 
-	// $: balanceL1 = $connected ? $web3.eth.getBalance(accounts[0]) : '';
-	// $: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
+	/**
+	 * @notice These subscribers react on any changes related to the referenced variable
+	 */
 	$: nfts = $page.path == '/explore' ? $zkSyncNfts.whitelistedNFTs : $zkSyncNfts.nfts;
 	$: {
 		if (accounts) {
@@ -32,9 +34,10 @@
 			filteredNFT = [...nfts];
 		}
 
-		// filteredNFT.sort((a, b) => a.creatorAddress.localeCompare(b.creatorAddress));
+		/// @notice Display nfts randomly
 		filteredNFT.sort(() => Math.random() - 0.5);
 
+		/// @notice Remove certain nft ids
 		filteredNFT = filteredNFT.filter(
 			(nft) => ![99337, 99357, 99382, 99387, 99393, 99398, 99406, 115226].includes(nft.id)
 		);
@@ -45,16 +48,21 @@
 	 * and add $zkSyncNfts.nfts.length == 0 check if necessary.
 	 */
 	export const getZkSyncNfts = async () => {
-		zkSyncNfts.update((previous) => ({
-			loading: false,
-			nfts: [],
-			whitelistedNFTs: []
-		}));
+		if (nfts.length == 0) {
+			zkSyncNfts.update((previous) => ({
+				...previous,
+				loading: true
+			}));
+		}
 
+		const provider = $connected ? $syncProvider : await zksync.getDefaultProvider('mainnet');
 		let committedNFT;
 
+		/**
+		 * @dev The tx of a verified NFT has already been mined on L1, while committed means that it has not yet been mined
+		 */
 		for (const account of accounts) {
-			const state = await $syncProvider.getState(account);
+			const state = await provider.getState(account);
 			committedNFT = { ...committedNFT, ...state.committed.nfts };
 			// verifiedNFT = {...verifiedNFT, ...state.verified.nfts};
 		}
@@ -66,7 +74,6 @@
 				whitelistedNFTs: Object.values(committedNFT)
 			}));
 		} else {
-			// @todo Move to store
 			zkSyncNfts.update((previous) => ({
 				...previous,
 				loading: false,

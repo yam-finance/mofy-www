@@ -22,6 +22,9 @@
 	let loading = false;
 	let imageFile;
 
+	/**
+	 * @notice These subscribers react on any changes related to the referenced variable
+	 */
 	$: if (files) {
 		// Note that `files` is of type `FileList`, not an Array:
 		// https://developer.mozilla.org/en-US/docs/Web/API/FileList
