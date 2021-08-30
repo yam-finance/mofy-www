@@ -3,6 +3,11 @@ import { derived, writable } from 'svelte/store';
 import * as zksync from 'zksync';
 import { ethers } from 'ethers';
 import { zkSyncNfts } from '$lib/stores/nft-store';
+import KeyDidResolver from 'key-did-resolver';
+import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
+import { DID } from 'dids';
+
+const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
 
 const getGlobalObject = () => {
 	if (typeof globalThis !== 'undefined') {
@@ -78,6 +83,23 @@ export const createStore = () => {
 			loading: false,
 			nfts: []
 		}));
+
+		const { ThreeIdConnect, EthereumAuthProvider } = await import('@3id/connect');
+		const CeramicClient = (await import('@ceramicnetwork/http-client')).default;
+		const threeIdConnect = new ThreeIdConnect();
+		/// @dev Ceramic uses @eip155:1
+		const authProvider = new EthereumAuthProvider(provider, accounts[0].toLowerCase());
+		await threeIdConnect.connect(authProvider);
+		const didProvider = await threeIdConnect.getDidProvider();
+		const ceramic = new CeramicClient(CERAMIC_API_URL);
+		const resolver = { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) };
+		const did = new DID({ resolver });
+		ceramic.did = did;
+		ceramic.did.setProvider(didProvider);
+		await ceramic.did.authenticate();
+		console.log(ceramic.did)
+
+		// @todo Create store for ceramic
 
 		update(() => ({
 			signer,
