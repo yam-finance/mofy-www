@@ -83,32 +83,6 @@
 	};
 </script>
 
-<!-- <p>
-	Connected chain: chainId = {$chainId}
-</p>
-<p>
-	Selected account: {accounts[0] || 'not defined'}
-</p>
-
-<p>
-	Balance on Ethereum {$chainData.network}:
-	{#await balanceL1}
-		<span>waiting...</span>
-	{:then value}
-		<span>{value}</span>
-	{/await}
-	{$chainData.nativeCurrency?.symbol}
-</p>
-<p>
-	Balance on zkSync {$chainData.network}:
-	{#await balanceL2}
-		<span>waiting...</span>
-	{:then value}
-		<span>{value}</span>
-	{/await}
-	{$chainData.nativeCurrency?.symbol}
-</p> -->
-
 <div class="px-8 sm:px-4">
 	{#if $zkSyncNfts.loading && filteredNFT.length == 0}
 		<div class="flex justify-center">
