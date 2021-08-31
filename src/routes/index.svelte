@@ -29,7 +29,6 @@
 </script>
 
 <svelte:head>
-	<base href="./">
 	<title>Home</title>
 </svelte:head>
 
