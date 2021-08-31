@@ -48,6 +48,17 @@
 
 		const provider = await web3Modal.connect();
 		await defaultChainStore.setProvider(provider);
+
+		// const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
+		// const CeramicClient = (await import('@ceramicnetwork/http-client')).default;
+		// const { IDX } = (await import('@ceramicstudio/idx'));
+		// const ceramic = new CeramicClient(CERAMIC_API_URL);
+		// const idx = new IDX({ ceramic });
+
+		// const data = await $idx.get(
+		// 	'basicProfile'
+		// );
+		// console.log('data: ', data);
 	};
 
 	/**
@@ -109,7 +120,7 @@
 				<div class="flex flex-shrink-0 items-center text-black dark:text-white">
 					<a
 						href="/explore"
-						class="{$page.path == '/explore'
+						class="{$page.path == '/#/explore'
 							? dynamicClass.desktop.current
 							: dynamicClass.desktop
 									.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
@@ -163,13 +174,11 @@
 							</button>
 						{:else}
 							<button
-								on:click={disconnect}
+								on:click={() => goto('/profile')}
 								type="button"
-								class="text-black dark:text-white flex items-center hover:opacity-70"
+								class="mr-2 text-black dark:text-white flex items-center hover:opacity-70"
 							>
-								<span class="font-medium sm:text-xs"
-									>Log out {$selectedAccount.substring(0, 6)}</span
-								>
+								<span class="font-medium sm:text-xs">{$selectedAccount.substring(0, 6)}</span>
 								<div
 									class="ml-2 w-6 h-6 rounded-full border-black dark:border-white border-2 flex flex-col items-center overflow-hidden"
 								>
@@ -180,6 +189,26 @@
 										class="w-4 h-4 rounded-full flex-shrink-0 border-black dark:border-white border-2"
 									/>
 								</div>
+							</button>
+							<button
+								on:click={disconnect}
+								type="button"
+								class="text-black dark:text-white flex items-center hover:opacity-70"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-6 w-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+									/>
+								</svg>
 							</button>
 						{/if}
 					{:else}
