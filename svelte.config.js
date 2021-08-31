@@ -12,7 +12,6 @@ const config = {
 		target: '#svelte',
 		adapter: adapter(),
 		ssr: false,
-		appDir: '.',
 		vite: () => ({
 			define: {
 				'process.env.NODE_ENV': {}
