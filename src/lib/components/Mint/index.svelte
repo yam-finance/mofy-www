@@ -227,7 +227,7 @@
 					<div>
 						<form on:submit|preventDefault={addAttribute}>
 							<label class="text-black dark:text-white" for="attribute-name">Attributes</label>
-							<div class="mt-1 flex  shadow-sm">
+							<div class="mt-1 flex">
 								<div class="relative flex items-stretch flex-grow focus-within:z-10">
 									<input
 										required
@@ -235,7 +235,7 @@
 										bind:value={attributeName}
 										name="attribute-name"
 										id="attribute-name"
-										class="focus:ring-white text-lg focus:border-none block w-full text-black placeholder-gray dark:text-white placeholder-opacity-60 bg-gray bg-opacity-20 border-none"
+										class="focus:ring-white text-lg focus:border-none block w-full text-black placeholder-gray dark:text-white bg-gray bg-opacity-20 border-none"
 										placeholder="Name of the attribute"
 									/>
 								</div>
@@ -267,7 +267,7 @@
 									class="relative border w-full flex items-stretch border-white border-opacity-0 my-2 focus-within:ring-1 focus-within:ring-white focus-within:white"
 								>
 									<label
-										class="relative block items-center py-3 px-4 border-white border-opacity-0 font-medium h-full text-white bg-gray bg-opacity-20"
+										class="relative block items-center py-3 px-4 border-white border-opacity-0 font-medium h-full text-black dark:text-white bg-gray bg-opacity-20"
 										for="name">{attributeName}</label
 									>
 									<input
@@ -277,7 +277,7 @@
 										bind:value={propertyValues[attributeName]}
 										name="name"
 										id="name"
-										class="text-lg block flex-grow border-transparent focus:outline-none focus:border-transparent focus:ring-transparent text-black placeholder-black dark:text-white dark:placeholder-white placeholder-opacity-50 bg-gray bg-opacity-20"
+										class="text-lg block flex-grow border-transparent focus:outline-none focus:border-transparent focus:ring-transparent text-black dark:text-white placeholder-gray placeholder-opacity-50 bg-gray bg-opacity-20"
 										placeholder="Enter value"
 									/>
 									<div
@@ -287,7 +287,7 @@
 										<!--  -->
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
-											class="h-5 w-5 text-white mt-1.5"
+											class="h-5 w-5 text-black dark:text-white mt-1.5"
 											viewBox="0 0 20 20"
 											fill="currentColor"
 										>
