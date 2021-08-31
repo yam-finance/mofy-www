@@ -3,6 +3,12 @@ import { derived, writable } from 'svelte/store';
 import * as zksync from 'zksync';
 import { ethers } from 'ethers';
 import { zkSyncNfts } from '$lib/stores/nft-store';
+import KeyDidResolver from 'key-did-resolver';
+import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
+import { DID } from 'dids';
+import { IDX } from '@ceramicstudio/idx';
+
+const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
 
 const getGlobalObject = () => {
 	if (typeof globalThis !== 'undefined') {
@@ -79,7 +85,29 @@ export const createStore = () => {
 			nfts: []
 		}));
 
+		const { ThreeIdConnect, EthereumAuthProvider } = await import('@3id/connect');
+		const CeramicClient = (await import('@ceramicnetwork/http-client')).default;
+		const threeIdConnect = new ThreeIdConnect();
+		/// @dev Ceramic uses @eip155:1
+		const authProvider = new EthereumAuthProvider(provider, accounts[0].toLowerCase());
+		await threeIdConnect.connect(authProvider);
+		const didProvider = await threeIdConnect.getDidProvider();
+		const ceramic = new CeramicClient(CERAMIC_API_URL);
+		const resolver = { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) };
+		const did = new DID({ resolver });
+		ceramic.did = did;
+		ceramic.did.setProvider(didProvider);
+		await ceramic.did.authenticate();
+		const idx = new IDX({ ceramic });
+
+		// console.log(`${accounts[0].toLowerCase()}@eip155:1`);
+		// const { Caip10Link } = (await import('@ceramicnetwork/stream-caip10-link'));
+		// const caip10 = await Caip10Link.fromAccount(ceramic, `${accounts[0].toLowerCase()}@eip155:1`);
+		// const accountDid = caip10.did;
+		// console.log(accountDid);
+
 		update(() => ({
+			idx,
 			signer,
 			syncWallet,
 			syncProvider,
@@ -92,22 +120,22 @@ export const createStore = () => {
 		}));
 	};
 
-	const setBrowserProvider = async () => {
-		init();
-		if (!getWindowEthereum())
-			throw new Error('Please autorized browser extension (Metamask or similar)');
-		const res = await getWindowEthereum().request({ method: 'eth_requestAccounts' });
-		getWindowEthereum().on('accountsChanged', setBrowserProvider);
-		getWindowEthereum().on('chainChanged', setBrowserProvider);
-		update(() => ({
-			provider: getWindowEthereum(),
-			providerType: 'Browser',
-			connected: true,
-			chainId: getWindowEthereum().chainId,
-			accounts: res,
-			instance: new Web3(getWindowEthereum())
-		}));
-	};
+	// const setBrowserProvider = async () => {
+	// 	init();
+	// 	if (!getWindowEthereum())
+	// 		throw new Error('Please autorized browser extension (Metamask or similar)');
+	// 	const res = await getWindowEthereum().request({ method: 'eth_requestAccounts' });
+	// 	getWindowEthereum().on('accountsChanged', setBrowserProvider);
+	// 	getWindowEthereum().on('chainChanged', setBrowserProvider);
+	// 	update(() => ({
+	// 		provider: getWindowEthereum(),
+	// 		providerType: 'Browser',
+	// 		connected: true,
+	// 		chainId: getWindowEthereum().chainId,
+	// 		accounts: res,
+	// 		instance: new Web3(getWindowEthereum())
+	// 	}));
+	// };
 
 	const disconnect = async (provider) => {
 		if (provider && provider.disconnect) {
@@ -127,7 +155,7 @@ export const createStore = () => {
 	};
 
 	return {
-		setBrowserProvider,
+		// setBrowserProvider,
 		setProvider,
 		disconnect,
 		subscribe
@@ -156,6 +184,7 @@ export const makeChainStore = (name) => {
 	allStores[name].syncWallet = derived(ethStore, ($ethStore) => $ethStore.syncWallet);
 	allStores[name].syncProvider = derived(ethStore, ($ethStore) => $ethStore.syncProvider);
 	allStores[name].signer = derived(ethStore, ($ethStore) => $ethStore.signer);
+	allStores[name].idx = derived(ethStore, ($ethStore) => $ethStore.idx);
 	allStores[name].selectedAccount = derived(ethStore, ($ethStore) => {
 		if ($ethStore.connected) return $ethStore.accounts.length ? $ethStore.accounts[0] : null;
 		return null;
@@ -208,3 +237,4 @@ export const selectedAccount = allStores.default.selectedAccount;
 export const walletType = allStores.default.walletType;
 export const web3 = allStores.default.web3;
 export const chainData = allStores.default.chainData;
+export const idx = allStores.default.idx;

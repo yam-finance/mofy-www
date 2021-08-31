@@ -12,6 +12,9 @@
 	let metadata;
 	let nftImage;
 
+	/**
+	 * @notice These subscribers react on any changes related to the referenced variable
+	 */
 	$: {
 		if (nft) {
 			getNFTInfo();
