@@ -12,9 +12,7 @@ const config = {
 		target: '#svelte',
 		adapter: adapter(),
 		ssr: false,
-		paths: {
-			base: '/'
-		},
+		appDir: '.',
 		vite: () => ({
 			define: {
 				'process.env.NODE_ENV': {}
