@@ -11,7 +11,6 @@ const config = {
         // hydrate the <div id="svelte"> element in src/app.html
         target: '#svelte',
         adapter: adapter_ipfs({ removeBuiltInServiceWorkerRegistration: true, injectPagesInServiceWorker: true }),
-        ssr: false,
         vite: () => ({
             define: {
                 'process.env.NODE_ENV': {}
