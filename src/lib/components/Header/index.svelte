@@ -119,8 +119,8 @@
 			<div class="flex items-center">
 				<div class="flex flex-shrink-0 items-center text-black dark:text-white">
 					<a
-						href="/#/explore"
-						class="{$page.path == '/#/explore'
+						href="/explore"
+						class="{$page.path == '/explore'
 							? dynamicClass.desktop.current
 							: dynamicClass.desktop
 									.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
@@ -129,8 +129,8 @@
 					</a>
 					{#if $connected}
 						<a
-							href="/#/gallery/{$selectedAccount}"
-							class="{$page.path == `/#/gallery/${$selectedAccount}`
+							href="/gallery/{$selectedAccount}"
+							class="{$page.path == `/gallery/${$selectedAccount}`
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
 										.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
@@ -138,8 +138,8 @@
 							Your Gallery
 						</a>
 						<a
-							href="/#/mint"
-							class="md:hidden {$page.path == '/#/mint'
+							href="/mint"
+							class="md:hidden {$page.path == '/mint'
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
 										.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
@@ -174,7 +174,7 @@
 							</button>
 						{:else}
 							<button
-								on:click={() => goto('/#/profile')}
+								on:click={() => goto('/profile')}
 								type="button"
 								class="mr-2 text-black dark:text-white flex items-center hover:opacity-70"
 							>
@@ -228,24 +228,24 @@
 		<div class="hidden md:block mx-16 border-b sm:mx-4" id="mobile-menu">
 			<div class="pt-2">
 				<a
-					href="/#/explore"
-					class="{$page.path == '/#/explore'
+					href="/explore"
+					class="{$page.path == '/explore'
 						? dynamicClass.mobile.current
 						: dynamicClass.mobile
 								.default} block py-2 text-lg text-black dark:text-white font-medium">Explore</a
 				>
 				{#if $connected}
 					<a
-						href="/#/gallery/{$selectedAccount}"
-						class="{$page.path == `/#/gallery/${$selectedAccount}`
+						href="/gallery/{$selectedAccount}"
+						class="{$page.path == `/gallery/${$selectedAccount}`
 							? dynamicClass.mobile.current
 							: dynamicClass.mobile
 									.default} block py-2 text-lg text-black dark:text-white font-medium"
 						>Your Gallery</a
 					>
 					<a
-						href="/#/mint"
-						class="{$page.path == '/#/mint'
+						href="/mint"
+						class="{$page.path == '/mint'
 							? dynamicClass.mobile.current
 							: dynamicClass.mobile
 									.default} block py-2 text-lg text-black dark:text-white font-medium">Mint</a
