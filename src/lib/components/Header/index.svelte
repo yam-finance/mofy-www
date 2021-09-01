@@ -33,8 +33,6 @@
 	 * @notice Use web3Modal to connect a user wallet
 	 */
 	const enable = async () => {
-		connecting = true;
-
 		let web3Modal = new Web3Modal({
 			cacheProvider: false,
 			providerOptions: {
@@ -50,6 +48,9 @@
 		});
 
 		const provider = await web3Modal.connect();
+
+		connecting = true;
+
 		await defaultChainStore.setProvider(provider);
 
 		// const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
