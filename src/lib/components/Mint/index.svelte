@@ -7,6 +7,7 @@
 	import { NFTStorage, File } from 'nft.storage';
 	import CID from 'cids';
 	import { ethers } from 'ethers';
+	import { zkExplorer } from '$lib/config';
 
 	let txFee;
 	let amount;
@@ -33,15 +34,6 @@
 
 		for (const file of files) {
 			console.log(`${file.name}: ${file.size} bytes`);
-		}
-	}
-
-	/// @todo Move to utils
-	async function zkExplorer(_networkId: number) {
-		if (_networkId === 1) {
-			return 'https://zkscan.io/explorer/transactions/';
-		} else if (_networkId === 4) {
-			return 'https://rinkeby.zkscan.io/explorer/transactions/';
 		}
 	}
 
@@ -98,7 +90,7 @@
 				showModal = true;
 				throw new Error(`Not ennough ETH to mint. TxFee: ${txFee}`);
 			}
-			
+
 			await checkZkSyncAccount();
 
 			const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });

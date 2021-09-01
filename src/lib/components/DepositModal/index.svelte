@@ -1,14 +1,16 @@
 <!-- src/lib/components/DepositModal/index.svelte -->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { syncWallet, connected } from '$lib/stores/web3-store';
+	import { syncWallet, connected, chainId } from '$lib/stores/web3-store';
 	import { clickOutside } from '$lib/utils';
+	import { zkExplorer } from '$lib/config';
 	import { fade } from 'svelte/transition';
 	import { ethers } from 'ethers';
 
 	export let visible;
 	let amount;
 	let loading = false;
+	let txLink = '';
 
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
 
@@ -19,14 +21,17 @@
 	 * @notice This function takes care of depositing ETH from L1 to L2
 	 */
 	const deposit = async () => {
-		loading = true;
-
 		const deposit = await $syncWallet.depositToSyncFromEthereum({
 			depositTo: $syncWallet.address(),
 			token: 'ETH',
 			amount: ethers.utils.parseEther(amount)
 		});
 		const depositReceipt = await deposit.awaitReceipt();
+
+		const zkScanURL = await zkExplorer($chainId);
+		txLink = `${zkScanURL}${depositReceipt.txHash.substring(8)}`;
+
+		loading = true;
 
 		console.log('Deposit Receipt: ', depositReceipt);
 
@@ -138,16 +143,16 @@
 							</div>
 						</div>
 						<div class="mt-5 sm:mt-6">
-							<button
-								type="submit"
-								class="inline-flex justify-center w-full py-4 px-8 border border-transparent bg-black dark:bg-white text-base font-bold text-white dark:text-black hover:bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white sm:text-sm"
-							>
-								{#if !loading}
+							{#if !loading}
+								<button
+									type="submit"
+									class="inline-flex justify-center w-full py-4 px-8 border border-transparent bg-black dark:bg-white text-base font-bold text-white dark:text-black hover:bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white sm:text-sm"
+								>
 									Deposit
-								{:else}
-									loading ..
-								{/if}
-							</button>
+								</button>
+							{:else}
+								<a href={txLink}>please wait, tx is mined ..</a>
+							{/if}
 						</div>
 					</form>
 				</div>
