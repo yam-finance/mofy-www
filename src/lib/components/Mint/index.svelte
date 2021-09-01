@@ -77,14 +77,12 @@
 
 	// @todo Move partly to modal component
 	const mint = async () => {
-		let customError = '';
-
-		if (!files) {
-			customError = 'Please upload a photo to your nft';
-		}
+		loading = true;
 
 		try {
-			loading = true;
+			if (!files) {
+				throw new Error('Please upload a photo to your nft.');
+			}
 			const feeToken = 'ETH';
 			const { totalFee: fee } = await $syncProvider.getTransactionFee(
 				'MintNFT',
@@ -96,34 +94,12 @@
 
 			const accountETHBalance = await $syncWallet.getBalance('ETH');
 
-			// @todo Open modal to onboard the user
 			if (txFee.gte(accountETHBalance)) {
-				customError = 'You have to register your account on zkSync first in order to mint.';
+				showModal = true;
+				throw new Error(`Not ennough ETH to mint. TxFee: ${txFee}`);
 			}
-
-			if (!(await $syncWallet.isSigningKeySet())) {
-				if ((await $syncWallet.getAccountId()) == undefined) {
-					customError = 'Unknown account';
-				}
-
-				message = 'You need to register your account on zkSync first.';
-				showNotification = true;
-
-				// @todo Open Modal to tell the user what to do and continue on the modal
-
-				// As any other kind of transaction, `ChangePubKey` transaction requires fee.
-				// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
-				// the lowest possible amount.
-				const changePubkey = await $syncWallet.setSigningKey({
-					feeToken: 'ETH',
-					ethAuthType: 'ECDSA'
-				});
-
-				// Wait until the tx is committed
-				await changePubkey.awaitReceipt();
-
-				showNotification = false;
-			}
+			
+			await checkZkSyncAccount();
 
 			const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
 
@@ -162,7 +138,7 @@
 			description = '';
 			name = '';
 		} catch (err) {
-			message = `${customError} ${err}`;
+			message = `${err}`;
 			showNotification = true;
 			loading = false;
 			amount = null;
@@ -174,9 +150,33 @@
 			name = '';
 		}
 	};
+
+	const checkZkSyncAccount = async () => {
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				showModal = true;
+				throw new Error('Unknown account');
+			} else {
+				message = 'You need to register your account on zkSync first.';
+				showNotification = true;
+
+				// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+				// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+				// the lowest possible amount.
+				const changePubkey = await $syncWallet.setSigningKey({
+					feeToken: 'ETH',
+					ethAuthType: 'ECDSA'
+				});
+
+				// Wait until the tx is committed
+				await changePubkey.awaitReceipt();
+			}
+		}
+	};
 </script>
+
 <svelte:head>
-	<link rel="preload" href="/empty-nft.png" as="img">
+	<link rel="preload" href="/empty-nft.png" as="img" />
 </svelte:head>
 
 <!-- @todo make attribute name editable
@@ -193,7 +193,12 @@
 		<div class="py-16 sm:py-4 px-4 sm:px-4 lg:col-span-2">
 			<div class="max-w-lg mx-auto">
 				<div class="grid grid-cols-1 gap-y-6">
-					<img alt="placeholder" class="w-full" in:fly src={imageFile ? imageFile : '/empty-nft.png'} />
+					<img
+						alt="placeholder"
+						class="w-full"
+						in:fly
+						src={imageFile ? imageFile : '/empty-nft.png'}
+					/>
 					<input
 						type="file"
 						accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"

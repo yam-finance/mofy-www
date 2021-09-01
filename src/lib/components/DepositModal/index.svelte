@@ -89,7 +89,8 @@
 								</h3>
 								<div class="mt-2">
 									<p class="text-sm text-black dark:text-white opacity-50 mb-8">
-										To mint or buy an nft over the mofy app you need to have some ETH on zkSync L2.
+										To mint or buy an nft over the mofy app you need to have some ETH on zkSync L2
+										and register your account on zkSync.
 									</p>
 									<p class="mt-2 text-sm text-black dark:text-white">
 										{#await balanceL2}
