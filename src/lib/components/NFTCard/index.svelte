@@ -50,7 +50,13 @@
 					<Loading />
 				</div>
 			{:else}
-				<img in:fly src={nftImage} alt="NFT" class="pointer-events-none w-full" on:load={dispatchLoaded} />
+				<img
+					in:fly
+					src={nftImage}
+					alt="NFT"
+					class="pointer-events-none w-full"
+					on:load={dispatchLoaded}
+				/>
 			{/if}
 
 			<button
