@@ -6,7 +6,6 @@
 	import { NFTStorage, File } from 'nft.storage';
 	import CID from 'cids';
 	import { ethers } from 'ethers';
-	import Placeholder from '../../../../static/empty-nft.png';
 
 	let txFee;
 	let amount;
@@ -176,6 +175,10 @@
 	};
 </script>
 
+<svelte:head>
+	<link rel="preload" href="/empty-nft.png" as="img">
+</svelte:head>
+
 <!-- @todo make attribute name editable
      @todo modal should close after depositing and loading finishing
 	 @todo Page not found when pasting the wrong address
@@ -190,7 +193,7 @@
 		<div class="py-16 sm:py-4 px-4 sm:px-4 lg:col-span-2">
 			<div class="max-w-lg mx-auto">
 				<div class="grid grid-cols-1 gap-y-6">
-					<img alt="placeholder" class="w-full" src={imageFile ? imageFile : Placeholder} />
+					<img alt="placeholder" class="w-full" src={imageFile ? imageFile : '/empty-nft.png'} />
 					<input
 						type="file"
 						accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"
