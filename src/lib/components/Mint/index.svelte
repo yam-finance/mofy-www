@@ -1,6 +1,5 @@
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
 	import Notification from '$lib/components/Notification/index.svelte';
@@ -23,11 +22,6 @@
 	let message = '';
 	let loading = false;
 	let imageFile;
-	let src = '/empty-nft.png';
-
-	onMount(async () => {
-		await preload(src);
-	});
 
 	/**
 	 * @notice These subscribers react on any changes related to the referenced variable
@@ -180,15 +174,10 @@
 			name = '';
 		}
 	};
-
-	function preload(src) {
-		return new Promise(function (resolve) {
-			let img = new Image();
-			img.onload = resolve;
-			img.src = src;
-		});
-	}
 </script>
+<svelte:head>
+	<link rel="preload" href="/empty-nft.png" as="img">
+</svelte:head>
 
 <!-- @todo make attribute name editable
      @todo modal should close after depositing and loading finishing
@@ -204,7 +193,7 @@
 		<div class="py-16 sm:py-4 px-4 sm:px-4 lg:col-span-2">
 			<div class="max-w-lg mx-auto">
 				<div class="grid grid-cols-1 gap-y-6">
-					<img alt="placeholder" class="w-full" in:fly src={imageFile ? imageFile : src} />
+					<img alt="placeholder" class="w-full" in:fly src={imageFile ? imageFile : '/empty-nft.png'} />
 					<input
 						type="file"
 						accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"
