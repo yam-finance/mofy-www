@@ -21,7 +21,7 @@
 	onMount(async () => {
 		// @todo Test with netlify adapter
 		// goto(path)
-		goto(window.location.href)
+		goto(window.location.href);
 	});
 </script>
 

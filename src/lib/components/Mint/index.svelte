@@ -1,8 +1,4 @@
 <!-- src/lib/components/Mint/index.svelte -->
-<script context="module">
-	export const prerender = true;
-</script>
-
 <script lang="ts">
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
 	import Notification from '$lib/components/Notification/index.svelte';
@@ -193,7 +189,7 @@
 		<div class="py-16 sm:py-4 px-4 sm:px-4 lg:col-span-2">
 			<div class="max-w-lg mx-auto">
 				<div class="grid grid-cols-1 gap-y-6">
-					<img alt="placeholder" class="w-full" src={imageFile ? imageFile : '/empty-nft.png'} />
+					<img alt="placeholder" class="w-full" src={imageFile ? imageFile : 'empty-nft.png'} />
 					<input
 						type="file"
 						accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"
