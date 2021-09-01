@@ -70,6 +70,7 @@
 								<div class="mt-1 flex rounded-md shadow-sm">
 									<input
 										bind:value={profileRecord.name}
+										maxlength="150"
 										type="text"
 										name="company-website"
 										id="company-website"
@@ -87,6 +88,7 @@
 							<div class="mt-1">
 								<textarea
 									bind:value={profileRecord.description}
+									maxlength="420"
 									id="about"
 									name="about"
 									rows="3"
