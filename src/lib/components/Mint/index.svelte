@@ -7,6 +7,7 @@
 	import { NFTStorage, File } from 'nft.storage';
 	import CID from 'cids';
 	import { ethers } from 'ethers';
+	import { zkExplorer } from '$lib/config';
 
 	let txFee;
 	let amount;
@@ -22,7 +23,6 @@
 	let message = '';
 	let loading = false;
 	let imageFile;
-	let src = '/empty-nft.png';
 
 	/**
 	 * @notice These subscribers react on any changes related to the referenced variable
@@ -34,15 +34,6 @@
 
 		for (const file of files) {
 			console.log(`${file.name}: ${file.size} bytes`);
-		}
-	}
-
-	/// @todo Move to utils
-	async function zkExplorer(_networkId: number) {
-		if (_networkId === 1) {
-			return 'https://zkscan.io/explorer/transactions/';
-		} else if (_networkId === 4) {
-			return 'https://rinkeby.zkscan.io/explorer/transactions/';
 		}
 	}
 
@@ -78,14 +69,12 @@
 
 	// @todo Move partly to modal component
 	const mint = async () => {
-		let customError = '';
-
-		if (!files) {
-			customError = 'Please upload a photo to your nft';
-		}
+		loading = true;
 
 		try {
-			loading = true;
+			if (!files) {
+				throw new Error('Please upload a photo to your nft.');
+			}
 			const feeToken = 'ETH';
 			const { totalFee: fee } = await $syncProvider.getTransactionFee(
 				'MintNFT',
@@ -97,34 +86,12 @@
 
 			const accountETHBalance = await $syncWallet.getBalance('ETH');
 
-			// @todo Open modal to onboard the user
 			if (txFee.gte(accountETHBalance)) {
-				customError = 'You have to register your account on zkSync first in order to mint.';
+				showModal = true;
+				throw new Error(`Not ennough ETH to mint. TxFee: ${txFee}`);
 			}
 
-			if (!(await $syncWallet.isSigningKeySet())) {
-				if ((await $syncWallet.getAccountId()) == undefined) {
-					customError = 'Unknown account';
-				}
-
-				message = 'You need to register your account on zkSync first.';
-				showNotification = true;
-
-				// @todo Open Modal to tell the user what to do and continue on the modal
-
-				// As any other kind of transaction, `ChangePubKey` transaction requires fee.
-				// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
-				// the lowest possible amount.
-				const changePubkey = await $syncWallet.setSigningKey({
-					feeToken: 'ETH',
-					ethAuthType: 'ECDSA'
-				});
-
-				// Wait until the tx is committed
-				await changePubkey.awaitReceipt();
-
-				showNotification = false;
-			}
+			await checkZkSyncAccount();
 
 			const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
 
@@ -163,7 +130,7 @@
 			description = '';
 			name = '';
 		} catch (err) {
-			message = `${customError} ${err}`;
+			message = `${err}`;
 			showNotification = true;
 			loading = false;
 			amount = null;
@@ -176,14 +143,33 @@
 		}
 	};
 
-	function preload(src) {
-		return new Promise(function (resolve) {
-			let img = new Image();
-			img.onload = resolve;
-			img.src = src;
-		});
-	}
+	const checkZkSyncAccount = async () => {
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				showModal = true;
+				throw new Error('Unknown account');
+			} else {
+				message = 'You need to register your account on zkSync first.';
+				showNotification = true;
+
+				// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+				// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+				// the lowest possible amount.
+				const changePubkey = await $syncWallet.setSigningKey({
+					feeToken: 'ETH',
+					ethAuthType: 'ECDSA'
+				});
+
+				// Wait until the tx is committed
+				await changePubkey.awaitReceipt();
+			}
+		}
+	};
 </script>
+
+<svelte:head>
+	<link rel="preload" href="/empty-nft.png" as="img" />
+</svelte:head>
 
 <!-- @todo make attribute name editable
      @todo modal should close after depositing and loading finishing
@@ -199,16 +185,19 @@
 		<div class="py-16 sm:py-4 px-4 sm:px-4 lg:col-span-2">
 			<div class="max-w-lg mx-auto">
 				<div class="grid grid-cols-1 gap-y-6">
-					{#await preload(src) then _}
-						<img alt="placeholder" class="w-full" in:fly src={imageFile ? imageFile : src} />
-						<input
-							type="file"
-							accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"
-							bind:files
-							on:change={(e) => updateImage(e)}
-							class="relative block w-full border border-black text-black dark:text-white dark:border-white border-dashed p-5 text-center hover:border-opacity-50 focus:outline-none focus:border-opacity-50"
-						/>
-					{/await}
+					<img
+						alt="placeholder"
+						class="w-full"
+						in:fly
+						src={imageFile ? imageFile : '/empty-nft.png'}
+					/>
+					<input
+						type="file"
+						accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"
+						bind:files
+						on:change={(e) => updateImage(e)}
+						class="relative block w-full border border-black text-black dark:text-white dark:border-white border-dashed p-5 text-center hover:border-opacity-50 focus:outline-none focus:border-opacity-50"
+					/>
 				</div>
 			</div>
 		</div>

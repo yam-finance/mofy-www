@@ -10,6 +10,7 @@
 	import { ethers } from 'ethers';
 	import CID from 'cids';
 	import Notification from '$lib/components/Notification/index.svelte';
+	import DepositModal from '$lib/components/DepositModal/index.svelte';
 
 	const id = Number($page.params.id);
 	let nft;
@@ -22,6 +23,7 @@
 	let showNotification = false;
 	let message = '';
 	let verified;
+	let showModal = false;
 
 	/**
 	 * @notice These subscribers react on any changes related to the referenced variable
@@ -109,26 +111,9 @@
 	 * @notice Create a sell order in our db
 	 */
 	const setSellOrder = async () => {
-		// @todo Move
-		if (!(await $syncWallet.isSigningKeySet())) {
-			if ((await $syncWallet.getAccountId()) == undefined) {
-				throw new Error('Unknown account');
-			}
+		// @todo Add loader when selling the nft
 
-			message = 'You need to register your account on zkSync first.';
-			showNotification = true;
-
-			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
-			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
-			// the lowest possible amount.
-			const changePubkey = await $syncWallet.setSigningKey({
-				feeToken: 'ETH',
-				ethAuthType: 'ECDSA'
-			});
-
-			// Wait until the tx is committed
-			await changePubkey.awaitReceipt();
-		}
+		await checkZkSyncAccount();
 
 		const _order = {
 			tokenBuy: 'ETH',
@@ -169,26 +154,8 @@
 	 */
 	const setBuyOrder = async () => {
 		// @todo Add loader when buying the nft
-		// @todo Move
-		if (!(await $syncWallet.isSigningKeySet())) {
-			if ((await $syncWallet.getAccountId()) == undefined) {
-				throw new Error('Unknown account');
-			}
 
-			message = 'You need to register your account on zkSync first.';
-			showNotification = true;
-
-			// As any other kind of transaction, `ChangePubKey` transaction requires fee.
-			// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
-			// the lowest possible amount.
-			const changePubkey = await $syncWallet.setSigningKey({
-				feeToken: 'ETH',
-				ethAuthType: 'ECDSA'
-			});
-
-			// Wait until the tx is committed
-			await changePubkey.awaitReceipt();
-		}
+		await checkZkSyncAccount();
 
 		const _order = {
 			tokenSell: 'ETH',
@@ -225,6 +192,29 @@
 		});
 
 		order = undefined;
+	};
+
+	const checkZkSyncAccount = async () => {
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				showModal = true;
+				throw new Error('Unknown account');
+			} else {
+				message = 'You need to register your account on zkSync first.';
+				showNotification = true;
+
+				// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+				// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+				// the lowest possible amount.
+				const changePubkey = await $syncWallet.setSigningKey({
+					feeToken: 'ETH',
+					ethAuthType: 'ECDSA'
+				});
+
+				// Wait until the tx is committed
+				await changePubkey.awaitReceipt();
+			}
+		}
 	};
 </script>
 
@@ -385,5 +375,6 @@
 			</div>
 		</div>
 	</div>
+	<DepositModal on:close={() => (showModal = false)} visible={showModal} />
 	<Notification on:close={() => (showNotification = false)} visible={showNotification} {message} />
 </div>

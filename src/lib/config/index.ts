@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 browser ? '' : dotenv.config();
 
-export function zkExplorer(_networkId: number): string {
+export async function zkExplorer(_networkId: number): Promise<string> {
 	if (_networkId === 1) {
 		return 'https://zkscan.io/explorer/transactions/';
 	} else if (_networkId === 4) {
