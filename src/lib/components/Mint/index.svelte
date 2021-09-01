@@ -1,8 +1,4 @@
 <!-- src/lib/components/Mint/index.svelte -->
-<script context="module" lang="ts">
-	export const prerender = true;
-</script>
-
 <script lang="ts">
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
 	import Notification from '$lib/components/Notification/index.svelte';
