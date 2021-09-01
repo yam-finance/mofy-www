@@ -272,7 +272,7 @@
 					on:click={() => {
 						if (!loading) goto(`/gallery/${nft.creatorAddress}`);
 					}}
-					class="flex items-center text-sm text-black dark:text-white opacity-50 cursor-pointer"
+					class="flex items-center break-all text-sm text-black dark:text-white opacity-50 cursor-pointer"
 				>
 					<!-- Heroicon name: solid/briefcase -->
 					{#if loading}
