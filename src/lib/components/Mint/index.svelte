@@ -1,4 +1,8 @@
 <!-- src/lib/components/Mint/index.svelte -->
+<script context="module" lang="ts">
+	export const prerender = true;
+</script>
+
 <script lang="ts">
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
 	import Notification from '$lib/components/Notification/index.svelte';
@@ -6,7 +10,7 @@
 	import { NFTStorage, File } from 'nft.storage';
 	import CID from 'cids';
 	import { ethers } from 'ethers';
-	import Placeholder from "../../../../static/empty-nft.png"
+	import Placeholder from '../../../../static/empty-nft.png';
 
 	let txFee;
 	let amount;

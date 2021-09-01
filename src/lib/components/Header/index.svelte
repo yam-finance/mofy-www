@@ -62,7 +62,7 @@
 		// 	'basicProfile'
 		// );
 		// console.log('data: ', data);
-		
+
 		connecting = false;
 	};
 
@@ -178,12 +178,12 @@
 								<span>Connect Account</span>
 							</button>
 						{:else if connecting}
-						<button
-						type="button"
-						class="relative inline-flex items-center px-8 py-4 sm:px-2 sm:py-1 border border-transparent text-sm font-medium text-white dark:text-black bg-black dark:bg-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-					>
-						<span>connecting ...</span>
-					</button>						
+							<button
+								type="button"
+								class="relative inline-flex items-center px-8 py-4 sm:px-2 sm:py-1 border border-transparent text-sm font-medium text-white dark:text-black bg-black dark:bg-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+							>
+								<span>connecting ...</span>
+							</button>
 						{:else}
 							<button
 								on:click={() => goto('/profile')}
