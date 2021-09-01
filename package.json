@@ -46,6 +46,7 @@
 		"masonry-layout": "^4.2.2",
 		"nft.storage": "^3.0.1",
 		"node-sass": "^6.0.1",
+		"sveltejs-adapter-ipfs": "^0.1.6",
 		"zksync": "^0.11.1"
 	},
 	"engines": {

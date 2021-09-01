@@ -1,5 +1,6 @@
 <!-- src/lib/components/NFTCard/index.svelte -->
 <script lang="ts">
+	import { fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import { ethers } from 'ethers';
 	import CID from 'cids';
@@ -49,7 +50,13 @@
 					<Loading />
 				</div>
 			{:else}
-				<img src={nftImage} alt="NFT" class="pointer-events-none w-full" on:load={dispatchLoaded} />
+				<img
+					in:fly
+					src={nftImage}
+					alt="NFT"
+					class="pointer-events-none w-full"
+					on:load={dispatchLoaded}
+				/>
 			{/if}
 
 			<button

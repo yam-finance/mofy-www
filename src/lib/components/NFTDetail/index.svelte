@@ -1,5 +1,6 @@
 <!-- src/lib/components/NFTDetail/index.svelte -->
 <script lang="ts">
+	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { syncWallet, syncProvider, selectedAccount } from '$lib/stores/web3-store';
@@ -236,7 +237,7 @@
 				<!-- Testimonial card-->
 				<div class="relative pb-10 overflow-hidden">
 					{#if !loading}
-						<img class="inset-0 w-full" src={nftImage} alt="NFT" />
+						<img in:fly class="inset-0 w-full" src={nftImage} alt="NFT" />
 					{/if}
 					<div class="relative mt-4">
 						<div class="mt-1 mx-0 flex items-center text-sm text-black dark:text-white opacity-50">
@@ -272,7 +273,7 @@
 					on:click={() => {
 						if (!loading) goto(`/gallery/${nft.creatorAddress}`);
 					}}
-					class="flex items-center text-sm text-black dark:text-white opacity-50 cursor-pointer"
+					class="flex items-center break-all text-sm text-black dark:text-white opacity-50 cursor-pointer"
 				>
 					<!-- Heroicon name: solid/briefcase -->
 					{#if loading}
