@@ -16,7 +16,11 @@
 	$: ETHBalanceL1 = $connected ? $web3.eth.getBalance($selectedAccount) : '';
 
 	onMount(async () => {
-		profileRecord = await $idx.get('basicProfile');
+		const idxProfile = await $idx.get('basicProfile');
+		if (idxProfile != null) {
+			profileRecord = idxProfile;
+
+		}	
 	});
 
 	async function updateProfile() {

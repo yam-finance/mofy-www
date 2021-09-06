@@ -71,7 +71,8 @@
 	 * @notice Disconnect the user wallet and clear the account state
 	 */
 	const disconnect = async () => {
-		defaultChainStore.disconnect();
+		await defaultChainStore.disconnect();
+		goto('/');
 	};
 </script>
 
