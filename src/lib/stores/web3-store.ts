@@ -3,12 +3,12 @@ import { derived, writable } from 'svelte/store';
 import * as zksync from 'zksync';
 import { ethers } from 'ethers';
 import { zkSyncNfts } from '$lib/stores/nft-store';
-// import KeyDidResolver from 'key-did-resolver';
-// import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
-// import { DID } from 'dids';
-// import { IDX } from '@ceramicstudio/idx';
+import KeyDidResolver from 'key-did-resolver';
+import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
+import { DID } from 'dids';
+import { IDX } from '@ceramicstudio/idx';
 
-// const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
+const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
 
 const getGlobalObject = () => {
 	if (typeof globalThis !== 'undefined') {
@@ -85,20 +85,20 @@ export const createStore = () => {
 			nfts: []
 		}));
 
-		// const { ThreeIdConnect, EthereumAuthProvider } = await import('@3id/connect');
-		// const CeramicClient = (await import('@ceramicnetwork/http-client')).default;
-		// const threeIdConnect = new ThreeIdConnect();
-		// /// @dev Ceramic uses @eip155:1
-		// const authProvider = new EthereumAuthProvider(provider, accounts[0].toLowerCase());
-		// await threeIdConnect.connect(authProvider);
-		// const didProvider = await threeIdConnect.getDidProvider();
-		// const ceramic = new CeramicClient(CERAMIC_API_URL);
-		// const resolver = { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) };
-		// const did = new DID({ resolver });
-		// ceramic.did = did;
-		// ceramic.did.setProvider(didProvider);
-		// await ceramic.did.authenticate();
-		// const idx = new IDX({ ceramic });
+		const { ThreeIdConnect, EthereumAuthProvider } = await import('@3id/connect');
+		const CeramicClient = (await import('@ceramicnetwork/http-client')).default;
+		const threeIdConnect = new ThreeIdConnect();
+		/// @dev Ceramic uses @eip155:1
+		const authProvider = new EthereumAuthProvider(provider, accounts[0].toLowerCase());
+		await threeIdConnect.connect(authProvider);
+		const didProvider = await threeIdConnect.getDidProvider();
+		const ceramic = new CeramicClient(CERAMIC_API_URL);
+		const resolver = { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) };
+		const did = new DID({ resolver });
+		ceramic.did = did;
+		ceramic.did.setProvider(didProvider);
+		await ceramic.did.authenticate();
+		const idx = new IDX({ ceramic });
 
 		// console.log(`${accounts[0].toLowerCase()}@eip155:1`);
 		// const { Caip10Link } = (await import('@ceramicnetwork/stream-caip10-link'));
