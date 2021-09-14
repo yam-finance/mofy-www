@@ -19,8 +19,7 @@
 		const idxProfile = await $idx.get('basicProfile');
 		if (idxProfile != null) {
 			profileRecord = idxProfile;
-
-		}	
+		}
 	});
 
 	async function updateProfile() {

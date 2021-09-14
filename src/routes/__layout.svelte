@@ -12,6 +12,7 @@
 </script>
 
 <script lang="ts">
+	import '../app.postcss';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Header from '$lib/components/Header/index.svelte';
@@ -32,10 +33,6 @@
 </main>
 
 <style global>
-	@tailwind base;
-	@tailwind components;
-	@tailwind utilities;
-
 	body {
 		background-color: white;
 		text-color: black;
