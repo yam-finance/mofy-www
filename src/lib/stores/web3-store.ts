@@ -107,7 +107,7 @@ export const createStore = () => {
 		// console.log(accountDid);
 
 		update(() => ({
-			// idx,
+			idx,
 			signer,
 			syncWallet,
 			syncProvider,
@@ -184,7 +184,7 @@ export const makeChainStore = (name) => {
 	allStores[name].syncWallet = derived(ethStore, ($ethStore) => $ethStore.syncWallet);
 	allStores[name].syncProvider = derived(ethStore, ($ethStore) => $ethStore.syncProvider);
 	allStores[name].signer = derived(ethStore, ($ethStore) => $ethStore.signer);
-	// allStores[name].idx = derived(ethStore, ($ethStore) => $ethStore.idx);
+	allStores[name].idx = derived(ethStore, ($ethStore) => $ethStore.idx);
 	allStores[name].selectedAccount = derived(ethStore, ($ethStore) => {
 		if ($ethStore.connected) return $ethStore.accounts.length ? $ethStore.accounts[0] : null;
 		return null;
@@ -237,4 +237,4 @@ export const selectedAccount = allStores.default.selectedAccount;
 export const walletType = allStores.default.walletType;
 export const web3 = allStores.default.web3;
 export const chainData = allStores.default.chainData;
-// export const idx = allStores.default.idx;
+export const idx = allStores.default.idx;
