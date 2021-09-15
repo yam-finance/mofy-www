@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { defaultChainStore, web3, connected, selectedAccount } from '$lib/stores/web3-store';
+	import Banner from '$lib/components/Banner/index.svelte';
 
 	let Web3Modal;
 	let WalletConnectProvider;
@@ -53,17 +54,6 @@
 
 		await defaultChainStore.setProvider(provider);
 
-		// const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
-		// const CeramicClient = (await import('@ceramicnetwork/http-client')).default;
-		// const { IDX } = (await import('@ceramicstudio/idx'));
-		// const ceramic = new CeramicClient(CERAMIC_API_URL);
-		// const idx = new IDX({ ceramic });
-
-		// const data = await $idx.get(
-		// 	'basicProfile'
-		// );
-		// console.log('data: ', data);
-
 		connecting = false;
 	};
 
@@ -77,6 +67,7 @@
 </script>
 
 <nav>
+	<Banner />
 	<div class="mx-16 py-8 border-b sm:mx-4 sm:py-4">
 		<div class="flex justify-between">
 			<div class="flex">
@@ -187,8 +178,8 @@
 								<span>connecting ...</span>
 							</button>
 						{:else}
+							<!-- on:click={() => goto('/profile')} -->
 							<button
-								on:click={() => goto('/profile')}
 								type="button"
 								class="mr-2 text-black dark:text-white flex items-center hover:opacity-70"
 							>
