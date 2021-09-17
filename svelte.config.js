@@ -1,5 +1,5 @@
-import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
+import adapter_ipfs from 'sveltejs-adapter-ipfs';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -10,7 +10,15 @@ const config = {
 	kit: {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
-		adapter: adapter()
+		adapter: adapter_ipfs({
+			removeBuiltInServiceWorkerRegistration: true,
+			injectPagesInServiceWorker: true
+		}),
+		vite: () => ({
+			define: {
+				'process.env.NODE_ENV': {}
+			}
+		})
 	}
 };
 

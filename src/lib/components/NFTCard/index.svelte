@@ -1,5 +1,6 @@
 <!-- src/lib/components/NFTCard/index.svelte -->
 <script lang="ts">
+	import { fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import { ethers } from 'ethers';
 	import CID from 'cids';
@@ -12,6 +13,9 @@
 	let metadata;
 	let nftImage;
 
+	/**
+	 * @notice These subscribers react on any changes related to the referenced variable
+	 */
 	$: {
 		if (nft) {
 			getNFTInfo();
@@ -34,6 +38,14 @@
 
 		nftImage = 'https://ipfs.io/ipfs/' + metadata.image.slice(7);
 	};
+
+	function preload(src) {
+		return new Promise(function (resolve) {
+			let img = new Image();
+			img.onload = resolve;
+			img.src = src;
+		});
+	}
 </script>
 
 <div class="colc-item hover:bg-gray hover:bg-opacity-20">
@@ -46,7 +58,15 @@
 					<Loading />
 				</div>
 			{:else}
-				<img src={nftImage} alt="NFT" class="pointer-events-none w-full" on:load={dispatchLoaded} />
+				{#await preload(nftImage) then _}
+					<img
+						in:fly
+						src={nftImage}
+						alt="NFT"
+						class="pointer-events-none w-full"
+						on:load={dispatchLoaded}
+					/>
+				{/await}
 			{/if}
 
 			<button

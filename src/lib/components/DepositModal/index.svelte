@@ -1,28 +1,39 @@
 <!-- src/lib/components/DepositModal/index.svelte -->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { syncWallet, connected } from '$lib/stores/web3-store';
+	import { syncWallet, connected, chainId } from '$lib/stores/web3-store';
+	import { clickOutside } from '$lib/utils';
+	import { zkExplorer } from '$lib/config';
 	import { fade } from 'svelte/transition';
 	import { ethers } from 'ethers';
 
 	export let visible;
 	let amount;
 	let loading = false;
-	const dispatch = createEventDispatcher();
-	const close = () => dispatch('close');
+	let txLink = '';
 
 	$: balanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
 
+	const dispatch = createEventDispatcher();
+	const close = () => dispatch('close');
+
+	/**
+	 * @notice This function takes care of depositing ETH from L1 to L2
+	 */
 	const deposit = async () => {
-		loading = true;
 		const deposit = await $syncWallet.depositToSyncFromEthereum({
 			depositTo: $syncWallet.address(),
 			token: 'ETH',
 			amount: ethers.utils.parseEther(amount)
 		});
-
 		const depositReceipt = await deposit.awaitReceipt();
-		console.log(depositReceipt);
+
+		const zkScanURL = await zkExplorer($chainId);
+		txLink = `${zkScanURL}${depositReceipt.txHash.substring(8)}`;
+
+		loading = true;
+
+		console.log('Deposit Receipt: ', depositReceipt);
 
 		if (!(await $syncWallet.isSigningKeySet())) {
 			if ((await $syncWallet.getAccountId()) == undefined) {
@@ -41,28 +52,10 @@
 			await changePubkey.awaitReceipt();
 		}
 
-		loading = false;
 		close();
+
+		loading = false;
 	};
-
-	// @todo Move to utils
-	export function clickOutside(node, onEventFunction) {
-		const handleClick = (event) => {
-			var path = event.composedPath();
-
-			if (!path.includes(node)) {
-				onEventFunction();
-			}
-		};
-
-		document.addEventListener('click', handleClick);
-
-		return {
-			destroy() {
-				document.removeEventListener('click', handleClick);
-			}
-		};
-	}
 </script>
 
 {#if visible}
@@ -101,7 +94,8 @@
 								</h3>
 								<div class="mt-2">
 									<p class="text-sm text-black dark:text-white opacity-50 mb-8">
-										To mint or buy an nft over the mofy app you need to have some ETH on zkSync L2.
+										To mint or buy an nft over the mofy app you need to have some ETH on zkSync L2
+										and register your account on zkSync.
 									</p>
 									<p class="mt-2 text-sm text-black dark:text-white">
 										{#await balanceL2}
@@ -149,16 +143,16 @@
 							</div>
 						</div>
 						<div class="mt-5 sm:mt-6">
-							<button
-								type="submit"
-								class="inline-flex justify-center w-full py-4 px-8 border border-transparent bg-black dark:bg-white text-base font-bold text-white dark:text-black hover:bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white sm:text-sm"
-							>
-								{#if !loading}
+							{#if !loading}
+								<button
+									type="submit"
+									class="inline-flex justify-center w-full py-4 px-8 border border-transparent bg-black dark:bg-white text-base font-bold text-white dark:text-black hover:bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white sm:text-sm"
+								>
 									Deposit
-								{:else}
-									loading ..
-								{/if}
-							</button>
+								</button>
+							{:else}
+								<a href={txLink}>please wait, tx is mined ..</a>
+							{/if}
 						</div>
 					</form>
 				</div>

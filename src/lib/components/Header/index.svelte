@@ -4,10 +4,11 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { defaultChainStore, web3, connected, selectedAccount } from '$lib/stores/web3-store';
-	import { zkSyncNfts } from '$lib/stores/nft-store';
+	import Banner from '$lib/components/Banner/index.svelte';
 
 	let Web3Modal;
 	let WalletConnectProvider;
+	let connecting = false;
 	let mobileMenu = { open: false };
 	let dynamicClass = {
 		desktop: {
@@ -29,6 +30,9 @@
 		mobileMenu.open = !mobileMenu.open;
 	}
 
+	/**
+	 * @notice Use web3Modal to connect a user wallet
+	 */
 	const enable = async () => {
 		let web3Modal = new Web3Modal({
 			cacheProvider: false,
@@ -45,21 +49,29 @@
 		});
 
 		const provider = await web3Modal.connect();
+
+		connecting = true;
+
 		await defaultChainStore.setProvider(provider);
+
+		connecting = false;
 	};
 
+	/**
+	 * @notice Disconnect the user wallet and clear the account state
+	 */
 	const disconnect = async () => {
-		defaultChainStore.disconnect();
+		await defaultChainStore.disconnect();
+		goto('/');
 	};
 </script>
 
 <nav>
+	<Banner />
 	<div class="mx-16 py-8 border-b sm:mx-4 sm:py-4">
 		<div class="flex justify-between">
 			<div class="flex">
 				<div class="flex-shrink-0 mr-8 sm:mr-2 flex items-center cursor-pointer">
-					<!-- <img on:click={() => goto('/')} class="block lg:hidden h-8 w-auto" src="" alt="Yam Museum" /> -->
-					<!-- <img on:click={() => goto('/')} class="hidden lg:block h-8 w-auto" src="" alt="Yam Museum" /> -->
 					<img
 						src="/yam.png"
 						on:click={() => goto('/')}
@@ -104,23 +116,22 @@
 			</div>
 			<div class="flex items-center">
 				<div class="flex flex-shrink-0 items-center text-black dark:text-white">
+					<a
+						href="/explore"
+						class="{$page.path == '/explore'
+							? dynamicClass.desktop.current
+							: dynamicClass.desktop
+									.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
+					>
+						Explore
+					</a>
 					{#if $connected}
 						<a
-							href="/explore"
-							class="md:hidden {$page.path == '/explore'
-								? dynamicClass.desktop.current
-								: dynamicClass.desktop
-										.default} rounded-md py-2 px-3 items-center text-base font-medium"
-							aria-current="page"
-						>
-							Explore
-						</a>
-						<a
 							href="/gallery/{$selectedAccount}"
-							class="md:hidden {$page.path == `/gallery/${$selectedAccount}`
+							class="{$page.path == `/gallery/${$selectedAccount}`
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} rounded-md py-2 px-3 items-center text-base font-medium"
+										.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Your Gallery
 						</a>
@@ -129,27 +140,29 @@
 							class="md:hidden {$page.path == '/mint'
 								? dynamicClass.desktop.current
 								: dynamicClass.desktop
-										.default} rounded-md py-2 px-3 items-center text-base font-medium"
+										.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Mint
 						</a>
 						<a
 							href="https://mofy.yam.xyz/"
 							target="_blank"
-							class="md:hidden rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+							class="{dynamicClass.desktop
+								.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium"
 						>
 							Magazine
 						</a>
 						<a
 							href="https://docs.yam.finance/projects/museum"
 							target="_blank"
-							class="md:hidden rounded-md py-2 px-3 items-center text-base font-medium mr-5"
+							class="{dynamicClass.desktop
+								.default} md:hidden rounded-md py-2 px-3 items-center text-base font-medium mr-5"
 						>
 							FAQ
 						</a>
 					{/if}
 					{#if $web3.version}
-						{#if !$connected}
+						{#if !$connected && !connecting}
 							<button
 								on:click={enable}
 								type="button"
@@ -157,15 +170,20 @@
 							>
 								<span>Connect Account</span>
 							</button>
-						{:else}
+						{:else if connecting}
 							<button
-								on:click={disconnect}
 								type="button"
-								class="text-black dark:text-white flex items-center hover:opacity-70"
+								class="relative inline-flex items-center px-8 py-4 sm:px-2 sm:py-1 border border-transparent text-sm font-medium text-white dark:text-black bg-black dark:bg-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 							>
-								<span class="font-medium sm:text-xs"
-									>Log out {$selectedAccount.substring(0, 6)}</span
-								>
+								<span>connecting ...</span>
+							</button>
+						{:else}
+							<!-- on:click={() => goto('/profile')} -->
+							<button
+								type="button"
+								class="mr-2 text-black dark:text-white flex items-center hover:opacity-70"
+							>
+								<span class="font-medium sm:text-xs">{$selectedAccount.substring(0, 6)}</span>
 								<div
 									class="ml-2 w-6 h-6 rounded-full border-black dark:border-white border-2 flex flex-col items-center overflow-hidden"
 								>
@@ -176,6 +194,26 @@
 										class="w-4 h-4 rounded-full flex-shrink-0 border-black dark:border-white border-2"
 									/>
 								</div>
+							</button>
+							<button
+								on:click={disconnect}
+								type="button"
+								class="text-black dark:text-white flex items-center hover:opacity-70"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-6 w-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+									/>
+								</svg>
 							</button>
 						{/if}
 					{:else}
@@ -193,16 +231,15 @@
 
 	{#if mobileMenu.open}
 		<div class="hidden md:block mx-16 border-b sm:mx-4" id="mobile-menu">
-			{#if $connected}
-				<div class="pt-2">
-					<a
-						href="/explore"
-						class="{$page.path == '/explore'
-							? dynamicClass.mobile.current
-							: dynamicClass.mobile
-									.default} block py-2 text-lg text-black dark:text-white font-medium"
-						aria-current="page">Explore</a
-					>
+			<div class="pt-2">
+				<a
+					href="/explore"
+					class="{$page.path == '/explore'
+						? dynamicClass.mobile.current
+						: dynamicClass.mobile
+								.default} block py-2 text-lg text-black dark:text-white font-medium">Explore</a
+				>
+				{#if $connected}
 					<a
 						href="/gallery/{$selectedAccount}"
 						class="{$page.path == `/gallery/${$selectedAccount}`
@@ -221,19 +258,22 @@
 					<a
 						href="https://mofy.yam.xyz/"
 						target="_blank"
-						class="block py-2 text-lg text-black dark:text-white font-medium">Magazine</a
+						class="{dynamicClass.mobile
+							.default} block py-2 text-lg text-black dark:text-white font-medium">Magazine</a
 					>
 					<a
 						href="https://docs.yam.finance/projects/museum"
 						target="_blank"
-						class="block py-2 text-lg text-black dark:text-white font-medium">FAQ</a
+						class="{dynamicClass.mobile
+							.default} block py-2 text-lg text-black dark:text-white font-medium">FAQ</a
 					>
-				</div>
-			{/if}
+				{/if}
+			</div>
 			<div class="pb-3">
 				<div class="mt-3 space-y-1">
 					<a
 						href="https://yam.finance/"
+						target="_blank"
 						class="block py-2 text-base text-black dark:text-white font-medium opacity-60 hover:opacity-30"
 						>Built by Yam</a
 					>

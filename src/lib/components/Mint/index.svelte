@@ -1,11 +1,13 @@
 <!-- src/lib/components/Mint/index.svelte -->
 <script lang="ts">
+	import { fly } from 'svelte/transition';
 	import DepositModal from '$lib/components/DepositModal/index.svelte';
 	import Notification from '$lib/components/Notification/index.svelte';
 	import { syncWallet, syncProvider, chainId } from '$lib/stores/web3-store';
 	import { NFTStorage, File } from 'nft.storage';
 	import CID from 'cids';
 	import { ethers } from 'ethers';
+	import { zkExplorer } from '$lib/config';
 
 	let txFee;
 	let amount;
@@ -22,6 +24,9 @@
 	let loading = false;
 	let imageFile;
 
+	/**
+	 * @notice These subscribers react on any changes related to the referenced variable
+	 */
 	$: if (files) {
 		// Note that `files` is of type `FileList`, not an Array:
 		// https://developer.mozilla.org/en-US/docs/Web/API/FileList
@@ -29,15 +34,6 @@
 
 		for (const file of files) {
 			console.log(`${file.name}: ${file.size} bytes`);
-		}
-	}
-
-	/// @todo Move to utils
-	async function zkExplorer(_networkId: number) {
-		if (_networkId === 1) {
-			return 'https://zkscan.io/explorer/transactions/';
-		} else if (_networkId === 4) {
-			return 'https://rinkeby.zkscan.io/explorer/transactions/';
 		}
 	}
 
@@ -73,14 +69,12 @@
 
 	// @todo Move partly to modal component
 	const mint = async () => {
-		let customError = '';
-
-		if (!files) {
-			customError = 'Please upload a photo to your nft';
-		}
+		loading = true;
 
 		try {
-			loading = true;
+			if (!files) {
+				throw new Error('Please upload a photo to your nft.');
+			}
 			const feeToken = 'ETH';
 			const { totalFee: fee } = await $syncProvider.getTransactionFee(
 				'MintNFT',
@@ -92,34 +86,12 @@
 
 			const accountETHBalance = await $syncWallet.getBalance('ETH');
 
-			// @todo Open modal to onboard the user
 			if (txFee.gte(accountETHBalance)) {
-				customError = 'You have to register your account on zkSync first in order to mint.';
+				showModal = true;
+				throw new Error(`Not ennough ETH to mint. TxFee: ${txFee}`);
 			}
 
-			if (!(await $syncWallet.isSigningKeySet())) {
-				if ((await $syncWallet.getAccountId()) == undefined) {
-					customError = 'Unknown account';
-				}
-
-				message = 'You need to register your account on zkSync first.';
-				showNotification = true;
-
-				// @todo Open Modal to tell the user what to do and continue on the modal
-
-				// As any other kind of transaction, `ChangePubKey` transaction requires fee.
-				// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
-				// the lowest possible amount.
-				const changePubkey = await $syncWallet.setSigningKey({
-					feeToken: 'ETH',
-					ethAuthType: 'ECDSA'
-				});
-
-				// Wait until the tx is committed
-				await changePubkey.awaitReceipt();
-
-				showNotification = false;
-			}
+			await checkZkSyncAccount();
 
 			const client = new NFTStorage({ token: import.meta.env.VITE_NFT_STORAGE_API_KEY as string });
 
@@ -158,7 +130,7 @@
 			description = '';
 			name = '';
 		} catch (err) {
-			message = `${customError} ${err}`;
+			message = `${err}`;
 			showNotification = true;
 			loading = false;
 			amount = null;
@@ -170,7 +142,34 @@
 			name = '';
 		}
 	};
+
+	const checkZkSyncAccount = async () => {
+		if (!(await $syncWallet.isSigningKeySet())) {
+			if ((await $syncWallet.getAccountId()) == undefined) {
+				showModal = true;
+				throw new Error('Unknown account');
+			} else {
+				message = 'You need to register your account on zkSync first.';
+				showNotification = true;
+
+				// As any other kind of transaction, `ChangePubKey` transaction requires fee.
+				// User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+				// the lowest possible amount.
+				const changePubkey = await $syncWallet.setSigningKey({
+					feeToken: 'ETH',
+					ethAuthType: 'ECDSA'
+				});
+
+				// Wait until the tx is committed
+				await changePubkey.awaitReceipt();
+			}
+		}
+	};
 </script>
+
+<svelte:head>
+	<link rel="preload" href="/empty-nft.png" as="img" />
+</svelte:head>
 
 <!-- @todo make attribute name editable
      @todo modal should close after depositing and loading finishing
@@ -186,7 +185,12 @@
 		<div class="py-16 sm:py-4 px-4 sm:px-4 lg:col-span-2">
 			<div class="max-w-lg mx-auto">
 				<div class="grid grid-cols-1 gap-y-6">
-					<img alt="placeholder" class="w-full" src={imageFile ? imageFile : '/empty-nft.png'} />
+					<img
+						alt="placeholder"
+						class="w-full"
+						in:fly
+						src={imageFile ? imageFile : '/empty-nft.png'}
+					/>
 					<input
 						type="file"
 						accept="image/png, image/jpg, video/mp4, video/x-m4v, video/*"
@@ -257,7 +261,7 @@
 					<div>
 						<form on:submit|preventDefault={addAttribute}>
 							<label class="text-black dark:text-white" for="attribute-name">Attributes</label>
-							<div class="mt-1 flex  shadow-sm">
+							<div class="mt-1 flex">
 								<div class="relative flex items-stretch flex-grow focus-within:z-10">
 									<input
 										required
@@ -265,7 +269,7 @@
 										bind:value={attributeName}
 										name="attribute-name"
 										id="attribute-name"
-										class="focus:ring-white text-lg focus:border-none block w-full text-black placeholder-gray dark:text-white placeholder-opacity-60 bg-gray bg-opacity-20 border-none"
+										class="focus:ring-white text-lg focus:border-none block w-full text-black placeholder-gray dark:text-white bg-gray bg-opacity-20 border-none"
 										placeholder="Name of the attribute"
 									/>
 								</div>
@@ -297,7 +301,7 @@
 									class="relative border w-full flex items-stretch border-white border-opacity-0 my-2 focus-within:ring-1 focus-within:ring-white focus-within:white"
 								>
 									<label
-										class="relative block items-center py-3 px-4 border-white border-opacity-0 font-medium h-full text-white bg-gray bg-opacity-20"
+										class="relative block items-center py-3 px-4 border-white border-opacity-0 font-medium h-full text-black dark:text-white bg-gray bg-opacity-20"
 										for="name">{attributeName}</label
 									>
 									<input
@@ -307,7 +311,7 @@
 										bind:value={propertyValues[attributeName]}
 										name="name"
 										id="name"
-										class="text-lg block flex-grow border-transparent focus:outline-none focus:border-transparent focus:ring-transparent text-black placeholder-black dark:text-white dark:placeholder-white placeholder-opacity-50 bg-gray bg-opacity-20"
+										class="text-lg block flex-grow border-transparent focus:outline-none focus:border-transparent focus:ring-transparent text-black dark:text-white placeholder-gray placeholder-opacity-50 bg-gray bg-opacity-20"
 										placeholder="Enter value"
 									/>
 									<div
@@ -317,7 +321,7 @@
 										<!--  -->
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
-											class="h-5 w-5 text-white mt-1.5"
+											class="h-5 w-5 text-black dark:text-white mt-1.5"
 											viewBox="0 0 20 20"
 											fill="currentColor"
 										>
