@@ -8,7 +8,7 @@ import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
 import { DID } from 'dids';
 import { IDX } from '@ceramicstudio/idx';
 
-const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
+const CERAMIC_API_URL = 'http://ipfs-ceramic-elp.yam.finance';
 
 const getGlobalObject = () => {
 	if (typeof globalThis !== 'undefined') {
