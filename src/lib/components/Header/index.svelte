@@ -103,11 +103,11 @@
 						<span class="sr-only">Open mobile menu</span>
 						<div>
 							<div
-								class="h-0.5 w-16 sm:w-10 mb-1.5 bg-black dark:bg-white"
+								class="h-0.5 w-10 mb-1.5 bg-black dark:bg-white"
 								class:open={mobileMenu.open}
 							/>
 							<div
-								class="h-0.5 w-16 sm:w-10 bg-black dark:bg-white"
+								class="h-0.5 w-10 bg-black dark:bg-white"
 								class:openN={mobileMenu.open}
 							/>
 						</div>
