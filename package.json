@@ -37,6 +37,7 @@
 		"@ceramicnetwork/stream-caip10-link": "^1.1.2",
 		"@ceramicstudio/idx": "^0.12.1",
 		"@sveltejs/adapter-static": "^1.0.0-next.15",
+		"axios": "^0.21.4",
 		"cids": "^1.1.7",
 		"colcade": "^0.2.0",
 		"dids": "^2.4.0",
@@ -50,6 +51,6 @@
 		"zksync": "^0.11.1"
 	},
 	"engines": {
-		"node": "14.13.1"
+		"node": "16.4.2"
 	}
 }
