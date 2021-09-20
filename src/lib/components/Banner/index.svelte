@@ -8,7 +8,7 @@
 			<div class="pr-16 sm:text-center sm:px-16">
 				<p class="font-medium text-white text-center">
 					<span class="md:inline">
-						This site is still a work in progress - things might change!
+						This site is still a work in <a href="https://docs.yam.finance/projects/mofy/beta">progress</a> - things might change!
 					</span>
 				</p>
 			</div>
