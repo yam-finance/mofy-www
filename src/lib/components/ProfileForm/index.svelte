@@ -1,11 +1,11 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import {
 		selectedAccount,
 		idx,
 		chainData,
 		syncWallet,
-		web3,
+		ethersProvider,
 		connected
 	} from '$lib/stores/web3-store';
 	import { ethers } from 'ethers';
@@ -13,7 +13,7 @@
 	let profileRecord = { name: '', description: '' };
 	let saving = false;
 	$: committedETHBalanceL2 = $connected ? $syncWallet.getBalance('ETH') : '';
-	$: ETHBalanceL1 = $connected ? $web3.eth.getBalance($selectedAccount) : '';
+	$: ETHBalanceL1 = $connected ? $ethersProvider.getBalance($selectedAccount) : '';
 
 	onMount(async () => {
 		const idxProfile = await $idx.get('basicProfile');
@@ -117,4 +117,4 @@
 			</div>
 		</div>
 	</div>
-</div> -->
+</div>

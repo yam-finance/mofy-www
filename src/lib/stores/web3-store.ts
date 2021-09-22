@@ -3,12 +3,12 @@ import { derived, writable } from 'svelte/store';
 import * as zksync from 'zksync';
 import { ethers } from 'ethers';
 import { zkSyncNfts } from '$lib/stores/nft-store';
-// import KeyDidResolver from 'key-did-resolver';
-// import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
-// import { DID } from 'dids';
-// import { IDX } from '@ceramicstudio/idx';
+import KeyDidResolver from 'key-did-resolver';
+import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
+import { DID } from 'dids';
+import { IDX } from '@ceramicstudio/idx';
 
-// const CERAMIC_API_URL = 'https://ceramic-clay.3boxlabs.com';
+const CERAMIC_API_URL = 'https://ipfs-ceramic-elp.yam.finance';
 
 const getGlobalObject = () => {
 	if (typeof globalThis !== 'undefined') {
@@ -85,20 +85,20 @@ export const createStore = () => {
 			nfts: []
 		}));
 
-		// const { ThreeIdConnect, EthereumAuthProvider } = await import('@3id/connect');
-		// const CeramicClient = (await import('@ceramicnetwork/http-client')).default;
-		// const threeIdConnect = new ThreeIdConnect();
-		// /// @dev Ceramic uses @eip155:1
-		// const authProvider = new EthereumAuthProvider(provider, accounts[0].toLowerCase());
-		// await threeIdConnect.connect(authProvider);
-		// const didProvider = await threeIdConnect.getDidProvider();
-		// const ceramic = new CeramicClient(CERAMIC_API_URL);
-		// const resolver = { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) };
-		// const did = new DID({ resolver });
-		// ceramic.did = did;
-		// ceramic.did.setProvider(didProvider);
-		// await ceramic.did.authenticate();
-		// const idx = new IDX({ ceramic });
+		const { ThreeIdConnect, EthereumAuthProvider } = await import('@3id/connect');
+		const CeramicClient = (await import('@ceramicnetwork/http-client')).default;
+		const threeIdConnect = new ThreeIdConnect();
+		/// @dev Ceramic uses @eip155:1
+		const authProvider = new EthereumAuthProvider(provider, accounts[0].toLowerCase());
+		await threeIdConnect.connect(authProvider);
+		const didProvider = await threeIdConnect.getDidProvider();
+		const ceramic = new CeramicClient(CERAMIC_API_URL);
+		const resolver = { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) };
+		const did = new DID({ resolver });
+		ceramic.did = did;
+		ceramic.did.setProvider(didProvider);
+		await ceramic.did.authenticate();
+		const idx = new IDX({ ceramic });
 
 		// console.log(`${accounts[0].toLowerCase()}@eip155:1`);
 		// const { Caip10Link } = (await import('@ceramicnetwork/stream-caip10-link'));
@@ -107,9 +107,10 @@ export const createStore = () => {
 		// console.log(accountDid);
 
 		update(() => ({
-			// idx,
+			idx,
 			signer,
 			syncWallet,
+			ethersProvider,
 			syncProvider,
 			provider,
 			providerType: 'String',
@@ -183,8 +184,9 @@ export const makeChainStore = (name) => {
 	allStores[name].providerType = derived(ethStore, ($ethStore) => $ethStore.providerType);
 	allStores[name].syncWallet = derived(ethStore, ($ethStore) => $ethStore.syncWallet);
 	allStores[name].syncProvider = derived(ethStore, ($ethStore) => $ethStore.syncProvider);
+	allStores[name].ethersProvider = derived(ethStore, ($ethStore) => $ethStore.ethersProvider);
 	allStores[name].signer = derived(ethStore, ($ethStore) => $ethStore.signer);
-	// allStores[name].idx = derived(ethStore, ($ethStore) => $ethStore.idx);
+	allStores[name].idx = derived(ethStore, ($ethStore) => $ethStore.idx);
 	allStores[name].selectedAccount = derived(ethStore, ($ethStore) => {
 		if ($ethStore.connected) return $ethStore.accounts.length ? $ethStore.accounts[0] : null;
 		return null;
@@ -232,9 +234,10 @@ export const chainId = allStores.default.chainId;
 export const providerType = allStores.default.providerType;
 export const syncWallet = allStores.default.syncWallet;
 export const syncProvider = allStores.default.syncProvider;
+export const ethersProvider = allStores.default.ethersProvider;
 export const signer = allStores.default.signer;
 export const selectedAccount = allStores.default.selectedAccount;
 export const walletType = allStores.default.walletType;
 export const web3 = allStores.default.web3;
 export const chainData = allStores.default.chainData;
-// export const idx = allStores.default.idx;
+export const idx = allStores.default.idx;

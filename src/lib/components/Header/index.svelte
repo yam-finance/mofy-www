@@ -178,8 +178,8 @@
 								<span>connecting ...</span>
 							</button>
 						{:else}
-							<!-- on:click={() => goto('/profile')} -->
 							<button
+								on:click={() => goto('/profile')}
 								type="button"
 								class="mr-2 text-black dark:text-white flex items-center hover:opacity-70"
 							>
