@@ -29,7 +29,7 @@
 				A curated list of yam museum artists
 			</p>
 		</div>
-		<div class="mt-8 w-full max-w-xs">
+		<div class="mt-8 w-full max-w-xs md:max-w-none">
 			<div class="mt-1 relative flex items-center">
 				<input
 					type="text"
